@@ -1,0 +1,27 @@
+.general{
+    margin: auto;
+    width: 99%;
+    height: 800px;
+    color: #053667;
+}
+
+.opciones-victimario{
+    float: left;
+    width: 30%;
+    height: 100%;
+}
+
+.card{
+    margin-top: 30%;
+    text-align: center;
+}
+
+.map{
+    float: left;
+    width: 70%;
+    height: 100%;
+}
+
+.reloj{
+    margin: auto;
+}

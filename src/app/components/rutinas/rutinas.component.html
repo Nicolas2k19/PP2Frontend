@@ -1,0 +1,32 @@
+<div class="general">
+    <div class="opciones-victimario">
+        <div class="col-10">
+            <div class="card bg-light mb-3">
+                <div class="card-body">
+                    <legend>Rutina</legend>
+                    <legend>{{victimarioSeleccionado}}</legend>
+                    <form>
+                        <div class="row">
+                            <div class="form-group btn-block">
+                                <select class="form-control" name="dia" ngbTooltip="Día de rutina"
+                                    [(ngModel)]="diaSeleccionado">
+                                    <option *ngFor="let dia of dias">
+                                        {{dia}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <ngb-timepicker ngbTooltip="Horario de rutina" [(ngModel)]="time" name="horario"
+                                [hourStep]="1" [minuteStep]="30" readonlyInputs="true" class="reloj"></ngb-timepicker>
+                        </div>
+                        <button class="btn btn-primary btn-block" (click)=mostrarRutina()
+                            [disabled]="!seleccioneRestriccion">Ver área rutinaria</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map" class="map">
+    </div>
+</div>

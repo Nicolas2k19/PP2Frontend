@@ -1,0 +1,28 @@
+.general{
+    margin: auto;
+    width: 99%;
+    height: 600px;
+}
+
+.lista-restricciones{
+    float: left;
+    width: 30%;
+    height: 100%;
+}
+
+.table tr:hover {
+    background-color: azure;
+    cursor: pointer;
+}
+
+.map{
+    float: left;
+    width: 70%;
+    height: 100%;
+}
+
+.spinner-grow{
+    position: fixed;
+    margin-top: 20%;
+    z-index: 9999;
+}

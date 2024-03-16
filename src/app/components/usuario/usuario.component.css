@@ -1,0 +1,23 @@
+.container{
+    margin-top: 10%
+}
+
+.form-group input{
+    padding-left: 40px;
+}
+
+.form-group{
+    position: relative;
+}
+
+.form-group i{
+    position: absolute;
+    left: 0;
+    padding: 8px 8px;
+    color: #aaa;
+}
+
+#forgotPassword{
+    cursor: pointer;
+}
+

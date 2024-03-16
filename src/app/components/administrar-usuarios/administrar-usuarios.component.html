@@ -1,0 +1,68 @@
+<div class="alert alert-danger" role="alert" *ngIf="hayError">
+    {{ mensajeError }}
+</div>
+<ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
+    <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
+</ngx-spinner>
+<div class="container">
+    <div class="row">
+
+        <div class="col-4">
+            <div class="card bg-light mb-3" style="max-width: 20rem;">
+                <div class="card-body">
+                    <legend>Usuario</legend>
+                    <form #usuarioForm="ngForm" (ngSubmit)="agregarUsuario(usuarioForm)" novalidate>
+                        <div class="row">
+                            <input class="form-control" type="email" name="email" #email="ngModel" placeholder="Email"
+                                [ngClass]="{ 'is-invalid': email.invalid && email.touched, 'is-valid': email.valid}"
+                                [(ngModel)]="usuarioSeleccionado.email" ngbTooltip="Email"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required email>
+                            <div class="invalid-feedback d-block"
+                                *ngIf="email.invalid && (email.dirty || email.touched)">
+                                Email inválido
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group btn-block">
+                                <select class="form-control" name="rolSeleccionado" [(ngModel)]="rolSeleccionado"
+                                    ngbTooltip="Rol de usuario" required>
+                                    <option *ngFor="let rol of roles">
+                                        {{rol}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block" [disabled]="!usuarioForm.valid">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let usuario of usuarioService.usuarios">
+                        <td>{{usuario.email}}</td>
+                        <td>{{usuario.rolDeUsuario}}</td>
+                        <td>
+                            <a (click)="editarUsuario(usuario)">
+                                <i class="material-icons">editar</i>
+                            </a>
+                            <a (click)="eliminarUsuario(usuario.idUsuario)">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

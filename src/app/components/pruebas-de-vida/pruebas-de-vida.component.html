@@ -1,0 +1,90 @@
+<div class="container">
+    <ngx-spinner type="ball-clip-rotate" size="medium" bdColor="rgba(51,51,51,0.3)" color="#26294D">
+        <p style="font-size: 15px; font-weight: bold; color: #26294D">Cargando...</p>
+    </ngx-spinner>
+
+    <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-6">
+                    <legend text-center>Foto perfil</legend>
+                    <img [src]="imgPerfil" alt="">
+                </div>
+                <div class="col-6">
+                    <legend>Prueba de vida</legend>
+                    <a [hidden]="respondio">RESPUESTA NO RECIBIDA</a>
+                    <img [src]="imgPruebaDeVida" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="aceptarPruebaDeVida()">Aceptar</button>
+            <button type="button" class="btn btn-danger" (click)="rechazarPruebaDeVida()">Rechazar</button>
+        </div>
+    </ng-template>
+
+    <div class="row">
+        <div class="col">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand"></a>
+                <a id="restriccionSeleccionada"></a>
+            </nav>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card bg-light mb-3" style="max-width: 20rem;">
+                <div class="card-body" text-center>
+                    <legend>Generar prueba de vida</legend>
+                    <form #pruebaDeVidaForm="ngForm" (ngSubmit)="enviarPruebaDeVida(pruebaDeVidaForm)">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Descripción" name="descripcion"
+                            [(ngModel)]="pruebaDeVida.descripcion" required>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block"
+                                [disabled]="!pruebaDeVidaForm.valid">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="text-center">
+                <div class="spinner-grow" *ngIf="spinnerBoolean" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Ver</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let prueba of pruebasDeVida">
+                        <td class="joinedDate">{{prueba.fecha | date:'dd-MM-yyyy HH:mm'}}</td>
+                        <td>{{prueba.descripcion}}</td>
+                        <td>{{prueba.estado}}</td>
+                        <td>
+                            <a (click)="open(content, prueba)" *ngIf="prueba.estado=='Pendiente'">
+                                <i class="material-icons">insert_photo </i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

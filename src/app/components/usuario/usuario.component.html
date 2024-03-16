@@ -1,0 +1,63 @@
+<div class="container">
+    <ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
+        <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
+    </ngx-spinner>
+    <div class="col-4 mx-auto">
+        <div class="card border-primary mb-3 text-center">
+            <div class="card-header">
+                <legend>Iniciar Sesión</legend>
+            </div>
+            <div class="card-body">
+                <form #usuarioForm="ngForm" (ngSubmit)="ingresar(usuarioForm)" novalidate>
+                    <fieldset>
+                        <div class="form-group">
+                            <i class="large material-icons">person</i>
+                            <input type="email" class="form-control" ngbTooltip="Ingrese su email"
+                                [ngClass]="{ 'is-invalid': mail.invalid && mail.touched, 'is-valid': mail.valid}"
+                                placeholder="Email" name="mail" #mail="ngModel"
+                                [(ngModel)]="usuarioService.usuarioSeleccionado.email"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required email>
+                            <div class="invalid-feedback d-block" *ngIf="mail.invalid && (mail.dirty || mail.touched)">
+                                <div *ngIf="mail.errors.required">
+                                    Email requerido
+                                </div>
+                                <div *ngIf="mail.errors.email">
+                                    Email invalido
+                                </div>
+                            </div>
+                            <small class="form-text text-muted">Ingrese Email</small>
+                        </div>
+
+                        <div class="form-group">
+                            <i class="large material-icons">https</i>
+                            <input type="password" class="form-control" placeholder="Password" name="contrasena"
+                                #contrasena="ngModel" ngbTooltip="Contraseña"
+                                [ngClass]="{ 'is-invalid': contrasena.invalid && contrasena.touched, 'is-valid': contrasena.valid}"
+                                [(ngModel)]="usuarioService.usuarioSeleccionado.contrasena" required>
+
+                            <div class="invalid-feedback d-block"
+                                *ngIf="contrasena.invalid && (contrasena.dirty || contrasena.touched)">
+                                <div *ngIf="contrasena.errors.required">
+                                    Contraseña requerida.
+                                </div>
+                            </div>
+
+                            <small (click)="recuperarContrasena()" id="forgotPassword" class="form-text text-muted"
+                            *ngIf="mail.valid">
+                                Olvidé mi contraseña</small>
+                        </div>
+
+                        <div class="alert alert-danger" role="alert" *ngIf="loginEsInvalido">
+                            Error al iniciar sesión. Por favor verifique los datos ingresados.
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-primary" [disabled]="!usuarioForm.valid">Ingresar</button>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

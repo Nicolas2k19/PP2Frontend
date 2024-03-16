@@ -1,0 +1,116 @@
+<ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
+    <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
+</ngx-spinner>
+<div class="container">
+    <div class="row">
+        <!-- FORMULARIO DE RESTRICCIONES -->
+        <div class="col-4">
+            <div class="card bg-light mb-3" style="max-width: 20rem;">
+                <div class="card-body">
+                    <legend>Restricción Perimetral</legend>
+                    <form #restriccionForm="ngForm" (ngSubmit)="guardarRestriccion(restriccionForm)" novalidate>
+                        <div class="row">
+                            <div class="input-group">
+                                <input class="form-control" type="tel" name="dniVictimario"
+                                    placeholder="DNI Victimario" ngbTooltip="DNI victimario"
+                                    [(ngModel)]="victimario.dni">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        (click)="agregarVictimario()" [disabled]="victimario.dni === ''">
+                                        <i class="small material-icons">person_add</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <label id="labelVictimario"></label>
+                        </div>
+                        <div class="row">
+                            <div class="input-group">
+                                <input class="form-control" type="tel" name="dniDamnificada"
+                                    placeholder="DNI Damnificada" ngbTooltip="DNI damnificada"
+                                    [(ngModel)]="damnificada.dni">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        (click)="agregarDamnificada()" [disabled]="damnificada.dni === ''">
+                                        <i class="small material-icons">person_add</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <label id="labelDamnificada"></label>
+                        </div>
+                        <div class="row">
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="emailAdministrativo"
+                                    placeholder="Email Administrativo a cargo" ngbTooltip="Email administrativo a cargo"
+                                    [(ngModel)]="administrativo.email">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        (click)="agregarAdministrativo()" [disabled]="administrativo.email === ''">
+                                        <i class="small material-icons">person_add</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <label id="labelAdministrativo"></label>
+                        </div>
+                        <div class="row">
+                            <input class="form-control" type="number" name="distancia" placeholder="Distancia"
+                                ngbTooltip="Distancia restricción" #distancia="ngModel"
+                                [ngClass]="{ 'is-invalid': distancia.invalid && distancia.touched, 'is-valid': distancia.valid}"
+                                [(ngModel)]="restriccion.distancia" pattern="^[0-9]+" required>
+                            <div class="invalid-feedback d-block"
+                                *ngIf="distancia.invalid && (distancia.dirty || distancia.touched)">
+                                Distancia requerida
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="Fecha (Año-Mes-Día)" name="dp"
+                                    [(ngModel)]="restriccion.fechaSentencia" ngbDatepicker #d="ngbDatepicker"
+                                    ngbTooltip="Fecha de sentencia" [minDate]="{year: 1900, month: 1, day: 1}"
+                                    [maxDate]="maxDatePicker" readonly required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
+                                        type="button">
+                                        <i class="small material-icons">event</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button class="btn btn-primary btn-block" [disabled]="!restriccionForm.valid">
+                                Agregar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- TABLA DE RESTRICCIONES -->
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Victimario</th>
+                        <th scope="col">Damnificada</th>
+                        <th scope="col">Administrativo</th>
+                        <th scope="col">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let restriccion of restriccionService.restricciones">
+                        <td>{{restriccion.victimario.apellido}}</td>
+                        <td>{{restriccion.damnificada.apellido}}</td>
+                        <td>{{restriccion.administrativo.email}}</td>
+                        <td>
+                            <a (click)="editarRestriccion(restriccion)">
+                                <i class="material-icons">editar</i>
+                            </a>
+                            <a (click)="eliminarRestriccion(restriccion)">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

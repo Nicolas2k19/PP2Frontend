@@ -1,0 +1,52 @@
+.container{
+    color: #26294D;
+}
+
+.card{
+    cursor: pointer;
+}
+
+.card:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.card-header i{
+    position: absolute;
+}
+
+.card-header a{
+    margin-left: 2%;
+}
+
+.archivadas{
+    margin-top: 3%;
+    float: right;
+    text-align: right;
+}
+
+.btn{
+    float: right;
+}
+
+.texto{
+    font-weight: bold;
+    text-overflow:ellipsis;
+    white-space:nowrap; 
+    overflow:hidden; 
+}
+
+.col{
+    text-overflow:ellipsis;
+    white-space:nowrap; 
+    overflow:hidden; 
+}
+
+.col-4{
+    text-overflow:ellipsis;
+    white-space:nowrap; 
+    overflow:hidden; 
+}
+
+.cargarMas{
+    cursor: pointer;
+}

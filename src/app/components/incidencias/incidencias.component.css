@@ -1,0 +1,20 @@
+.container{
+    color: #053667;
+}
+
+.table{
+    color: #053667;
+}
+
+.row{
+    margin-top: 10px;
+}
+
+.table tr:hover {
+    background-color: azure;
+    cursor: pointer;
+}
+
+.table i:hover{
+    opacity: .3;
+}

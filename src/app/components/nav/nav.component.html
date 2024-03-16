@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <img class="img" src="https://image.flaticon.com/icons/svg/1499/1499591.svg" alt="W3Schools.com">
+  
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="restricciones" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Restricciones perimetrales <span
+              class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+  
+          <a class="nav-link" routerLink="notificaciones" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Notificaciones <span
+              class="badge badge-pill badge-danger badge-notif"
+              [(ngModel)]="notificacionesNoLeidas" [hidden]="cantNotificaciones<=0" >{{notificacionesNoLeidas}}</span></a>
+  
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="incidencias" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Incidencias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="pruebasDeVida"
+          [hidden]="rolDeUsuario!='ADMINISTRATIVO'" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Pruebas de vida</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="rutinas" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Rutina</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+            aria-expanded="false" [hidden]="rolDeUsuario!='SUPERVISOR'">Administrar</a>
+          <div class="dropdown-menu" x-placement="bottom-start"
+            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+            <a class="dropdown-item" routerLink="administrarUsuarios">Usuarios</a>
+            <a class="dropdown-item" routerLink="administrarPersonas">Personas</a>
+            <a class="dropdown-item" routerLink="administrarRestricciones">Restricciones perimetrales</a>
+          </div>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <a class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+            aria-expanded="false">{{usuarioLogeado}}</a>
+          <div class="dropdown-menu" x-placement="bottom-start"
+            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+            <a class="dropdown-item" routerLink="recuperarContrasena">Cambiar Contraseña</a>
+            <a class="dropdown-item" routerLink="../ingresar" (click)="salir()">Salir</a>
+          </div>
+        </a>
+      </form>
+    </div>
+  </nav>

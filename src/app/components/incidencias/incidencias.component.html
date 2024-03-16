@@ -1,0 +1,52 @@
+<div class="container">
+    <ngx-spinner type="ball-clip-rotate" size="medium" bdColor="rgba(51,51,51,0.3)"
+    color="#26294D">
+        <p style="font-size: 15px; font-weight: bold; color: #26294D">Cargando...</p>
+    </ngx-spinner>
+    <div class="row">
+        <div class="col">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand">Restricción: </a>
+                <a id="restriccionSeleccionada"></a>
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="navbar-nav mr-auto">
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <select class="form-control" name="tipoIncidencia" [(ngModel)]="incidencias"
+                            ngbTooltip="Tipo de Incidencia" required>
+                            <option value="1">Todas</option>
+                            <option value="2">Infracciones</option>
+                            <option value="3">Pruebas de vida</option>
+                        </select>
+                        <button class="btn btn-secondary my-2 my-sm-0" type="button"
+                            (click)=cambioTexto() disabled="true">Search</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Tipo de incidencia</th>
+                        <th scope="col">Fecha y Hora</th>
+                        <th scope="col">Datos generales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let incidencia of incidencias" (click)="seleccionarIncidencia(incidencia)">
+                        <td>{{incidencia.topico}}</td>
+                        <td class="joinedDate">{{incidencia.fecha | date:'dd-MM-yyyy HH:mm'}}</td>
+                        <td>{{incidencia.descripcion}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-center">
+        <a class="cargarMas" (click)="cargarMas()">Cargar más ...</a>
+    </div>
+</div>

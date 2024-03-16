@@ -1,0 +1,25 @@
+<div class="general">
+    <ngx-spinner type="ball-clip-rotate" size="medium" bdColor="rgba(51,51,51,0.3)"
+    color="#26294D">
+        <p style="font-size: 15px; font-weight: bold; color: #26294D">Cargando...</p>
+    </ngx-spinner>
+    <div class="lista-restricciones">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Victimario</th>
+                    <th scope="col">Damnificada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let restriccion of restriccionService.restricciones"
+                    (click)=seleccionarRestriccion(restriccion)>
+                    <td>{{restriccion.victimario.apellido}}</td>
+                    <td>{{restriccion.damnificada.apellido}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="map" class="map">
+    </div>
+</div>

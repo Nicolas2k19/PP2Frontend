@@ -1,0 +1,33 @@
+<div class="container">
+    <ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
+        <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
+    </ngx-spinner>
+    <div class="row">
+        <div class="col-4 mx-auto">
+            <div class="card bg-light mb-3" style="max-width: 20rem;">
+                <div class="card-body">
+                    <form #usuarioForm="ngForm" (ngSubmit)="modificarContrasena(usuarioForm)">
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Contraseña antigua"
+                                name="contrasenaVieja" #contrasenaVieja="ngModel" [(ngModel)]="contrasenavieja"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Contraseña nueva"
+                                name="contrasenaNueva" #contrasenaNueva="ngModel" [(ngModel)]="contrasenanueva"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Repetir contraseña nueva"
+                                name="contrasenaNuevaRepetida" #contrasenaNuevaRepetida="ngModel"
+                                [(ngModel)]="contrasenanuevarepetida" required>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" [disabled]="!usuarioForm.valid">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

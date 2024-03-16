@@ -1,0 +1,75 @@
+<div class="container">
+    <ngx-spinner type="ball-clip-rotate" size="medium" bdColor="rgba(51,51,51,0.3)" color="#26294D">
+        <p style="font-size: 15px; font-weight: bold; color: #26294D">Cargando...</p>
+    </ngx-spinner>
+
+    <div class="row">
+        <div class="archivadas">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" checked=""
+                        (change)="verArchivadas()" [(ngModel)]="check">
+                    <label class="custom-control-label" for="customSwitch1">Ver archivadas</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">{{notificacionSeleccionada.asunto}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>{{notificacionSeleccionada.descripcion}}</p>
+        </div>
+        <div class="modal-footer">
+            <p class="joinedDate">Fecha: {{notificacionSeleccionada.fecha | date:'dd-MM-yyyy HH:mm'}}</p>
+            <button type="button" class="btn btn-outline-dark" *ngIf="notificacionSeleccionada.estado!='Archivada'"
+                (click)="archivar()">Archivar</button>
+
+        </div>
+    </ng-template>
+
+    <div class="card" *ngFor="let notificacion of notificaciones" (click)="open(content, notificacion)">
+        <div class="card-header" *ngIf="notificacion.estado=='NoVista'">
+            <div class="row">
+                <div class="col-4">
+                    <div class="texto">{{notificacion.asunto}}</div>
+                </div>
+                <div class="col">
+                    <div class="texto">{{notificacion.descripcion}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="card-header" *ngIf="notificacion.estado=='Vista'" style="opacity: 0.5;">
+            <div class="row">
+                <div class="col-4">
+                    {{notificacion.asunto}}
+                </div>
+                <div class="col">
+                    {{notificacion.descripcion}}
+                </div>
+            </div>
+        </div>
+        <div class="card-header" *ngIf="notificacion.estado=='Archivada'">
+            <div class="row">
+                <div class="col-4">
+                    <div class="texto">{{notificacion.asunto}}</div>
+                </div>
+                <div class="col">
+                    <div class="texto">{{notificacion.descripcion}}</div>
+                </div>
+                <div class="col-1">
+                    <i *ngIf="notificacion.estado=='Archivada'" class="large material-icons">check_circle</i>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <a class="cargarMas" (click)="cargarMas()">Cargar más ...</a>
+    </div>
+</div>

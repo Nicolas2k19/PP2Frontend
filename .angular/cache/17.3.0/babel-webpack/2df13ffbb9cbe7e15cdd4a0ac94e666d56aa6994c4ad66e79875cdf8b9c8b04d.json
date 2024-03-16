@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class ErrorDTO {\n  constructor(hayError = false, mensajeError = \"\") {\n    this.hayError = hayError;\n    this.mensajeError = mensajeError;\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

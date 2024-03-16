@@ -1,0 +1,32 @@
+.container{
+    color: #053667;
+}
+
+.row{
+    margin-top: 10px;
+}
+
+.card{
+    text-align: center
+}
+
+.table{
+    color: #053667;
+}
+
+.table tr:hover {
+    background-color: azure;
+    cursor: pointer;
+}
+
+.table i:hover{
+    opacity: .3;
+}
+
+.spinner-grow{
+    position: fixed;
+    margin-top: 20%;
+    z-index: 9999;
+}
+
+

@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class FotoIdentificacion {\n  constructor(idFoto = 0, foto = null, idPersona = 0) {\n    this.idFoto = idFoto;\n    this.foto = foto;\n    this.idPersona = idPersona;\n  }\n  idFoto;\n  foto;\n  idPersona;\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
