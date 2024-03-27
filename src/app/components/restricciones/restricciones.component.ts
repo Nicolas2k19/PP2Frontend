@@ -19,7 +19,6 @@ import { UbicacionDto } from 'src/app/models/ubicacion-dto';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
 import { Usuario } from 'src/app/models/usuario';
-import TileSourceType from "ol/layer/Tile"
 
 @Component({
   selector: 'app-restricciones',
@@ -32,10 +31,10 @@ export class RestriccionesComponent implements OnInit {
   //VARIABLES PARA EL MAPA
   map: OlMap;
   mapSource: OlXYZ;
-  capaMapa;
+  capaMapa: OlTileLayer;
   vistaMapa: OlView;
   vectorUbicaciones: VectorSource;
-  capaUbicaciones;
+  capaUbicaciones: VectorLayer;
 
   //UBICACIONES UTILIZADAS PARA MOSTRAR EN EL MAPA
   ubicacionVictimario: Ubicacion;
@@ -129,7 +128,7 @@ export class RestriccionesComponent implements OnInit {
         markerVictimario.setStyle(new Style({
           image: new Icon(({
             src: 'assets/markerVictimario.png',
-           // imgSize: [60, 60]
+            imgSize: [60, 60]
           }))
         }));
 
@@ -140,7 +139,7 @@ export class RestriccionesComponent implements OnInit {
         markerDamnificada.setStyle(new Style({
           image: new Icon(({
             src: 'assets/markerDamnificada.png',
-           // imgSize: [60, 60]
+            imgSize: [60, 60]
           }))
         }));
 

@@ -16,7 +16,7 @@
             "outputPath": "angular-build",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
@@ -82,7 +82,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
@@ -129,6 +129,6 @@
     }},
   "defaultProject": "vdg-frontend",
   "cli": {
-    "analytics": "fe5c7e29-12ef-48f6-975a-56465c421ea3"
+    "analytics": "d7e40eb0-683f-4b91-93c6-240a235eef28"
   }
 }

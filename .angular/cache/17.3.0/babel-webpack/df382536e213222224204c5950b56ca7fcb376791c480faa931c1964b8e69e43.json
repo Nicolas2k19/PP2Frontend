@@ -1,1 +1,0 @@
-{"ast":null,"code":"/**\n * RGB space.\n *\n * @module  color-space/rgb\n */\n\nexport default {\n  name: 'rgb',\n  min: [0, 0, 0],\n  max: [255, 255, 255],\n  channel: ['red', 'green', 'blue'],\n  alias: ['RGB']\n};","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

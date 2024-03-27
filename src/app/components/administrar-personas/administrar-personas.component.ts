@@ -19,7 +19,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class AdministrarPersonasComponent implements OnInit {
 
-  public mensajeError : string;
   personaDTOSelleccionada = new FormPersonaDTO;
   fotoIdentificacion = new FotoIdentificacion;
   fecha: Date = new Date();
@@ -42,7 +41,7 @@ export class AdministrarPersonasComponent implements OnInit {
   mostrarImagen: boolean = false;
   imagenSeleccionada: File = null;
 
-  public hayError : boolean;
+  hayError = false;
   editarBandera: boolean = false;
 
   constructor(
@@ -50,11 +49,7 @@ export class AdministrarPersonasComponent implements OnInit {
     private toastr: ToastrService,
     private provinciaLocalidadService: ProvinciaLocalidadService,
     private fotoIdentificacionService: FotoIdentificacionService,
-    private spinner: NgxSpinnerService)
-    
-    {
-    this.mensajeError =  "Ha ocurrido un error";
-    this.hayError = false;
+    private spinner: NgxSpinnerService) {
     this.roles = ['DAMNIFICADA', 'VICTIMARIO'];
   }
 

@@ -72,9 +72,11 @@ export class IncidenciasComponent implements OnInit {
       });
   }
 
-  seleccionarIncidencia(incidencia: Incidencia){
+  seleccionarIncidencia(incidencia: Incidencia){ 
+    console.log('me rompi aca ');
     document.getElementById("topico").innerHTML = " " + incidencia.topico;
     document.getElementById("exampleTextarea").innerHTML = " " + incidencia.descripcion;
+   
   }
 
   cargarMas(){
@@ -86,7 +88,7 @@ export class IncidenciasComponent implements OnInit {
   }
 
   cambioTexto(){
-    alert("Cambio de texto , no implementado")
+    console.log("creado por maty para resolver un error")
   }
 
 }

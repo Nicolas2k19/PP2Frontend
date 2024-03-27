@@ -1,27 +1,42 @@
-# VdgFrontend
+# VDG Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.3.
+Este proyecto contiene el frontend para la aplicación VDG. Proporciona instrucciones sobre cómo configurar y ejecutar el código.
 
-## Development server
+## Instrucciones para ejecutar el código
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. **Instalar dependencias:** Ejecuta el siguiente comando para instalar todas las dependencias necesarias:
 
-## Code scaffolding
+    ```bash
+    npm install --force
+    ```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+2. **Corregir auditoría de seguridad:** Después de instalar las dependencias, puedes ejecutar el siguiente comando para corregir cualquier problema de seguridad:
 
-## Build
+    ```bash
+    npm audit fix --force
+    ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+3. **Ejecutar la aplicación:** Para ejecutar la aplicación, ejecuta el siguiente comando:
 
-## Running unit tests
+    ```bash
+    ng serve
+    ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    Esto desplegará la aplicación en el servidor local en [http://localhost:4200/](http://localhost:4200/).
 
-## Running end-to-end tests
+## Configuraciones dentro del código
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+- **Cambiar la URL del backend:** Si el backend está desplegado en una ubicación diferente, asegúrate de cambiar la URL dentro del archivo `environments/environment.ts`.
 
-## Further help
+## Cuentas validas
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- **Cuenta de supervisor predeterminada:**
+  - Correo electrónico: admin@admin.com
+  - Contraseña: admin
+
+- **Cuenta de administrador:**
+  - Ejemplo: gfgrillo3@gmail.com y gustycruz85@gmail.com
+  - Para acceder a estas cuentas, sigue el procedimiento de "Olvidaste tu contraseña" y se enviará una nueva contraseña al correo electrónico pp2proyectoviolenciagenero@gmail.com.
+
+    Nota: Si el correo electrónico no funciona o estás en un entorno de desarrollo, podrás ver la nueva contraseña desde la consola del backend.
+

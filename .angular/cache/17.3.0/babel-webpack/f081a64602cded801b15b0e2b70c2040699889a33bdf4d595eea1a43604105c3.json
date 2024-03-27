@@ -1,1 +1,0 @@
-{"ast":null,"code":"/**\n * @module ol/asserts\n */\n\n/**\n * @param {*} assertion Assertion we expected to be truthy.\n * @param {string} errorMessage Error message.\n */\nexport function assert(assertion, errorMessage) {\n  if (!assertion) {\n    throw new Error(errorMessage);\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

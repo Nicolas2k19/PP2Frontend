@@ -39,10 +39,10 @@ export class RutinasComponent implements OnInit {
   //VARIABLES PARA EL MAPA
   map: OlMap;
   mapSource: OlXYZ;
-  capaMapa;
+  capaMapa: OlTileLayer;
   vistaMapa: OlView;
   vectorUbicaciones: VectorSource;
-  capaUbicaciones;
+  capaUbicaciones: VectorLayer;
 
 
   constructor(private ubicacionService: UbicacionService, private comunicacion: ComunicacionService,
@@ -107,7 +107,7 @@ export class RutinasComponent implements OnInit {
             markerVictimario.setStyle(new Style({
               image: new Icon(({
                 src: 'assets/markerVictimario.png',
-               // imgSize: [60, 60]
+                imgSize: [60, 60]
               }))
             }));
 

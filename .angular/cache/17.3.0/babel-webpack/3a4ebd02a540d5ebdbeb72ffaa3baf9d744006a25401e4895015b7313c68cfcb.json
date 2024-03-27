@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\n * @module ol/style/IconAnchorUnits\n */\n\n/**\n * Icon anchor units. One of 'fraction', 'pixels'.\n * @enum {string}\n */\nexport default {\n  FRACTION: 'fraction',\n  PIXELS: 'pixels'\n};\n\n//# sourceMappingURL=IconAnchorUnits.js.map","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

@@ -16,16 +16,13 @@ export class AdministrarUsuariosComponent implements OnInit {
   roles;
   rolSeleccionado;
   usuarioSeleccionado = new Usuario;
-  hayError  : boolean ;
-  mensajeError : string;
+
   editarBandera: boolean = false;
 
   constructor(
     public usuarioService: UsuarioService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
-    this.hayError = false;
-    this.mensajeError = "Ha ocurrido un error"
     this.roles = ['SUPERVISOR', 'ADMINISTRATIVO'];
   }
 
