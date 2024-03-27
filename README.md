@@ -1,4 +1,4 @@
-# VDG Frontend
+# VDG Frontend 💻
 
 Este proyecto contiene el frontend para la aplicación VDG. Proporciona instrucciones sobre cómo configurar y ejecutar el código.
 
