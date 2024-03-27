@@ -33,6 +33,9 @@ Este proyecto contiene el frontend para la aplicación VDG. Proporciona instrucc
 - **Cuenta de supervisor predeterminada:**
   - Correo electrónico: admin@admin.com
   - Contraseña: admin
+    
+    ![image](https://github.com/Nicolas2k19/PP2Frontend/assets/86579814/91cd1045-7755-425b-82de-fea141545413)
+
 
 - **Cuenta de administrador:**
   - Ejemplo: gfgrillo3@gmail.com y gustycruz85@gmail.com
