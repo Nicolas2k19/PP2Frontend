@@ -24,6 +24,10 @@ export class PersonaService {
     return this.http.get(this.URL_API);
   }
 
+  getPersona(id : number){
+    return this.http.get(this.URL_API_PERSONA+'/GetById/'+id);
+  }
+
   postPersona(personaDTO: FormPersonaDTO){
     console.log(personaDTO);
     return this.http.post(this.URL_API, personaDTO);

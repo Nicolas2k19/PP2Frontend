@@ -32,8 +32,18 @@
         <div class="col">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <a class="navbar-brand"></a>
-                <a id="restriccionSeleccionada"></a>
+                <a>{{ selectedUserLabel }}</a>
             </nav>
+        </div>
+        <div class="col">
+            <div class="dropdown mt-lg-0 mt-3"> 
+                <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ 'Seleccionar opción' }}
+                </button>            
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" *ngFor="let opcion of opcionesDesplegable" (click)="seleccionarOpcion(opcion); getPruebasDeVidaPersona(opcion.idPersona)">{{ opcion.apellido }}</a>
+                </div>
+            </div>
         </div>
     </div>
     <br>
@@ -42,14 +52,15 @@
             <div class="card bg-light mb-3" style="max-width: 20rem;">
                 <div class="card-body" text-center>
                     <legend>Generar prueba de vida</legend>
-                    <form #pruebaDeVidaForm="ngForm" (ngSubmit)="enviarPruebaDeVida(pruebaDeVidaForm)">
+                    <form #pruebaDeVidaForm="ngForm" (ngSubmit)="enviarPruebaDeVida(pruebaDeVidaForm)" >
+                        <p>Prueba de vida para: {{ seleccionado?.nombre }} {{ seleccionado?.apellido }}</p>
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Descripción" name="descripcion"
                             [(ngModel)]="pruebaDeVida.descripcion" required>
                         </div>
                         <div class="form-group">
                             <button class="btn btn-primary btn-block"
-                                [disabled]="!pruebaDeVidaForm.valid">Enviar</button>
+                                [disabled]="!pruebaDeVidaForm.valid" >Enviar</button>
                         </div>
                     </form>
                 </div>

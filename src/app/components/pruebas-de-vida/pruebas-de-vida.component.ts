@@ -9,6 +9,10 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FotoIdentificacion } from 'src/app/models/foto-identificacion';
 import { FotoIdentificacionService } from 'src/app/services/fotoIdentificacion/foto-identificacion.service';
 import { FotoPruebaDeVida } from 'src/app/models/foto-prueba-de-vida';
+import { Persona } from 'src/app/models/persona';
+import { PersonaService } from 'src/app/services/personas/persona.service';
+import { Usuario } from 'src/app/models/usuario';
+import { UsuarioService } from 'src/app/services/login/usuario.service';
 
 @Component({
   selector: 'app-pruebas-de-vida',
@@ -25,6 +29,10 @@ export class PruebasDeVidaComponent implements OnInit {
   imgPerfil: String;
   imgPruebaDeVida: String;
   respondio: boolean = true;
+  opcionesDesplegable: Persona[];
+  seleccionado: Persona;
+  selectedUserLabel: string = "Seleccione un usuario";
+  usuarioSeleccionado: Usuario;
 
 
   constructor(
@@ -32,8 +40,10 @@ export class PruebasDeVidaComponent implements OnInit {
     private comunicacion: ComunicacionService,
     config: NgbModalConfig, private modalService: NgbModal,
     private spinnerService: NgxSpinnerService,
+    private personaService :PersonaService,
+    private usuarioService : UsuarioService,
     private fotoIdentificacionService: FotoIdentificacionService) {
-
+    
     config.backdrop = 'static';
     config.keyboard = false; 
   }
@@ -41,8 +51,8 @@ export class PruebasDeVidaComponent implements OnInit {
   ngOnInit() {
     if(this.comunicacion.restriccionDTO != null){
       this.restriccion = this.comunicacion.restriccionDTO;
-      this.imprimirNombrePersona();
-      this.getPruebasDeVidaPersona(this.comunicacion.restriccionDTO.victimario.idPersona);
+      if( this.seleccionado != null )
+        this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
       this.spinnerService.show();
     this.fotoIdentificacionService.getFotoPefil(this.comunicacion.restriccionDTO.victimario.idPersona).
      subscribe( res => {
@@ -52,22 +62,61 @@ export class PruebasDeVidaComponent implements OnInit {
         console.log(res);
       });
     }
+    this.opcionesDesplegable=[this.restriccion.victimario, this.restriccion.damnificada]
   }
+
+  seleccionarOpcion(opcion: Persona) {
+    this.personaService.getPersona(opcion.idPersona)
+      .subscribe(
+        (res: Persona) => {
+          this.seleccionado = res;
+          this.selectedUserLabel = "Usuario seleccionado: " + this.seleccionado.apellido;
+        },
+        (error) => {
+          console.error('Error al obtener persona:', error);
+        }
+      );
+  }
+  
 
   enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
     this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
-    this.pruebaDeVida.idPersonaRestriccion = this.comunicacion.restriccionDTO.victimario.idPersona;
-    this.pruebaDeVida.estado = "Pendiente";
-    this.spinnerService.show();
-    this.pruevaDeVidaService.postPruebaDeVida(this.pruebaDeVida)
-      .subscribe(res => {
-        this.spinnerService.hide();
-        console.log(res);
-        pruebaDeVidaForm.reset();
-        this.pruebaDeVida = new PruebaDeVida;
-        this.getPruebasDeVidaPersona(this.comunicacion.restriccionDTO.victimario.idPersona);
-      })
+    this.usuarioService.getUsuario(this.seleccionado.idUsuario)
+      .subscribe(
+        (res: Usuario) => {
+          this.usuarioSeleccionado = res;
+          
+          if (this.usuarioSeleccionado) {
+            //Según el rol, verifico a quién enviar
+            this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
+  
+            this.pruebaDeVida.estado = "Pendiente";
+            this.spinnerService.show();
+            this.pruevaDeVidaService.postPruebaDeVida(this.pruebaDeVida)
+              .subscribe(
+                (res) => {
+                  this.spinnerService.hide();
+                  console.log(res);
+                  pruebaDeVidaForm.reset();
+                  this.pruebaDeVida = new PruebaDeVida;
+                  this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
+                },
+                (error) => {
+                  console.error('Error al enviar prueba de vida:', error);
+                  this.spinnerService.hide();
+                }
+              );
+              return false;
+          } else {
+            console.error('Usuario seleccionado no está definido.');
+          }
+        },
+        (error) => {
+          console.error('Error al obtener usuario:', error);
+        }
+      );
   }
+  
 
   getPruebasDeVidaPersona(idPersona: number) {
     this.spinnerService.show();
@@ -86,7 +135,7 @@ export class PruebasDeVidaComponent implements OnInit {
     .subscribe(res => {
       console.log(res);
       this.pruebaDeVida = new PruebaDeVida;
-      this.getPruebasDeVidaPersona(this.comunicacion.restriccionDTO.victimario.idPersona);
+      this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
       this.modalService.dismissAll();
       this.spinnerService.hide();
     })
@@ -99,7 +148,7 @@ export class PruebasDeVidaComponent implements OnInit {
     .subscribe(res => {
       console.log(res);
       this.pruebaDeVida = new PruebaDeVida;
-      this.getPruebasDeVidaPersona(this.comunicacion.restriccionDTO.victimario.idPersona);
+      this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
       this.modalService.dismissAll();
       this.spinnerService.hide();
     })
@@ -127,13 +176,6 @@ export class PruebasDeVidaComponent implements OnInit {
        console.log(res);
       }
      });
-  }
-
-  imprimirNombrePersona(){
-    if (this.restriccion != null) {
-      document.getElementById("restriccionSeleccionada").innerHTML = ""
-        + this.restriccion.victimario.apellido + ", " + this.restriccion.victimario.nombre;
-    }
   }
 
   cerrarModal(){
