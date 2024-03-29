@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Usuario } from 'src/app/models/usuario';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
-import {tap} from "rxjs/operators";
+
 
 
 @Component({
@@ -23,10 +23,11 @@ export class EstadoComponent{
   actualizarEstado(formEstado : NgForm){
     console.log(this.estadoSeleccionado)
     this.usuarioService.
-    getUsuarioByEmail(this.recuperarEmailUsuario())
-    .pipe(tap(user =>{user.estado = this.estadoSeleccionado;}))
-    .subscribe(user =>{
-      this.usuarioService.putUsuario(user);
+    getUsuarioByEmail(this.recuperarEmailUsuario()).subscribe(
+     usuario => {
+      usuario.estado = formEstado.value.estadoSeleccionado;
+      this.usuarioService.putUsuario(usuario).subscribe(e =>{})
+    
     })
      
 
