@@ -1,6 +1,6 @@
 export class Usuario {
 
-    constructor(idUsuario = 0, email = '', contrasena = '123',rolDeUsuario = '',estadoUsuario=''){
+    constructor(idUsuario = 0, email = '', contrasena = '123',rolDeUsuario = '',estadoUsuario='NO_CORRESPONDE'){
         this.idUsuario=idUsuario;
         this.email=email;
         this.contrasena=contrasena;
