@@ -15,7 +15,9 @@ export class AdministrarUsuariosComponent implements OnInit {
 
   roles;
   rolSeleccionado;
+  hayError;
   usuarioSeleccionado = new Usuario;
+
 
   editarBandera: boolean = false;
 
@@ -28,6 +30,7 @@ export class AdministrarUsuariosComponent implements OnInit {
 
   ngOnInit() {
     this.getUsuarios();
+    this.hayError = false;
     this.editarBandera = false;
     this.usuarioSeleccionado = new Usuario;
   }
@@ -102,4 +105,17 @@ export class AdministrarUsuariosComponent implements OnInit {
         }
       });
   }
+
+  filtrarEstado(){
+
+    this.usuarioService.filtrarEstado("CONECTADO").subscribe(res => {
+        this.spinner.hide();
+        this.usuarioService.usuarios = res as Usuario[];
+        console.log(res);
+      });
+
+
+  }
+
+
 }

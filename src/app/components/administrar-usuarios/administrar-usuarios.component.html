@@ -1,4 +1,4 @@
-<div class="alert alert-danger" role="alert" >
+<div *ngIf="hayError" class="alert alert-danger" role="alert" >
     aca deberia ir un error (*ngIf="hayError")
 </div>
 <ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
@@ -43,13 +43,16 @@
                 <thead>
                     <tr>
                         <th scope="col">Usuario</th>
+                        <th scope="col">Estado</th>
                         <th scope="col">Rol</th>
                         <th scope="col">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <button (click)="filtrarEstado()">Filtrar</button>
                     <tr *ngFor="let usuario of usuarioService.usuarios">
                         <td>{{usuario.email}}</td>
+                        <td>{{usuario.estadoUsuario}}</td>
                         <td>{{usuario.rolDeUsuario}}</td>
                         <td>
                             <a (click)="editarUsuario(usuario)">

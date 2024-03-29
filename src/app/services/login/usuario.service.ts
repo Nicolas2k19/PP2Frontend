@@ -62,4 +62,8 @@ export class UsuarioService {
     return this.http.put(this.URL_API+"/recuperarContrasena", usuario);
   }
 
+  filtrarEstado(estado: string){
+    return this.http.get(this.URL_API+"/estadoUsuario/"+ estado);
+  }
+
 }
