@@ -59,6 +59,9 @@ export class AdministrarPersonasComponent implements OnInit {
     this.editarBandera = false;
   }
 
+  /**
+   * Obtiene las personas 
+   */
   getPersonas() {
     this.spinner.show();
     this.personaService.getPersonas()
@@ -69,6 +72,10 @@ export class AdministrarPersonasComponent implements OnInit {
       })
   }
 
+  /**
+   * Guarda a una persona con la informacion del formulario pasada por parametro
+   * @param personaForm 
+   */
   guardarPersona(personaForm: NgForm){
     this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
     let ngbDate = personaForm.value.fechaNacimiento;
@@ -94,6 +101,10 @@ export class AdministrarPersonasComponent implements OnInit {
 
   }
 
+  /**
+   * Agrega a una peronsa
+   * @param personaForm 
+   */
   agregarPersona(personaForm: NgForm) {
     this.spinner.show();
     //CARGO DATOS DEL FORM A PERSONA
@@ -137,7 +148,10 @@ export class AdministrarPersonasComponent implements OnInit {
 
     })
 
-    //Funcion para usar en la promesa para esperar a que se cargue la foto
+    /**
+     * Funcion para usar en la promesa para esperar a que se cargue la foto
+     * @param resolve  se le pasa por parametro una promesa 
+     */
     function getBuffer(resolve) {
       var fileReader = new FileReader();
       fileReader.readAsDataURL(imgSeleccionadaBlob);
@@ -148,6 +162,10 @@ export class AdministrarPersonasComponent implements OnInit {
     }
   }
 
+  /**
+   * Setea la propiedad hay error a true, luego de 5 segundos la setea a falso
+   * 
+   */
   setHayError(): void {
     this.hayError = true;
     setTimeout(() => {
@@ -155,6 +173,10 @@ export class AdministrarPersonasComponent implements OnInit {
     }, 5000);
   }
 
+  /**
+   * 
+   * @param event 
+   */
   archivoSeleccionado(event) {
     //Obtengo la imagen seleccionada
     this.imagenSeleccionada = event.target.files[0];

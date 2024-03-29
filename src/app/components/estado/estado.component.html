@@ -1,0 +1,9 @@
+<form #estadoForm="ngForm" (ngSubmit)="(actualizarEstado(estadoForm))" action="PUT">
+    <select name="estadoSeleccionado" 
+    ngbTooltip="Estado persona" [(ngModel)]="estadoSeleccionado">
+        <option *ngFor="let estado of estados">
+            {{estado}}
+        </option>
+    </select>
+    <button>Actualizar estado</button>
+</form>

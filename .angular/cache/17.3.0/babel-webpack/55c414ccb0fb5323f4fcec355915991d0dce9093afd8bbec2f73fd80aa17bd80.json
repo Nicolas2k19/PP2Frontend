@@ -1,1 +1,0 @@
-{"ast":null,"code":"export class Localidad {\n  constructor(idLocalidad = 0, nombre = '', codigoPostal = '', idProvincia = 0) {\n    this.idLocalidad = idLocalidad;\n    this.nombre = nombre;\n    this.codigoPostal = codigoPostal;\n    this.idProvincia = idProvincia;\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

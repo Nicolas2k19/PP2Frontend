@@ -14,6 +14,7 @@ import { RecuperarContrasenaComponent } from './components/recuperar-contrasena/
 import { AuthGuard } from './guards/auth.guard';
 import { AuthSupervisorGuard } from './guards/auth-supervisor.guard';
 import { AuthAdministrativoGuard } from './guards/auth-administrativo.guard';
+import { EstadoComponent } from './components/estado/estado.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
       { path: 'administrarUsuarios', component: AdministrarUsuariosComponent, canActivate : [ AuthSupervisorGuard ] },
       { path: 'administrarRestricciones', component: AdministrarRestriccionesComponent, canActivate : [ AuthSupervisorGuard ] },
       { path: 'recuperarContrasena', component: RecuperarContrasenaComponent },
+      {path:'estado', component:EstadoComponent}
     ]
   },
   { path: 'ingresar', component: UsuarioComponent },
