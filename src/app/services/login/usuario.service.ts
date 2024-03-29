@@ -35,12 +35,22 @@ export class UsuarioService {
     loginInfo["contrasena"] = contrasena;
     return this.http.post(this.URL_API+"/login", loginInfo);
   }
-
+  /**
+   * Obtiene a los usuarios que comparten el email pasado por parametro
+   * @param email email pasado por parametro
+   * @returns <Usuario>
+   */
   getUsuarioByEmail(email: string){
     return this.http.get<Usuario>(this.URL_API+"/GetByEmail/"+email);
   }
 
+  /**
+   * Modica al usuario pasado por parametro
+   * @param usuario usuarioo con los nuevos valores
+   * @returns 
+   */
   putUsuario(usuario: Usuario){
+    console.log("Estoy actualizando....")
     return this.http.put(this.URL_API+"/modificarUsuario", usuario);
   }
 

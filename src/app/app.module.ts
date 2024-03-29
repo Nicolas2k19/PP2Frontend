@@ -13,6 +13,8 @@ import { PruebasDeVidaComponent } from './components/pruebas-de-vida/pruebas-de-
 import { AdministrarRestriccionesComponent } from './components/administrar-restricciones/administrar-restricciones.component';
 import { AdministrarUsuariosComponent } from './components/administrar-usuarios/administrar-usuarios.component';
 import { AdministrarPersonasComponent } from './components/administrar-personas/administrar-personas.component';
+import { EstadoComponent } from './components/estado/estado.component';
+
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
@@ -38,6 +40,7 @@ import { RecuperarContrasenaComponent } from './components/recuperar-contrasena/
     AdministrarPersonasComponent,
     RutinasComponent,
     RecuperarContrasenaComponent,
+    EstadoComponent
   ],
   imports: [
     BrowserModule,

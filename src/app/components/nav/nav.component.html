@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <img class="img" src="https://image.flaticon.com/icons/svg/1499/1499591.svg" >
+    <img class="img" src="https://cnnespanol.cnn.com/wp-content/uploads/2021/07/pichu.jpg?quality=100&strip=info&w=940&h=530&crop=1" >
   
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav mr-auto">
@@ -18,11 +18,13 @@
           <a class="nav-link" routerLink="incidencias" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Incidencias</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="pruebasDeVida"
-          [hidden]="rolDeUsuario!='ADMINISTRATIVO'" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Pruebas de vida</a>
+          <a class="nav-link" routerLink="pruebasDeVida" [hidden]="rolDeUsuario!='ADMINISTRATIVO'" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Pruebas de vida</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="rutinas" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Rutina</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="estado" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Estado</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
