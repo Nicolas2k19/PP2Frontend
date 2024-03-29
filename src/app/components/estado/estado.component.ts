@@ -25,7 +25,7 @@ export class EstadoComponent{
     this.usuarioService.
     getUsuarioByEmail(this.recuperarEmailUsuario()).subscribe(
      usuario => {
-      usuario.estado = formEstado.value.estadoSeleccionado;
+      usuario.estadoUsuario = formEstado.value.estadoSeleccionado;
       this.usuarioService.putUsuario(usuario).subscribe(e =>{})
     
     })
