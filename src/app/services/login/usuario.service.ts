@@ -66,4 +66,8 @@ export class UsuarioService {
     return this.http.get(this.URL_API+"/estadoUsuario/"+ estado);
   }
 
+  filtrarRol(rol: string){
+    return this.http.get(this.URL_API+"/rolDeUsuario/"+ rol);
+  }
+
 }

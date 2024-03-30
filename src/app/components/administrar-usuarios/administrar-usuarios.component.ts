@@ -17,6 +17,8 @@ export class AdministrarUsuariosComponent implements OnInit {
   rolSeleccionado;
   hayError;
   usuarioSeleccionado = new Usuario;
+  showSelect: boolean = false;
+  selectedOption: string;
 
 
   editarBandera: boolean = false;
@@ -106,15 +108,77 @@ export class AdministrarUsuariosComponent implements OnInit {
       });
   }
 
-  filtrarEstado(){
+  //Filtros
+
+  filtrar(){
+
+    console.log("filtrando")
+    console.log(this.selectedOption);
+    switch (this.selectedOption) {
+      case 'conectado':
+        this.filtrarEstadoConectado();
+        break;
+      case 'ausente':
+        this.filtrarEstadoAusente();
+        break;
+      case 'supervisor':
+        this.filtrarRolSupervisor();
+        break;
+      case 'administrativo':
+        this.filtrarRolAdministrativo();
+        break;
+      case 'todos':
+        this.getUsuarios();
+        this.toggleSelect();
+        break;
+      default:
+        console.log('Opción no válida');
+    }
+
+  }
+
+
+  filtrarEstadoConectado(){
 
     this.usuarioService.filtrarEstado("CONECTADO").subscribe(res => {
         this.spinner.hide();
         this.usuarioService.usuarios = res as Usuario[];
+        this.toggleSelect();
         console.log(res);
       });
+  }
+  filtrarEstadoAusente(){
 
+    this.usuarioService.filtrarEstado("AUSENTE").subscribe(res => {
+        this.spinner.hide();
+        this.usuarioService.usuarios = res as Usuario[];
+        this.toggleSelect();
+        console.log(res);
+      });
+  }
 
+  filtrarRolSupervisor(){
+
+    this.usuarioService.filtrarRol("SUPERVISOR").subscribe(res => {
+        this.spinner.hide();
+        this.usuarioService.usuarios = res as Usuario[];
+        this.toggleSelect();
+        console.log(res);
+      });
+  }
+
+  filtrarRolAdministrativo(){
+
+    this.usuarioService.filtrarRol("ADMINISTRATIVO").subscribe(res => {
+        this.spinner.hide();
+        this.usuarioService.usuarios = res as Usuario[];
+        this.toggleSelect();
+        console.log(res);
+      });
+  }
+  
+  toggleSelect() {
+    this.showSelect = !this.showSelect;
   }
 
 
