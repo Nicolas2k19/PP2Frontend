@@ -36,6 +36,8 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   idFilterVictimario: number;
 
+  showSelect: boolean = false;
+
   constructor(
     public restriccionService: RestriccionService,
     private personaService: PersonaService,
@@ -264,4 +266,10 @@ filtrarAdministrativo(){
     });
 }
 
+
+toggleSelect() {
+  this.showSelect = !this.showSelect;
 }
+}
+
+
