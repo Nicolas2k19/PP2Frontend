@@ -30,6 +30,12 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   editarBandera: boolean = false;
 
+  emailFilter: string;
+
+  idFilterDamnificada: number;
+
+  idFilterVictimario: number;
+
   constructor(
     public restriccionService: RestriccionService,
     private personaService: PersonaService,
@@ -225,5 +231,37 @@ export class AdministrarRestriccionesComponent implements OnInit {
     }
 
   }
+
+
+//filtros
+
+
+
+filtrarDamnificada(){
+
+
+  this.restriccionService.getRestriccionesDamnificada(this.idFilterDamnificada).subscribe(res => {
+      this.spinner.hide();
+      this.restriccionService.restricciones = res as RestriccionDTO[];
+      console.log(res);
+    });
+}
+filtrarVictimario(){
+
+  this.restriccionService.getRestriccionesVictimario(this.idFilterVictimario).subscribe(res => {
+      this.spinner.hide();
+      this.restriccionService.restricciones = res as RestriccionDTO[];
+      console.log(res);
+    });
+}
+
+
+filtrarAdministrativo(){
+  this.restriccionService.getRestriccionesAdministrativo(this.emailFilter).subscribe(res => {
+      this.spinner.hide();
+      this.restriccionService.restricciones = res as RestriccionDTO[];
+      console.log(res);
+    });
+}
 
 }

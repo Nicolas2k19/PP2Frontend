@@ -39,4 +39,12 @@ export class RestriccionService {
     return this.http.delete(this.URL_API + "/borrar/" + idRestriccion);
   }
 
+  getRestriccionesDamnificada(id: number){
+    return this.http.get(this.URL_API_RESTRICCION_DTO+"/getByDamnificada/"+ id);
+  }
+
+  getRestriccionesVictimario(id: number){
+    return this.http.get(this.URL_API_RESTRICCION_DTO+"/getByVictimario/"+ id);
+  }
+
 }

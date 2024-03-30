@@ -11,9 +11,8 @@
                     <form #restriccionForm="ngForm" (ngSubmit)="guardarRestriccion(restriccionForm)" novalidate>
                         <div class="row">
                             <div class="input-group">
-                                <input class="form-control" type="tel" name="dniVictimario"
-                                    placeholder="DNI Victimario" ngbTooltip="DNI victimario"
-                                    [(ngModel)]="victimario.dni">
+                                <input class="form-control" type="tel" name="dniVictimario" placeholder="DNI Victimario"
+                                    ngbTooltip="DNI victimario" [(ngModel)]="victimario.dni">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="button"
                                         (click)="agregarVictimario()" [disabled]="victimario.dni === ''">
@@ -112,5 +111,22 @@
             </table>
         </div>
 
+        <!-- FILTROS -->
+        <div class="filtros">
+
+            <input type="text" [(ngModel)]="idFilterDamnificada" placeholder="Ingresa el ID Damnificada">
+            <button (click)="filtrarDamnificada()">Buscar</button>
+
+            <input type="text" [(ngModel)]="idFilterVictimario" placeholder="Ingresa el ID Victimario">
+            <button (click)="filtrarVictimario()">Buscar</button>
+
+            <input type="text" [(ngModel)]="emailFilter" placeholder="Ingresa el EMAIL Administrativo">
+            <button (click)="filtrarAdministrativo()">Buscar</button>
+
+
+        </div>
+
     </div>
+
+
 </div>
