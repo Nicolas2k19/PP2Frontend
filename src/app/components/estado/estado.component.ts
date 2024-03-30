@@ -27,6 +27,7 @@ export class EstadoComponent implements OnInit{
    */
   actualizarEstado(formEstado : NgForm){
     console.log(this.estadoSeleccionado)
+    this.estadoActual = this.estadoSeleccionado;
     this.usuarioService.
     getUsuarioByEmail(this.recuperarEmailUsuario()).subscribe(
      usuario => {

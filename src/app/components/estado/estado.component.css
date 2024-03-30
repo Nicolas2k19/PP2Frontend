@@ -14,42 +14,27 @@ form{
 
 button{
     margin-top: 1rem;
-    padding: 0.5rem;
-    background-color: gray;
+    padding: .5rem;
     width: 7rem;
     height: 2rem;
     border-radius: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
-}
+    background-color: #fff;
+    border: 1px solid black;
+  }
 
 .estado-actual{
-    border:3px dotted blue;
-    background-color: gray;
-    border-radius: 5%;
+    border:1px solid black;
     margin-top: 1rem;
-    width: 7rem;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    animation-name: girar;
-    animation-duration: 3s;
-    animation-iteration-count: infinite;
-}
-
-
-
-
-@keyframes girar {
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5rem;
+    display: inline-block;
     
-    0%{
-        transform: rotate(0deg);
-    }
-
-    100%{
-        transform: rotate(180deg);
-    }
 }
+
+
+
+
