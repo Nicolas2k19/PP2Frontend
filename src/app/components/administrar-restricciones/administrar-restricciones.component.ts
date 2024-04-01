@@ -32,6 +32,10 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   emailFilter: string;
 
+  dniFilterDamnificada: string;
+
+  dniFilterVictimario: string;
+
   idFilterDamnificada: number;
 
   idFilterVictimario: number;
@@ -229,47 +233,61 @@ export class AdministrarRestriccionesComponent implements OnInit {
           this.damnificada = new Persona;
           this.administrativo = new Usuario;
           this.restriccion = new Restriccion;
-      });
+        });
     }
 
   }
 
 
-//filtros
+  //filtros
 
 
 
-filtrarDamnificada(){
+  filtrarDamnificada() {
+
+    this.personaService.getDamnificadaByDNI(this.dniFilterDamnificada).subscribe(res => {
+      this.damnificada = res;
+      this.idFilterDamnificada = this.damnificada.idPersona;
+      this.restriccionService.getRestriccionesDamnificada(this.idFilterDamnificada).subscribe(res => {
+        this.spinner.hide();
+        this.restriccionService.restricciones = res as RestriccionDTO[];
+      });
+    })
+
+  }
 
 
-  this.restriccionService.getRestriccionesDamnificada(this.idFilterDamnificada).subscribe(res => {
+
+
+
+  filtrarVictimario() {
+
+    this.personaService.getVictimarioByDNI(this.dniFilterVictimario).subscribe(res => {
+      this.victimario = res;
+      this.idFilterVictimario = this.victimario.idPersona;
+      this.restriccionService.getRestriccionesVictimario(this.idFilterVictimario).subscribe(res => {
+        this.spinner.hide();
+        this.restriccionService.restricciones = res as RestriccionDTO[];
+      });
+    })
+
+  }
+
+
+  filtrarAdministrativo() {
+    this.restriccionService.getRestriccionesAdministrativo(this.emailFilter).subscribe(res => {
       this.spinner.hide();
       this.restriccionService.restricciones = res as RestriccionDTO[];
       console.log(res);
+      this.dniFilterDamnificada = null;
+      this.dniFilterVictimario = null;
     });
-}
-filtrarVictimario(){
-
-  this.restriccionService.getRestriccionesVictimario(this.idFilterVictimario).subscribe(res => {
-      this.spinner.hide();
-      this.restriccionService.restricciones = res as RestriccionDTO[];
-      console.log(res);
-    });
-}
+  }
 
 
-filtrarAdministrativo(){
-  this.restriccionService.getRestriccionesAdministrativo(this.emailFilter).subscribe(res => {
-      this.spinner.hide();
-      this.restriccionService.restricciones = res as RestriccionDTO[];
-      console.log(res);
-    });
-}
-
-
-toggleSelect() {
-  this.showSelect = !this.showSelect;
-}
+  toggleSelect() {
+    this.showSelect = !this.showSelect;
+  }
 }
 
 

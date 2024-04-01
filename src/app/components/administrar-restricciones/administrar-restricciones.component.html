@@ -122,22 +122,22 @@
              </button>
 
             <div class="filtro"  *ngIf="showSelect">
-                <input type="text" [(ngModel)]="idFilterDamnificada" placeholder="Ingresa el ID Damnificada">
-                <button (click)="filtrarDamnificada()">Buscar</button>
+                <input type="text" [(ngModel)]="dniFilterDamnificada" placeholder="Ingresa el DNI Damnificada">
+                <button (click)="filtrarDamnificada()">Filtrar</button>
 
 
             </div>
 
             <div class="filtro" *ngIf="showSelect">
-                <input type="text" [(ngModel)]="idFilterVictimario" placeholder="Ingresa el ID Victimario">
-                <button (click)="filtrarVictimario()">Buscar</button>
+                <input type="text" [(ngModel)]="dniFilterVictimario" placeholder="Ingresa el DNI Victimario">
+                <button (click)="filtrarVictimario()">Filtrar</button>
 
 
             </div>
 
             <div class="filtro" *ngIf="showSelect">
                 <input type="text" [(ngModel)]="emailFilter" placeholder="Ingresa el EMAIL Administrativo">
-                <button (click)="filtrarAdministrativo()">Buscar</button>
+                <button (click)="filtrarAdministrativo()">Filtrar</button>
 
 
             </div>
