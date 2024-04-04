@@ -138,14 +138,32 @@
             <div class="filtro" *ngIf="showSelect">
                 <input type="text" [(ngModel)]="emailFilter" placeholder="Ingresa el EMAIL Administrativo">
                 <button (click)="filtrarAdministrativo()">Filtrar</button>
-
-
             </div>
-
-
-
         </div>
 
+    </div>
+
+    <form action="GET" (ngSubmit)="(getGrupo())">
+        <select name="" id="" [(ngModel)]="grupoSeleccionado">
+            <option value={{grupo}} *ngFor="let grupo of grupos">
+                {{"Grupo "+grupo}}
+            </option>
+        </select>
+
+        <button>SI</button>
+    </form>
+
+    <div *ngIf="mostrarGrupo">
+        <h1 class="titulo">{{"Grupo "+grupoActual.idGrupo}}</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    {{}}
+                </tr>
+            </thead>
+
+        </table>
     </div>
 
 

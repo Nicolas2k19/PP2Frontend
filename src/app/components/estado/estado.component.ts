@@ -15,12 +15,13 @@ export class EstadoComponent implements OnInit{
   estadoSeleccionado : string
   estadoActual : string
 
+
   constructor(public usuarioService : UsuarioService ){
     this.estados = ['AUSENTE','CONECTADO','FUERA_OFICINA','VACACIONES','LICENCIA'];
   }
   ngOnInit(): void {
      this.usuarioService.getUsuarioByEmail(this.recuperarEmailUsuario()).subscribe(user => this.estadoActual = user.estadoUsuario);
-  }
+    }
   /**
    * Actualiza el estado de un administrativo según el formulario pasado como parametro
    * @param formEstado 

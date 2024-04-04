@@ -11,6 +11,8 @@ import { ErrorDTO } from 'src/app/models/error-dto';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import GrupoService from 'src/app/services/grupo/grupoService';
+import Grupo from 'src/app/models/Grupo';
 
 @Component({
   selector: 'app-administrar-restricciones',
@@ -18,41 +20,62 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./administrar-restricciones.component.css']
 })
 export class AdministrarRestriccionesComponent implements OnInit {
-
   damnificada = new Persona;
   victimario = new Persona;
   administrativo = new Usuario;
   restriccion = new Restriccion;
-
   camposIncompletos = false;
   fecha: Date = new Date();
   maxDatePicker = { year: this.fecha.getFullYear(), month: this.fecha.getMonth() + 1, day: this.fecha.getDate() };
-
   editarBandera: boolean = false;
-
   emailFilter: string;
-
   dniFilterDamnificada: string;
-
   dniFilterVictimario: string;
-
   idFilterDamnificada: number;
-
   idFilterVictimario: number;
-
   showSelect: boolean = false;
+  grupos : Number[];
+  grupoSeleccionado : Number
+  grupoActual : Grupo
+  mostrarGrupo : boolean
+
+  
 
   constructor(
     public restriccionService: RestriccionService,
+    public grupoService : GrupoService,
     private personaService: PersonaService,
     private usuarioService: UsuarioService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService) { 
+      this.grupos = [];
+      this.mostrarGrupo = false;
+    }
+
+
 
   ngOnInit() {
     this.getRestricciones();
     this.editarBandera = false;
+    this.grupoService.getGrupos()
+    .subscribe(grupo => {  
+      (grupo as []).forEach(grupo => {
+        let grupoRetornado : Grupo = grupo as Grupo;
+        this.grupos.push(grupoRetornado.idGrupo)})
+      }
+      );
+     
   }
+
+  getGrupo(){
+    this.grupoService.getGrupo(this.grupoSeleccionado)
+    .subscribe( grupo=> {
+      this.grupoActual = grupo as Grupo
+      this.mostrarGrupo = true;
+      
+    });
+}
+
 
   getRestricciones() {
     this.spinner.show();
