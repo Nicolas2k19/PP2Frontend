@@ -14,9 +14,22 @@ export class RestriccionService {
   restricciones: RestriccionDTO[];  
   readonly URL_API = environment.apiUrl+'/RestriccionPerimetral';
   readonly URL_API_RESTRICCION_DTO = environment.apiUrl+'/RestriccionDTO';
+  
+  
+  readonly URL_API_GETByid= environment.apiUrl+"RestriccionPerimetral/getByRestriccion/";
 
   constructor(private http:HttpClient) { 
     this.restriccionSeleccionada = new Restriccion();
+  }
+
+
+  /**
+   * Obtiene la restriccion que contenga un id en particular 
+   *  
+   * @returns 
+   */
+  getByid(id : Number){
+    return this.http.get(this.URL_API_GETByid+id);
   }
 
   getRestricciones(){

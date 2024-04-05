@@ -48,6 +48,16 @@ export class UsuarioService {
     return this.http.get<Usuario>(this.URL_API+"/GetByEmail/"+email);
   }
 
+
+  /**
+   * Obtiene al usuario que coincida que el id pasado por parametro 
+   * 
+   */
+  getUsuarioById(id: Number){
+    return this.http.get(this.URL_API+"/"+id);
+  }
+
+
   /**
    * Modica al usuario pasado por parametro
    * @param usuario usuarioo con los nuevos valores

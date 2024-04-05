@@ -37,280 +37,325 @@ export class AdministrarRestriccionesComponent implements OnInit {
   grupos : Number[];
   grupoSeleccionado : Number
   grupoActual : Grupo
+ 
+  particionesGrupo : Grupo[]
+  usuariosDelGrupo : Usuario[]
+  restriccionesDelGrupo : Restriccion[]
+  mostrarAbmRestricciones : boolean;
+  mostrarGrupoRestricciones : boolean;
   mostrarGrupo : boolean
 
   
 
-  constructor(
-    public restriccionService: RestriccionService,
-    public grupoService : GrupoService,
-    private personaService: PersonaService,
-    private usuarioService: UsuarioService,
-    private toastr: ToastrService,
-    private spinner: NgxSpinnerService) { 
-      this.grupos = [];
-      this.mostrarGrupo = false;
-    }
+    constructor(
+      public restriccionService: RestriccionService,
+      public grupoService : GrupoService,
+      private personaService: PersonaService,
+      private usuarioService: UsuarioService,
+      private toastr: ToastrService,
+      private spinner: NgxSpinnerService) { 
+        this.grupos = [];
+        this.usuariosDelGrupo = []
+        this.restriccionesDelGrupo = []
 
-
-
-  ngOnInit() {
-    this.getRestricciones();
-    this.editarBandera = false;
-    this.grupoService.getGrupos()
-    .subscribe(grupo => {  
-      (grupo as []).forEach(grupo => {
-        let grupoRetornado : Grupo = grupo as Grupo;
-        this.grupos.push(grupoRetornado.idGrupo)})
+        this.mostrarAbmRestricciones = true;
+        this.mostrarGrupo = false;
+        this.mostrarGrupoRestricciones = false
+        
       }
-      );
-     
-  }
-
-  getGrupo(){
-    this.grupoService.getGrupo(this.grupoSeleccionado)
-    .subscribe( grupo=> {
-      this.grupoActual = grupo as Grupo
-      this.mostrarGrupo = true;
-      
-    });
-}
 
 
-  getRestricciones() {
-    this.spinner.show();
-    this.restriccionService.getRestricciones()
-      .subscribe(res => {
-        this.spinner.hide();
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        console.log(res);
-      })
-  }
 
-  agregarVictimario() {
-    //ACA TRAIGO AL VICTIMARIO
-    this.spinner.show();
-    this.personaService.getVictimarioByDNI(this.victimario.dni)
-      .subscribe(res => {
-        this.spinner.hide();
-        if (res == null) {
-          this.toastr.error("Verificar el DNI de victimario ingresado.", "Error!");
-          this.setCamposIncompletos();
-          return;
-        }
-        this.victimario = res;
-        document.getElementById("labelVictimario").innerHTML =
-          "Victimario: " + this.victimario.apellido + ", " + this.victimario.nombre;
-      })
+            ngOnInit() {
+              this.getRestricciones();
+              this.editarBandera = false;
+              this.grupoService.getGrupos()
+              .subscribe(grupo => {  
+                (grupo as []).forEach(grupo => {
+                  let grupoRetornado : Grupo = grupo as Grupo;
+                  this.grupos.push(grupoRetornado.idGrupo)})
+                }
+                );
+              
+            }
 
-  }
 
-  agregarDamnificada() {
-    //ACA TRAIGO LA DAMNIFICADA
-    this.spinner.show();
-    this.personaService.getDamnificadaByDNI(this.damnificada.dni)
-      .subscribe(res => {
-        this.spinner.hide();
-        if (res == null) {
-          this.toastr.error("Verificar el DNI de damnificada ingresado.", "Error!");
-          this.setCamposIncompletos();
-          return;
-        }
-        this.damnificada = res;
-        document.getElementById("labelDamnificada").innerHTML =
-          "Damnificada: " + this.damnificada.apellido + ", " + this.damnificada.nombre;
-      })
-  }
+            /**Crea un nuevo grupo! */
+            crearGrupo(){
 
-  agregarAdministrativo() {
-    this.spinner.show();
-    this.usuarioService.getUsuarioByEmail(this.administrativo.email)
-      .subscribe(res => {
-        this.spinner.hide();
-        if (res == null) {
-          this.toastr.error("Verificar el email de usuario ingresado.", "Error!");
-          this.setCamposIncompletos();
-          return;
-        }
-        this.administrativo = res;
-        document.getElementById("labelAdministrativo").innerHTML =
-          "Administrativo: " + this.administrativo.email;
-      })
-  }
+            }
 
-  guardarRestriccion(restriccionForm: NgForm) {
-    if (this.editarBandera == true) {
-      this.restriccion.idDamnificada = this.damnificada.idPersona;
-      this.restriccion.idVictimario = this.victimario.idPersona;
-      this.restriccion.idUsuario = this.administrativo.idUsuario;
+            /**
+             * Obtiene un grupo en base a lo seleccionado por el selector de grupo en administrar-restricciones-component-html 
+             */
+            getGrupo(){
+              this.usuariosDelGrupo = []
+              this.restriccionesDelGrupo = []
+              this.grupoService.getGrupo(this.grupoSeleccionado)
+              .subscribe( grupo=> {
+                this.grupoActual = grupo as Grupo
+                this.mostrarGrupo = true;
+                this.grupoService.getGruposByID(this.grupoActual.idGrupo).subscribe(particionCompleta => {
+                  this.particionesGrupo = particionCompleta as Grupo[]
+                  
+                  this.particionesGrupo.forEach(grupo => {
+                      this.usuarioService.getUsuarioById(grupo.idUsuario).subscribe( user => {this.usuariosDelGrupo.push(user as Usuario)});
+                      this.restriccionService.getByid(grupo.idRestriccion).subscribe( restriccion => {this.restriccionesDelGrupo.push(restriccion as Restriccion)});
+                  });
+                  
+                
+                })
+                
+                
 
-      let ngbDate = restriccionForm.value.dp;
-      let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
-      this.restriccion.fechaSentencia = myDate;
+                
 
-      if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
-        || this.restriccion.idDamnificada == 0) {
-        this.toastr.error("Completar todos los campos", "Error!");
-        this.setCamposIncompletos();
-      }
-      else {
-        this.spinner.show();
-        this.restriccionService.putRestriccion(this.restriccion)
-          .subscribe(res => {
-            this.spinner.hide();
-            this.toastr.success("La restricción se modificó correctamente", "Modificada!");
-            restriccionForm.reset();
-            this.getRestricciones();
-            document.getElementById("labelVictimario").innerHTML = "";
-            document.getElementById("labelDamnificada").innerHTML = "";
-            document.getElementById("labelAdministrativo").innerHTML = "";
-            this.victimario = new Persona;
-            this.damnificada = new Persona;
-            this.administrativo = new Usuario;
-            this.editarBandera = false;
-          })
-      }
-    }
-    else {
-      this.agregarRestriccion(restriccionForm);
-    }
-  }
-
-  agregarRestriccion(restriccionForm: NgForm) {
-    this.restriccion.idDamnificada = this.damnificada.idPersona;
-    this.restriccion.idVictimario = this.victimario.idPersona;
-    this.restriccion.idUsuario = this.administrativo.idUsuario;
-
-    let ngbDate = restriccionForm.value.dp;
-    let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
-    this.restriccion.fechaSentencia = myDate;
-
-    if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
-      || this.restriccion.idDamnificada == 0) {
-      this.toastr.error("Completar todos los campos", "Error!");
-      this.setCamposIncompletos();
-    }
-    else {
-      this.spinner.show();
-      this.restriccionService.postRestriccion(this.restriccion)
-        .subscribe(res => {
-          this.spinner.hide();
-          var error = res as ErrorDTO;
-          if (error.hayError) {
-            //MOSTRAR ERROR
-            this.toastr.error("" + error.mensajeError, "Error!");
-            this.setCamposIncompletos();
+                
+              });
           }
-          else {
-            this.toastr.success("La restricción se agrego correctamente", "Agregada!");
-            restriccionForm.reset();
-            this.getRestricciones();
-            document.getElementById("labelVictimario").innerHTML = "";
-            document.getElementById("labelDamnificada").innerHTML = "";
-            document.getElementById("labelAdministrativo").innerHTML = "";
-            this.victimario = new Persona;
-            this.damnificada = new Persona;
-            this.administrativo = new Usuario;
-            this.restriccion = new Restriccion;
+            /**
+             * Obtiene todas las restricciones
+             */
+            getRestricciones() {
+              this.spinner.show();
+              this.restriccionService.getRestricciones()
+                .subscribe(res => {
+                  this.spinner.hide();
+                  this.restriccionService.restricciones = res as RestriccionDTO[];
+                  console.log(res);
+                })
+            }
+
+            agregarVictimario() {
+              //ACA TRAIGO AL VICTIMARIO
+              this.spinner.show();
+              this.personaService.getVictimarioByDNI(this.victimario.dni)
+                .subscribe(res => {
+                  this.spinner.hide();
+                  if (res == null) {
+                    this.toastr.error("Verificar el DNI de victimario ingresado.", "Error!");
+                    this.setCamposIncompletos();
+                    return;
+                  }
+                  this.victimario = res;
+                  document.getElementById("labelVictimario").innerHTML =
+                    "Victimario: " + this.victimario.apellido + ", " + this.victimario.nombre;
+                })
+
+            }
+
+            agregarDamnificada() {
+              //ACA TRAIGO LA DAMNIFICADA
+              this.spinner.show();
+              this.personaService.getDamnificadaByDNI(this.damnificada.dni)
+                .subscribe(res => {
+                  this.spinner.hide();
+                  if (res == null) {
+                    this.toastr.error("Verificar el DNI de damnificada ingresado.", "Error!");
+                    this.setCamposIncompletos();
+                    return;
+                  }
+                  this.damnificada = res;
+                  document.getElementById("labelDamnificada").innerHTML =
+                    "Damnificada: " + this.damnificada.apellido + ", " + this.damnificada.nombre;
+                })
+            }
+
+            agregarAdministrativo() {
+              this.spinner.show();
+              this.usuarioService.getUsuarioByEmail(this.administrativo.email)
+                .subscribe(res => {
+                  this.spinner.hide();
+                  if (res == null) {
+                    this.toastr.error("Verificar el email de usuario ingresado.", "Error!");
+                    this.setCamposIncompletos();
+                    return;
+                  }
+                  this.administrativo = res;
+                  document.getElementById("labelAdministrativo").innerHTML =
+                    "Administrativo: " + this.administrativo.email;
+                })
+            }
+
+            guardarRestriccion(restriccionForm: NgForm) {
+              if (this.editarBandera == true) {
+                this.restriccion.idDamnificada = this.damnificada.idPersona;
+                this.restriccion.idVictimario = this.victimario.idPersona;
+                this.restriccion.idUsuario = this.administrativo.idUsuario;
+
+                let ngbDate = restriccionForm.value.dp;
+                let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+                this.restriccion.fechaSentencia = myDate;
+
+                if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
+                  || this.restriccion.idDamnificada == 0) {
+                  this.toastr.error("Completar todos los campos", "Error!");
+                  this.setCamposIncompletos();
+                }
+                else {
+                  this.spinner.show();
+                  this.restriccionService.putRestriccion(this.restriccion)
+                    .subscribe(res => {
+                      this.spinner.hide();
+                      this.toastr.success("La restricción se modificó correctamente", "Modificada!");
+                      restriccionForm.reset();
+                      this.getRestricciones();
+                      document.getElementById("labelVictimario").innerHTML = "";
+                      document.getElementById("labelDamnificada").innerHTML = "";
+                      document.getElementById("labelAdministrativo").innerHTML = "";
+                      this.victimario = new Persona;
+                      this.damnificada = new Persona;
+                      this.administrativo = new Usuario;
+                      this.editarBandera = false;
+                    })
+                }
+              }
+              else {
+                this.agregarRestriccion(restriccionForm);
+              }
+            }
+
+            agregarRestriccion(restriccionForm: NgForm) {
+              this.restriccion.idDamnificada = this.damnificada.idPersona;
+              this.restriccion.idVictimario = this.victimario.idPersona;
+              this.restriccion.idUsuario = this.administrativo.idUsuario;
+
+              let ngbDate = restriccionForm.value.dp;
+              let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+              this.restriccion.fechaSentencia = myDate;
+
+              if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
+                || this.restriccion.idDamnificada == 0) {
+                this.toastr.error("Completar todos los campos", "Error!");
+                this.setCamposIncompletos();
+              }
+              else {
+                this.spinner.show();
+                this.restriccionService.postRestriccion(this.restriccion)
+                  .subscribe(res => {
+                    this.spinner.hide();
+                    var error = res as ErrorDTO;
+                    if (error.hayError) {
+                      //MOSTRAR ERROR
+                      this.toastr.error("" + error.mensajeError, "Error!");
+                      this.setCamposIncompletos();
+                    }
+                    else {
+                      this.toastr.success("La restricción se agrego correctamente", "Agregada!");
+                      restriccionForm.reset();
+                      this.getRestricciones();
+                      document.getElementById("labelVictimario").innerHTML = "";
+                      document.getElementById("labelDamnificada").innerHTML = "";
+                      document.getElementById("labelAdministrativo").innerHTML = "";
+                      this.victimario = new Persona;
+                      this.damnificada = new Persona;
+                      this.administrativo = new Usuario;
+                      this.restriccion = new Restriccion;
+                    }
+                  })
+              }
+            }
+
+            confirm() {
+              if (window.confirm("Are you sure to delete ")) {
+                console.log("eliminar restriccion");
+              }
+            }
+
+            setCamposIncompletos(): void {
+              this.camposIncompletos = true;
+              setTimeout(() => {
+                this.camposIncompletos = false;
+              }, 5000);
+            }
+
+            editarRestriccion(restriccionDTO: RestriccionDTO) {
+              this.restriccion = restriccionDTO.restriccion;
+              this.victimario = restriccionDTO.victimario;
+              this.damnificada = restriccionDTO.damnificada;
+              this.administrativo = restriccionDTO.administrativo;
+              //CARGAR NOMBRES
+              document.getElementById("labelDamnificada").innerHTML =
+                "Damnificada: " + this.damnificada.apellido + ", " + this.damnificada.nombre;
+              document.getElementById("labelVictimario").innerHTML =
+                "Victimario: " + this.victimario.apellido + ", " + this.victimario.nombre;
+            }
+
+            eliminarRestriccion(restriccionDTO: RestriccionDTO) {
+              if (window.confirm("Are you sure to delete ")) {
+                this.spinner.show();
+                this.restriccionService.deleteRestriccion(restriccionDTO.restriccion.idRestriccion)
+                  .subscribe(res => {
+                    this.spinner.hide();
+                    this.getRestricciones();
+                    document.getElementById("labelVictimario").innerHTML = "";
+                    document.getElementById("labelDamnificada").innerHTML = "";
+                    document.getElementById("labelAdministrativo").innerHTML = "";
+                    this.victimario = new Persona;
+                    this.damnificada = new Persona;
+                    this.administrativo = new Usuario;
+                    this.restriccion = new Restriccion;
+                  });
+              }
+
+            }
+
+
+            //filtros
+
+
+
+            filtrarDamnificada() {
+
+              this.personaService.getDamnificadaByDNI(this.dniFilterDamnificada).subscribe(res => {
+                this.damnificada = res;
+                this.idFilterDamnificada = this.damnificada.idPersona;
+                this.restriccionService.getRestriccionesDamnificada(this.idFilterDamnificada).subscribe(res => {
+                  this.spinner.hide();
+                  this.restriccionService.restricciones = res as RestriccionDTO[];
+                });
+              })
+
+            }
+
+
+
+
+
+            filtrarVictimario() {
+
+              this.personaService.getVictimarioByDNI(this.dniFilterVictimario).subscribe(res => {
+                this.victimario = res;
+                this.idFilterVictimario = this.victimario.idPersona;
+                this.restriccionService.getRestriccionesVictimario(this.idFilterVictimario).subscribe(res => {
+                  this.spinner.hide();
+                  this.restriccionService.restricciones = res as RestriccionDTO[];
+                });
+              })
+
+            }
+
+
+            filtrarAdministrativo() {
+              this.restriccionService.getRestriccionesAdministrativo(this.emailFilter).subscribe(res => {
+                this.spinner.hide();
+                this.restriccionService.restricciones = res as RestriccionDTO[];
+                console.log(res);
+                this.dniFilterDamnificada = null;
+                this.dniFilterVictimario = null;
+              });
+            }
+
+
+            toggleSelect() {
+              this.showSelect = !this.showSelect;
+            }
+
+
+            cambiarVista(){
+              this.mostrarGrupoRestricciones = !this.mostrarGrupoRestricciones
+              this.mostrarAbmRestricciones = !this.mostrarAbmRestricciones
+            }
           }
-        })
-    }
-  }
-
-  confirm() {
-    if (window.confirm("Are you sure to delete ")) {
-      console.log("eliminar restriccion");
-    }
-  }
-
-  setCamposIncompletos(): void {
-    this.camposIncompletos = true;
-    setTimeout(() => {
-      this.camposIncompletos = false;
-    }, 5000);
-  }
-
-  editarRestriccion(restriccionDTO: RestriccionDTO) {
-    this.restriccion = restriccionDTO.restriccion;
-    this.victimario = restriccionDTO.victimario;
-    this.damnificada = restriccionDTO.damnificada;
-    this.administrativo = restriccionDTO.administrativo;
-    //CARGAR NOMBRES
-    document.getElementById("labelDamnificada").innerHTML =
-      "Damnificada: " + this.damnificada.apellido + ", " + this.damnificada.nombre;
-    document.getElementById("labelVictimario").innerHTML =
-      "Victimario: " + this.victimario.apellido + ", " + this.victimario.nombre;
-  }
-
-  eliminarRestriccion(restriccionDTO: RestriccionDTO) {
-    if (window.confirm("Are you sure to delete ")) {
-      this.spinner.show();
-      this.restriccionService.deleteRestriccion(restriccionDTO.restriccion.idRestriccion)
-        .subscribe(res => {
-          this.spinner.hide();
-          this.getRestricciones();
-          document.getElementById("labelVictimario").innerHTML = "";
-          document.getElementById("labelDamnificada").innerHTML = "";
-          document.getElementById("labelAdministrativo").innerHTML = "";
-          this.victimario = new Persona;
-          this.damnificada = new Persona;
-          this.administrativo = new Usuario;
-          this.restriccion = new Restriccion;
-        });
-    }
-
-  }
-
-
-  //filtros
-
-
-
-  filtrarDamnificada() {
-
-    this.personaService.getDamnificadaByDNI(this.dniFilterDamnificada).subscribe(res => {
-      this.damnificada = res;
-      this.idFilterDamnificada = this.damnificada.idPersona;
-      this.restriccionService.getRestriccionesDamnificada(this.idFilterDamnificada).subscribe(res => {
-        this.spinner.hide();
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-      });
-    })
-
-  }
-
-
-
-
-
-  filtrarVictimario() {
-
-    this.personaService.getVictimarioByDNI(this.dniFilterVictimario).subscribe(res => {
-      this.victimario = res;
-      this.idFilterVictimario = this.victimario.idPersona;
-      this.restriccionService.getRestriccionesVictimario(this.idFilterVictimario).subscribe(res => {
-        this.spinner.hide();
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-      });
-    })
-
-  }
-
-
-  filtrarAdministrativo() {
-    this.restriccionService.getRestriccionesAdministrativo(this.emailFilter).subscribe(res => {
-      this.spinner.hide();
-      this.restriccionService.restricciones = res as RestriccionDTO[];
-      console.log(res);
-      this.dniFilterDamnificada = null;
-      this.dniFilterVictimario = null;
-    });
-  }
-
-
-  toggleSelect() {
-    this.showSelect = !this.showSelect;
-  }
-}
 
 

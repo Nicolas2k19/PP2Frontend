@@ -12,6 +12,7 @@ export default class GrupoService{
     readonly post = environment.apiUrl+'/grupo'+"/nuevoGrupo"
     readonly get = environment.apiUrl+'/grupo'+"/obtenerGrupos"
     readonly getById = environment.apiUrl+'/grupo'+"/obtenerGrupo/"
+    readonly getAllById = environment.apiUrl+'/grupo'+"/obtenerGruposPorId/"
     constructor(private http :HttpClient){
 
     }
@@ -22,5 +23,9 @@ export default class GrupoService{
 
     getGrupo(idGrupo : Number){
         return this.http.get(this.getById+idGrupo);
+    }
+
+    getGruposByID(idGrupo : Number){
+        return this.http.get(this.getAllById+idGrupo);
     }
 }

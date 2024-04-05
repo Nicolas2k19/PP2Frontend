@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <!-- FORMULARIO DE RESTRICCIONES -->
-        <div class="col-4">
+        <div *ngIf="mostrarAbmRestricciones"  class="col-4">
             <div class="card bg-light mb-3" style="max-width: 20rem;">
                 <div class="card-body">
                     <legend>Restricción Perimetral</legend>
@@ -83,7 +83,7 @@
             </div>
         </div>
         <!-- TABLA DE RESTRICCIONES -->
-        <div class="col">
+        <div class="col" *ngIf="mostrarAbmRestricciones">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -112,7 +112,7 @@
         </div>
 
         <!-- FILTROS -->
-        <div class="filtros">
+        <div class="filtros" *ngIf="mostrarAbmRestricciones">
 
             <button class="image-button" (click)="toggleSelect()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
@@ -143,7 +143,23 @@
 
     </div>
 
-    <form action="GET" (ngSubmit)="(getGrupo())">
+     <!-- Grupos-------------------------------------------------------------------------->
+
+
+     <form *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="crearGrupo()">
+        <h1 class="titulo">Nuevo grupo</h1>
+        <button>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+            </svg>
+        </button>
+    </form>
+
+
+
+
+    <form class="seleccionar-grupo" *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="(getGrupo())">
+        <h3 class="titulo">Seleccionar grupos</h3>
         <select name="" id="" [(ngModel)]="grupoSeleccionado">
             <option value={{grupo}} *ngFor="let grupo of grupos">
                 {{"Grupo "+grupo}}
@@ -153,17 +169,56 @@
         <button>SI</button>
     </form>
 
-    <div *ngIf="mostrarGrupo">
-        <h1 class="titulo">{{"Grupo "+grupoActual.idGrupo}}</h1>
+    <div *ngIf="mostrarGrupo && mostrarGrupoRestricciones">
+        <h3 class="titulo">{{"Grupo "+grupoActual.idGrupo}}</h3>
 
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    {{}}
+                   <th >Administrativos</th>
                 </tr>
             </thead>
+            <tbody>
+                <tr *ngFor="let user of usuariosDelGrupo">
+                    <td>{{user.email}}</td>
+                </tr>
+            </tbody>
 
+        </table> 
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                   <th>Identificación de la Restricciónes</th>
+                   <th>Distancias</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let restriccion of restriccionesDelGrupo">
+                    <td>{{restriccion.idRestriccion}}</td>
+                    <td>{{restriccion.distancia}}</td>
+                </tr>
+            </tbody>
         </table>
+        
+    </div>
+
+    <div>
+        
+        <div *ngIf="mostrarAbmRestricciones" (click)="cambiarVista()">
+            Grupos
+            <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+            </svg>
+        </div>
+        <div  *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
+            Restricciones
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+            </svg>
+        </div>
+
+        
+       
     </div>
 
 
