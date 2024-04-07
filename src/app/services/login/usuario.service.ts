@@ -12,6 +12,8 @@ export class UsuarioService {
   usuarioSeleccionado: Usuario;
   usuarios: Usuario[];
   readonly URL_API = environment.apiUrl+'/Usuario';
+  readonly GET_POR_GRUPO = environment.apiUrl+'/Usuario'+'/obtenerUsuarioPorGrupo/';
+  
 
   constructor(private http: HttpClient) {
     this.usuarioSeleccionado = new Usuario();
@@ -54,7 +56,16 @@ export class UsuarioService {
    * 
    */
   getUsuarioById(id: Number){
-    return this.http.get(this.URL_API+"/"+id);
+    return this.http.get(this.GET_POR_GRUPO+id);
+  }
+
+
+  /**
+   * Obtiene al usuario que coincida con  el id de grupo pasado por parametro 
+   * 
+   */
+  getUsuarioByGrupo(id: Number){
+    return this.http.get(this.GET_POR_GRUPO+id);
   }
 
 

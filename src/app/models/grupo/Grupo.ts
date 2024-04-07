@@ -1,16 +1,16 @@
 
 export  default class Grupo {
 
-    constructor(idGrupo = 0,horaFinal="" ,horaInicial="" ,idRestriccion=0,idUsuario=0){
+    constructor(idGrupo=3, nombreGrupo = '', turnoGrupo = ''  ,idRestriccion=0,idUsuario=0){
         this.idGrupo=idGrupo;
-        this.horaFinal = horaFinal
-        this.horaInicial = horaInicial
         this.idRestriccion = idRestriccion
         this.idUsuario = idUsuario;
+        this.nombreGrupo = nombreGrupo;
+        this.turnoGrupo = turnoGrupo
     }
     idGrupo: Number;
-    horaFinal : string
-    horaInicial : string
+    nombreGrupo : String
+    turnoGrupo : String
     idRestriccion : Number
     idUsuario : Number;
 }

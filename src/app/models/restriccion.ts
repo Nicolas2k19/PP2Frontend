@@ -11,6 +11,7 @@ export class Restriccion {
     }
 
     idRestriccion: number;
+    idGrupo : Number
     idUsuario: number;
     idDamnificada: number;
     idVictimario: number;

@@ -5,6 +5,8 @@ import { NgForm } from '@angular/forms';
 import { ErrorDTO } from 'src/app/models/error-dto';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import GrupoService from 'src/app/services/grupo/grupoService';
+import Grupo from 'src/app/models/grupo/Grupo';
 
 @Component({
   selector: 'app-administrar-usuarios',
@@ -19,15 +21,19 @@ export class AdministrarUsuariosComponent implements OnInit {
   usuarioSeleccionado = new Usuario;
   showSelect: boolean = false;
   selectedOption: string;
-
-
+  grupoSeleccionado : Number
   editarBandera: boolean = false;
+  grupos : Number[];
+
+
 
   constructor(
     public usuarioService: UsuarioService,
+    public grupoService : GrupoService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
     this.roles = ['SUPERVISOR', 'ADMINISTRATIVO'];
+    this.grupos = []
   }
 
   ngOnInit() {
@@ -35,6 +41,14 @@ export class AdministrarUsuariosComponent implements OnInit {
     this.hayError = false;
     this.editarBandera = false;
     this.usuarioSeleccionado = new Usuario;
+    this.grupoService.getGrupos()
+              .subscribe(grupo => {  
+                (grupo as []).forEach(grupo => {
+                  let grupoRetornado : Grupo = grupo as Grupo;
+                  this.grupos.push(grupoRetornado.idGrupo)})
+               
+                  console.log(this.grupos)
+                });
   }
 
   getUsuarios() {
@@ -65,6 +79,7 @@ export class AdministrarUsuariosComponent implements OnInit {
     //GUARDO SI LA BANDERA ES FALSE
     else {
       this.usuarioSeleccionado.rolDeUsuario = this.rolSeleccionado;
+      this.usuarioSeleccionado.idGrupo = this.grupoSeleccionado;
       //POR AHORA ESTA POR DEFECTO ESTA CONTRASEÑA EN EL MODEL
       this.usuarioService.postUsuario(this.usuarioSeleccionado)
         .subscribe(res => {

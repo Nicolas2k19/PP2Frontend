@@ -12,7 +12,8 @@ import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import GrupoService from 'src/app/services/grupo/grupoService';
-import Grupo from 'src/app/models/Grupo';
+import Grupo from 'src/app/models/grupo/Grupo';
+import GrupoNuevo from 'src/app/models/grupo/grupoNuevo';
 
 @Component({
   selector: 'app-administrar-restricciones',
@@ -37,6 +38,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
   grupos : Number[];
   grupoSeleccionado : Number
   grupoActual : Grupo
+  
  
   particionesGrupo : Grupo[]
   usuariosDelGrupo : Usuario[]
@@ -45,6 +47,12 @@ export class AdministrarRestriccionesComponent implements OnInit {
   mostrarGrupoRestricciones : boolean;
   mostrarGrupo : boolean
 
+
+  turnoGrupo : String
+  nombreEquipo : String
+
+
+  nombreGrupoAAsignar : String;
   
 
     constructor(
@@ -61,6 +69,9 @@ export class AdministrarRestriccionesComponent implements OnInit {
         this.mostrarAbmRestricciones = true;
         this.mostrarGrupo = false;
         this.mostrarGrupoRestricciones = false
+        this.turnoGrupo = ""
+        this.nombreEquipo = ""
+        this.nombreGrupoAAsignar  = ""
         
       }
 
@@ -80,8 +91,43 @@ export class AdministrarRestriccionesComponent implements OnInit {
             }
 
 
+            /**
+             * Asigna un grupo a la perimetral a crear
+             */
+            asignarGrupoPerimetral(){
+              this.spinner.show();
+              this.grupoService.getGrupoByNombre(this.nombreGrupoAAsignar)
+                .subscribe(res => {
+                  this.spinner.hide();
+                  if (res == null) {
+                    this.toastr.error("Verificar el email de usuario ingresado.", "Error!");
+                    this.setCamposIncompletos();
+                    return;
+                  }
+                  this.grupoActual = res as Grupo;
+                  document.getElementById("labelAdministrativo").innerHTML =
+                    "Grupo: " + this.nombreGrupoAAsignar;
+                })
+
+            }
+
+
             /**Crea un nuevo grupo! */
             crearGrupo(){
+              console.log(this.turnoGrupo)
+              console.log(this.nombreEquipo)
+              let grupo : GrupoNuevo  = new GrupoNuevo
+              grupo.turnoGrupo = this.turnoGrupo
+              grupo.nombreGrupo = this.nombreEquipo
+
+              try{
+              this.grupoService.crearEquipo(grupo).subscribe( res => {
+                console.log(res);
+                this.toastr.success("¡Se agrego el nuevo equipo!")
+              } );}
+              catch(error){
+                this.toastr.success("No se pudo crear el equipo, intente nuevamente.")
+              }
 
             }
 
@@ -99,8 +145,10 @@ export class AdministrarRestriccionesComponent implements OnInit {
                   this.particionesGrupo = particionCompleta as Grupo[]
                   
                   this.particionesGrupo.forEach(grupo => {
-                      this.usuarioService.getUsuarioById(grupo.idUsuario).subscribe( user => {this.usuariosDelGrupo.push(user as Usuario)});
-                      this.restriccionService.getByid(grupo.idRestriccion).subscribe( restriccion => {this.restriccionesDelGrupo.push(restriccion as Restriccion)});
+                    console.log("Entre")
+                    console.log(grupo)
+                      this.usuarioService.getUsuarioByGrupo(grupo.idGrupo).subscribe( user => {this.usuariosDelGrupo = (user as Usuario[])});
+                      this.restriccionService.getByidGrupo(grupo.idGrupo).subscribe( restriccion => {this.restriccionesDelGrupo = (restriccion as Restriccion[])});
                   });
                   
                 
@@ -117,6 +165,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
              * Obtiene todas las restricciones
              */
             getRestricciones() {
+              console.log("Estoy llamando y te rompo todo")
               this.spinner.show();
               this.restriccionService.getRestricciones()
                 .subscribe(res => {
@@ -161,6 +210,10 @@ export class AdministrarRestriccionesComponent implements OnInit {
                 })
             }
 
+
+
+
+
             agregarAdministrativo() {
               this.spinner.show();
               this.usuarioService.getUsuarioByEmail(this.administrativo.email)
@@ -181,8 +234,8 @@ export class AdministrarRestriccionesComponent implements OnInit {
               if (this.editarBandera == true) {
                 this.restriccion.idDamnificada = this.damnificada.idPersona;
                 this.restriccion.idVictimario = this.victimario.idPersona;
-                this.restriccion.idUsuario = this.administrativo.idUsuario;
-
+                this.restriccion.idGrupo = this.grupoSeleccionado;
+    
                 let ngbDate = restriccionForm.value.dp;
                 let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
                 this.restriccion.fechaSentencia = myDate;
@@ -196,6 +249,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
                   this.spinner.show();
                   this.restriccionService.putRestriccion(this.restriccion)
                     .subscribe(res => {
+                      console.log(res)
                       this.spinner.hide();
                       this.toastr.success("La restricción se modificó correctamente", "Modificada!");
                       restriccionForm.reset();
@@ -218,8 +272,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
             agregarRestriccion(restriccionForm: NgForm) {
               this.restriccion.idDamnificada = this.damnificada.idPersona;
               this.restriccion.idVictimario = this.victimario.idPersona;
-              this.restriccion.idUsuario = this.administrativo.idUsuario;
-
+              this.restriccion.idGrupo = this.grupoSeleccionado;
               let ngbDate = restriccionForm.value.dp;
               let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
               this.restriccion.fechaSentencia = myDate;

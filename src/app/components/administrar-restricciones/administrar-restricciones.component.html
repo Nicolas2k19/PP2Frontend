@@ -37,18 +37,11 @@
                             <label id="labelDamnificada"></label>
                         </div>
                         <div class="row">
-                            <div class="input-group">
-                                <input class="form-control" type="text" name="emailAdministrativo"
-                                    placeholder="Email Administrativo a cargo" ngbTooltip="Email administrativo a cargo"
-                                    [(ngModel)]="administrativo.email">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        (click)="agregarAdministrativo()" [disabled]="administrativo.email === ''">
-                                        <i class="small material-icons">person_add</i>
-                                    </button>
-                                </div>
-                            </div>
-                            <label id="labelAdministrativo"></label>
+                            <select name="" id="" [(ngModel)]="grupoSeleccionado">
+                                <option value={{grupo}} *ngFor="let grupo of grupos">
+                                    {{"Grupo "+grupo}}
+                                </option>
+                            </select>
                         </div>
                         <div class="row">
                             <input class="form-control" type="number" name="distancia" placeholder="Distancia"
@@ -90,6 +83,7 @@
                         <th scope="col">Victimario</th>
                         <th scope="col">Damnificada</th>
                         <th scope="col">Administrativo</th>
+                        <th scope="col">Grupo</th>
                         <th scope="col">Operaciones</th>
                     </tr>
                 </thead>
@@ -98,6 +92,7 @@
                         <td>{{restriccion.victimario.apellido}}</td>
                         <td>{{restriccion.damnificada.apellido}}</td>
                         <td>{{restriccion.administrativo.email}}</td>
+                        <td>{{restriccion.restriccion.idGrupo}}</td>
                         <td>
                             <a (click)="editarRestriccion(restriccion)">
                                 <i class="material-icons">editar</i>
@@ -148,11 +143,19 @@
 
      <form *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="crearGrupo()">
         <h1 class="titulo">Nuevo grupo</h1>
-        <button>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
-            </svg>
-        </button>
+        <div class="formulario-equipo">
+            <input type="text" placeholder="Nombre del nuevo equipo" [(ngModel)]="nombreEquipo">
+            <select name="" id="" [(ngModel)]="turnoGrupo">
+                <option value="MAÑANA">Mañana</option>
+                <option value="TARDE">Tarde</option>
+                <option value="NOCHE">Noche</option>
+            </select>
+            <button class="boton-nuevo-equipo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+            </button>
+        </div>
     </form>
 
 
@@ -170,7 +173,7 @@
     </form>
 
     <div *ngIf="mostrarGrupo && mostrarGrupoRestricciones">
-        <h3 class="titulo">{{"Grupo "+grupoActual.idGrupo}}</h3>
+        <h4 class="titulo">{{"Grupo "+grupoActual.idGrupo}}</h4>
 
         <table class="table table-striped">
             <thead>
@@ -204,13 +207,13 @@
 
     <div>
         
-        <div *ngIf="mostrarAbmRestricciones" (click)="cambiarVista()">
+        <div class="boton-cambio-pantalla" *ngIf="mostrarAbmRestricciones" (click)="cambiarVista()">
             Grupos
             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
             </svg>
         </div>
-        <div  *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
+        <div  class="boton-cambio-pantalla"  *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
             Restricciones
             <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>

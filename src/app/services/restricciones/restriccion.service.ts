@@ -18,6 +18,8 @@ export class RestriccionService {
   
   readonly URL_API_GETByid= environment.apiUrl+"RestriccionPerimetral/getByRestriccion/";
 
+  readonly URL_API_GETByidGrupo= environment.apiUrl+"RestriccionPerimetral/ObtenerPorIdGrupo/";
+
   constructor(private http:HttpClient) { 
     this.restriccionSeleccionada = new Restriccion();
   }
@@ -31,6 +33,18 @@ export class RestriccionService {
   getByid(id : Number){
     return this.http.get(this.URL_API_GETByid+id);
   }
+
+  /**
+   * Obtiene la restriccion que contenga un id de grupo en particular 
+   *  
+   * @returns 
+   */
+  getByidGrupo(id : Number){
+    return this.http.get(this.URL_API_GETByidGrupo+id);
+  }
+
+
+
 
   getRestricciones(){
     return this.http.get(this.URL_API_RESTRICCION_DTO);
