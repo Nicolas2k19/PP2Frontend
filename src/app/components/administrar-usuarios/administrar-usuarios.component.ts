@@ -66,6 +66,8 @@ export class AdministrarUsuariosComponent implements OnInit {
     //EDITO SI LA BANDERA ES TRUE
     if (this.editarBandera == true) {
       this.usuarioSeleccionado.rolDeUsuario = this.rolSeleccionado;
+      this.usuarioSeleccionado.idGrupo = this.grupoSeleccionado;
+      console.log(this.usuarioSeleccionado)
       this.usuarioService.putUsuario(this.usuarioSeleccionado)
         .subscribe(res => {
           this.spinner.hide();
