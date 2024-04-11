@@ -21,15 +21,22 @@ export class AdministrarUsuariosComponent implements OnInit {
   usuarioSeleccionado = new Usuario;
   showSelect: boolean = false;
   selectedOption: string;
-  grupoSeleccionado : Number
+  grupoSeleccionado: Number
   editarBandera: boolean = false;
-  grupos : Number[];
+  grupos: Number[];
 
+
+
+  //ordenamiento
+  contadorU = 0;
+  contadorE = 0;
+  contadorR = 0;
+  contadorG = 0;
 
 
   constructor(
     public usuarioService: UsuarioService,
-    public grupoService : GrupoService,
+    public grupoService: GrupoService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
     this.roles = ['SUPERVISOR', 'ADMINISTRATIVO'];
@@ -42,13 +49,14 @@ export class AdministrarUsuariosComponent implements OnInit {
     this.editarBandera = false;
     this.usuarioSeleccionado = new Usuario;
     this.grupoService.getGrupos()
-              .subscribe(grupo => {  
-                (grupo as []).forEach(grupo => {
-                  let grupoRetornado : Grupo = grupo as Grupo;
-                  this.grupos.push(grupoRetornado.idGrupo)})
-               
-                  console.log(this.grupos)
-                });
+      .subscribe(grupo => {
+        (grupo as []).forEach(grupo => {
+          let grupoRetornado: Grupo = grupo as Grupo;
+          this.grupos.push(grupoRetornado.idGrupo)
+        })
+
+        console.log(this.grupos)
+      });
   }
 
   getUsuarios() {
@@ -127,7 +135,7 @@ export class AdministrarUsuariosComponent implements OnInit {
 
   //Filtros
 
-  filtrar(){
+  filtrar() {
 
     console.log("filtrando")
     console.log(this.selectedOption);
@@ -155,47 +163,196 @@ export class AdministrarUsuariosComponent implements OnInit {
   }
 
 
-  filtrarEstadoConectado(){
+  filtrarEstadoConectado() {
 
     this.usuarioService.filtrarEstado("CONECTADO").subscribe(res => {
-        this.spinner.hide();
-        this.usuarioService.usuarios = res as Usuario[];
-        this.toggleSelect();
-        console.log(res);
-      });
+      this.spinner.hide();
+      this.usuarioService.usuarios = res as Usuario[];
+      this.toggleSelect();
+      console.log(res);
+    });
   }
-  filtrarEstadoAusente(){
+  filtrarEstadoAusente() {
 
     this.usuarioService.filtrarEstado("AUSENTE").subscribe(res => {
-        this.spinner.hide();
-        this.usuarioService.usuarios = res as Usuario[];
-        this.toggleSelect();
-        console.log(res);
-      });
+      this.spinner.hide();
+      this.usuarioService.usuarios = res as Usuario[];
+      this.toggleSelect();
+      console.log(res);
+    });
   }
 
-  filtrarRolSupervisor(){
+  filtrarRolSupervisor() {
 
     this.usuarioService.filtrarRol("SUPERVISOR").subscribe(res => {
-        this.spinner.hide();
-        this.usuarioService.usuarios = res as Usuario[];
-        this.toggleSelect();
-        console.log(res);
-      });
+      this.spinner.hide();
+      this.usuarioService.usuarios = res as Usuario[];
+      this.toggleSelect();
+      console.log(res);
+    });
   }
 
-  filtrarRolAdministrativo(){
+  filtrarRolAdministrativo() {
 
     this.usuarioService.filtrarRol("ADMINISTRATIVO").subscribe(res => {
-        this.spinner.hide();
-        this.usuarioService.usuarios = res as Usuario[];
-        this.toggleSelect();
-        console.log(res);
-      });
+      this.spinner.hide();
+      this.usuarioService.usuarios = res as Usuario[];
+      this.toggleSelect();
+      console.log(res);
+    });
   }
-  
+
+
   toggleSelect() {
     this.showSelect = !this.showSelect;
+  }
+
+
+
+  ordenarPorUsuario() {
+
+    if (this.contadorU == 0) {
+      this.spinner.show();
+
+      this.usuarioService.usuarios.sort((a, b) => {
+        // Comparar los valores de 'damnificada' de los usuarios
+        if (a.email < b.email) {
+          return -1; // a debe aparecer antes que b
+        } else if (a.email > b.email) {
+          return 1; // b debe aparecer antes que a
+        } else {
+          return 0; // no se necesita cambiar el orden
+        }
+      });
+      this.contadorU += 1;
+      this.spinner.hide();
+    } else {
+      this.spinner.show();
+
+      this.usuarioService.usuarios.sort((a, b) => {
+        // Comparar los valores de 'damnificada' de los usuarios
+        if (a.email > b.email) {
+          return -1; // a debe aparecer antes que b
+        } else if (a.email < b.email) {
+          return 1; // b debe aparecer antes que a
+        } else {
+          return 0; // no se necesita cambiar el orden
+        }
+      });
+
+      this.spinner.hide();
+      this.contadorU -= 1;
+
+    }
+
+  }
+
+
+  ordenarPorEstado() {
+    if (this.contadorE == 0) {
+      this.spinner.show();
+
+      this.usuarioService.usuarios.sort((a, b) => {
+        // Comparar los valores de 'damnificada' de los usuarios
+        if (a.estadoUsuario < b.estadoUsuario) {
+          return -1; // a debe aparecer antes que b
+        } else if (a.estadoUsuario > b.estadoUsuario) {
+          return 1; // b debe aparecer antes que a
+        } else {
+          return 0; // no se necesita cambiar el orden
+        }
+      });
+      this.contadorE += 1;
+      this.spinner.hide();
+    } else {
+      this.spinner.show();
+
+      this.usuarioService.usuarios.sort((a, b) => {
+        // Comparar los valores de 'damnificada' de los usuarios
+        if (a.estadoUsuario > b.estadoUsuario) {
+          return -1; // a debe aparecer antes que b
+        } else if (a.estadoUsuario < b.estadoUsuario) {
+          return 1; // b debe aparecer antes que a
+        } else {
+          return 0; // no se necesita cambiar el orden
+        }
+      });
+
+      this.spinner.hide();
+      this.contadorE -= 1;
+    }
+  }
+
+
+  ordenarPorRol() {
+    if (this.contadorR == 0) {
+      this.spinner.show();
+
+      this.usuarioService.usuarios.sort((a, b) => {
+        // Comparar los valores de 'damnificada' de los usuarios
+        if (a.rolDeUsuario < b.rolDeUsuario) {
+          return -1; // a debe aparecer antes que b
+        } else if (a.rolDeUsuario > b.rolDeUsuario) {
+          return 1; // b debe aparecer antes que a
+        } else {
+          return 0; // no se necesita cambiar el orden
+        }
+      });
+      this.contadorR += 1;
+      this.spinner.hide();
+    } else {
+      this.spinner.show();
+
+      this.usuarioService.usuarios.sort((a, b) => {
+        // Comparar los valores de 'damnificada' de los usuarios
+        if (a.rolDeUsuario > b.rolDeUsuario) {
+          return -1; // a debe aparecer antes que b
+        } else if (a.rolDeUsuario < b.rolDeUsuario) {
+          return 1; // b debe aparecer antes que a
+        } else {
+          return 0; // no se necesita cambiar el orden
+        }
+      });
+
+      this.spinner.hide();
+      this.contadorR -= 1;
+    }
+  }
+
+
+  ordenarPorGrupo() {
+    if (this.contadorG == 0) {
+      this.spinner.show();
+
+      this.usuarioService.usuarios.sort((a, b) => {
+        // Comparar los valores de 'damnificada' de los usuarios
+        if (a.idGrupo < b.idGrupo) {
+          return -1; // a debe aparecer antes que b
+        } else if (a.idGrupo > b.idGrupo) {
+          return 1; // b debe aparecer antes que a
+        } else {
+          return 0; // no se necesita cambiar el orden
+        }
+      });
+      this.contadorG += 1;
+      this.spinner.hide();
+    } else {
+      this.spinner.show();
+
+      this.usuarioService.usuarios.sort((a, b) => {
+        // Comparar los valores de 'damnificada' de los usuarios
+        if (a.idGrupo > b.idGrupo) {
+          return -1; // a debe aparecer antes que b
+        } else if (a.idGrupo < b.idGrupo) {
+          return 1; // b debe aparecer antes que a
+        } else {
+          return 0; // no se necesita cambiar el orden
+        }
+      });
+
+      this.spinner.hide();
+      this.contadorG -= 1;
+    }
   }
 
 
