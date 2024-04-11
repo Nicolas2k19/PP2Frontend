@@ -25,6 +25,8 @@ export class AdministrarUsuariosComponent implements OnInit {
   editarBandera: boolean = false;
   grupos: Number[];
 
+  grupoFilter: number;
+
 
 
   //ordenamiento
@@ -137,27 +139,35 @@ export class AdministrarUsuariosComponent implements OnInit {
 
   filtrar() {
 
-    console.log("filtrando")
-    console.log(this.selectedOption);
-    switch (this.selectedOption) {
-      case 'conectado':
-        this.filtrarEstadoConectado();
-        break;
-      case 'ausente':
-        this.filtrarEstadoAusente();
-        break;
-      case 'supervisor':
-        this.filtrarRolSupervisor();
-        break;
-      case 'administrativo':
-        this.filtrarRolAdministrativo();
-        break;
-      case 'todos':
-        this.getUsuarios();
-        this.toggleSelect();
-        break;
-      default:
-        console.log('Opción no válida');
+    if (this.selectedOption == null) {
+
+      this.filtraridGrupo();
+
+    } else {
+
+      console.log(this.selectedOption);
+      switch (this.selectedOption) {
+        case 'conectado':
+          this.filtrarEstadoConectado();
+          break;
+        case 'ausente':
+          this.filtrarEstadoAusente();
+          break;
+        case 'supervisor':
+          this.filtrarRolSupervisor();
+          break;
+        case 'administrativo':
+          this.filtrarRolAdministrativo();
+          break;
+        case 'todos':
+          this.getUsuarios();
+          this.toggleSelect();
+          break;
+        default:
+          console.log('Opción no válida');
+      }
+
+
     }
 
   }
@@ -201,6 +211,25 @@ export class AdministrarUsuariosComponent implements OnInit {
       console.log(res);
     });
   }
+
+
+  filtraridGrupo() {
+
+    console.log("filtrar x id grupo")
+
+
+    this.usuarioService.getUsuarioByGrupo(this.grupoFilter).subscribe(res => {
+      this.spinner.hide();
+      this.usuarioService.usuarios = res as Usuario[];
+      this.toggleSelect();
+      console.log(res);
+    });
+
+    this.grupoFilter = null;
+
+
+  }
+
 
 
   toggleSelect() {
