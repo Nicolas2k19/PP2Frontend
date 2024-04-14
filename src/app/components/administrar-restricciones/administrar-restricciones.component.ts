@@ -55,6 +55,9 @@ export class AdministrarRestriccionesComponent implements OnInit {
   turnoGrupo : String
   nombreEquipo : String
 
+  errorTextoEquipo : boolean
+  errorTurno : boolean
+
 
   nombreGrupoAAsignar : String;
   errorCampoVictimario: boolean;
@@ -83,6 +86,8 @@ export class AdministrarRestriccionesComponent implements OnInit {
         this.errorCampoVictimario = false;
         this.errorCampoSelectorGrupo = false;
         this.errorCampoFecha = false;
+        this.errorTextoEquipo = false
+        this.errorTurno = false;
         
       }
 
@@ -126,8 +131,14 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
             /**Crea un nuevo grupo! */
             crearGrupo(){
-              console.log(this.turnoGrupo)
-              console.log(this.nombreEquipo)
+              this.eliminarErrorGrupo()
+              this.spinner.show();
+              if(this.hayError()){
+                this.toastr.error("Uno de los campos no ha sido completado", "Error!");
+                this.spinner.hide();
+                return
+              };
+
               let grupo : GrupoNuevo  = new GrupoNuevo
               grupo.turnoGrupo = this.turnoGrupo
               grupo.nombreGrupo = this.nombreEquipo
@@ -136,12 +147,42 @@ export class AdministrarRestriccionesComponent implements OnInit {
               this.grupoService.crearEquipo(grupo).subscribe( res => {
                 console.log(res);
                 this.toastr.success("¡Se agrego el nuevo equipo!")
+                this.spinner.hide();
+                
               } );}
               catch(error){
-                this.toastr.success("No se pudo crear el equipo, intente nuevamente.")
+                this.toastr.error("No se pudo crear el equipo, intente nuevamente.","Error!")
+                this.spinner.hide();
               }
 
             }
+
+            /**
+             * Si hay un error retorna true y setea el campo con error a true
+             * @returns 
+             */
+            private hayError() {
+              if (this.nombreEquipo.length == 0) {
+                  this.errorTextoEquipo = true;
+                  return true
+              }
+              if (this.turnoGrupo.length == 0) {
+                this.errorTurno = true;
+                return true
+            }
+
+              return false
+            }
+
+            /**
+             * Elimina el error del formulario de grupos
+             */
+            private eliminarErrorGrupo(){
+              this.errorTextoEquipo = false;
+              this.errorTurno = false;
+            }
+            
+
 
             /**
              * Obtiene un grupo en base a lo seleccionado por el selector de grupo en administrar-restricciones-component-html 
@@ -154,11 +195,8 @@ export class AdministrarRestriccionesComponent implements OnInit {
                 this.grupoActual = grupo as Grupo
                 this.mostrarGrupo = true;
                 this.grupoService.getGruposByID(this.grupoActual.idGrupo).subscribe(particionCompleta => {
-                  this.particionesGrupo = particionCompleta as Grupo[]
-                  
+                  this.particionesGrupo = particionCompleta as Grupo[]    
                   this.particionesGrupo.forEach(grupo => {
-                    console.log("Entre")
-                    console.log(grupo)
                       this.usuarioService.getUsuarioByGrupo(grupo.idGrupo).subscribe( user => {this.usuariosDelGrupo = (user as Usuario[])});
                       this.restriccionService.getByidGrupo(grupo.idGrupo).subscribe( restriccion => {this.restriccionesDelGrupo = (restriccion as Restriccion[])});
                   });
@@ -192,8 +230,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
              * @returns boolean
              */
             agregarVictimario() {
-              console.log("Hola")
-              console.log(this.victimario.dni)
               if (this.stringVacio(this.victimario.dni)) {
                 this.setErrorCampoVictimario();
                 this.toastr.error("Verificar el DNI de victimario ingresado.", "Error!");

@@ -131,17 +131,17 @@
     <div class="contenedor-grupos">
         <form *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="crearGrupo()" class="card formulario-grupo">
             <legend>Nuevo grupo</legend>
-                <input type="text" placeholder="Nombre del nuevo equipo" [(ngModel)]="nombreEquipo">
-                <select name="" id="" [(ngModel)]="turnoGrupo">
-                    <option value="MAÑANA">Mañana</option>
-                    <option value="TARDE">Tarde</option>
-                    <option value="NOCHE">Noche</option>
-                </select>
-                <button class="boton-nuevo-equipo">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
-                    </svg>
-                </button>
+            <div class="input-before-texto-grupo" [ngClass]="{ 'error': errorTextoEquipo}">
+                <input class="input-texto" type="text" [(ngModel)]="nombreEquipo">
+            </div>
+                <div class="input-before-selector-nuevo-grupo" [ngClass]="{ 'error': errorTurno}">
+                    <select name="" id="" [(ngModel)]="turnoGrupo" class="select-estilo" >
+                        <option value="MAÑANA">Mañana</option>
+                        <option value="TARDE">Tarde</option>
+                        <option value="NOCHE">Noche</option>
+                    </select>
+                </div>
+                <button class="btn btn-form-grupo">Agregar</button>
         </form>
 
 
@@ -149,19 +149,21 @@
 
         <form class="seleccionar-grupo" *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="(getGrupo())" class="card formulario-grupo">
             <legend class="titulo">Seleccionar grupos</legend>
-            <select name="" id="" [(ngModel)]="grupoSeleccionado">
-                <option value={{grupo}} *ngFor="let grupo of grupos">
-                    {{"Grupo "+grupo}}
-                </option>
-            </select>
+            <div class="input-before-selector-seleccion-grupo">
+                <select name="" id="" [(ngModel)]="grupoSeleccionado" class="select-estilo" >
+                    <option value={{grupo}} *ngFor="let grupo of grupos">
+                        {{"Grupo "+grupo}}
+                    </option>
+                </select>
+            </div>
 
-            <button>SI</button>
+            <button class="btn btn-form-grupo">Seleccionar</button>
         </form>
 
     </div>  
 
     <div *ngIf="mostrarGrupo && mostrarGrupoRestricciones">
-        <h4 class="titulo">{{"Grupo "+grupoActual.idGrupo}}</h4>
+        <legend class="titulo">{{grupoActual.nombreGrupo}}</legend>
 
         <table class="table table-striped">
             <thead>
