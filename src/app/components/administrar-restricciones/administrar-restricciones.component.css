@@ -1,11 +1,11 @@
 th{
   background-color: black;
   color: white;
-  cursor:default
+  cursor:pointer;
 }
 td{
   color: black;
-  cursor:default
+  cursor:default; 
 }
 
 .material-icons{

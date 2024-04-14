@@ -23,7 +23,7 @@
     "@popperjs/core": "^2.11.8",
     "@types/jest": "^24.0.18",
     "big.js": "^5.2.2",
-    "bootstrap": "^4.6.2",
+    "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "express": "^4.17.1",
     "jquery": "^3.4.1",
