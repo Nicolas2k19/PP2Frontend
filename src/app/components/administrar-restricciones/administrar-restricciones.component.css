@@ -1,3 +1,79 @@
+th{
+  background-color: black;
+  color: white;
+  cursor:default
+}
+td{
+  color: black;
+  cursor:default
+}
+
+.material-icons{
+  cursor: pointer;
+}
+
+
+
+.personas-a-vigilar{
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  flex-direction: column;
+}
+
+.input-texto{
+  background-color: #fff;
+  border: 0px solid #fff;
+  border-radius: 0;
+  border-bottom: 1px solid black;
+  padding: 0;
+}
+
+/*Textos que describen los campos*/
+
+.input-texto-before-victimario,.input-texto-before-damnificada,.input-before-selector-grupos,
+.input-before-selector-distancia,.input-before-selector-fecha{
+  display: flex;
+  flex-direction: column;
+}
+
+.input-texto-before-victimario::before{
+  content: "DNI Agresor*";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-damnificada::before{
+  content: "Dni Damnificada *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-before-selector-grupos::before{
+  content: "Grupo de trabajo *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-before-selector-distancia::before{
+  content: "Distancia *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-before-selector-fecha::before{
+  content: "Inicio de restricción *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+/*Control de errores*/
+.error{
+  color: red;
+}
+
+
+/*Container*/
 .container{
     color: #053667;
 }
@@ -8,7 +84,12 @@
 }
 
 .card{
-    text-align: center
+    text-align: center;
+    background-color: white;
+    color: black;
+    padding: 2.5rem;
+    border: 1px solid black;
+
 }
 
 .table{
@@ -67,14 +148,55 @@
     border: 1px solid black;
     background-color: #fff;
     margin: 0;
-    padding: 0.5rem 1.5rem 0.5rem 
+    padding: 0.5rem 1.5rem 0.5rem
+  
+  }
 
+  /*Selects formulario*/
+
+  .select-estilo{
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 50px;
+    background-color: white;
+    color: black;
+  }
+
+  .select-estilo::before{
+  content: "*";
+  display: flex;
+  }
+
+  /*Boton formulario */
+
+  .btn{
+    background-color: black;
+    color: white;
+  }
+
+  .contenedor-grupos{
+    display: flex;
+    gap: 3rem;
+  }
+
+  .formulario-grupo{
+    flex-direction: column;
   }
 
 
   /*Animación titulo css*/
 
   .titulo::after{
+    content: "";
+    border-bottom: 5px solid #212529;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+  }
+
+  legend::after{
     content: "";
     border-bottom: 5px solid #212529;
     display: flex;

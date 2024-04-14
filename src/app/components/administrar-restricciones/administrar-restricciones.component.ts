@@ -25,6 +25,10 @@ export class AdministrarRestriccionesComponent implements OnInit {
   victimario = new Persona;
   administrativo = new Usuario;
   restriccion = new Restriccion;
+  
+  errorCampos : Boolean
+  errorCampoDamnificada : Boolean
+
   camposIncompletos = false;
   fecha: Date = new Date();
   maxDatePicker = { year: this.fecha.getFullYear(), month: this.fecha.getMonth() + 1, day: this.fecha.getDate() };
@@ -53,7 +57,10 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
 
   nombreGrupoAAsignar : String;
-  
+  errorCampoVictimario: boolean;
+  errorCampoSelectorGrupo : boolean
+  errorCampoFecha : boolean
+  errorCampoDistancia : boolean
 
     constructor(
       public restriccionService: RestriccionService,
@@ -72,6 +79,10 @@ export class AdministrarRestriccionesComponent implements OnInit {
         this.turnoGrupo = ""
         this.nombreEquipo = ""
         this.nombreGrupoAAsignar  = ""
+        this.errorCampoDamnificada = false;
+        this.errorCampoVictimario = false;
+        this.errorCampoSelectorGrupo = false;
+        this.errorCampoFecha = false;
         
       }
 
@@ -79,6 +90,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
             ngOnInit() {
               this.getRestricciones();
+              this.restriccion.distancia = 200;
               this.editarBandera = false;
               this.grupoService.getGrupos()
               .subscribe(grupo => {  
@@ -175,39 +187,55 @@ export class AdministrarRestriccionesComponent implements OnInit {
                 })
             }
 
+            /**
+             * Agrega el victimario, retorna un booleano indicando si la operación de agregar fue exitosa
+             * @returns boolean
+             */
             agregarVictimario() {
-              //ACA TRAIGO AL VICTIMARIO
-              this.spinner.show();
+              console.log("Hola")
+              console.log(this.victimario.dni)
+              if (this.stringVacio(this.victimario.dni)) {
+                this.setErrorCampoVictimario();
+                this.toastr.error("Verificar el DNI de victimario ingresado.", "Error!");
+                return false;
+              }
               this.personaService.getVictimarioByDNI(this.victimario.dni)
                 .subscribe(res => {
-                  this.spinner.hide();
                   if (res == null) {
                     this.toastr.error("Verificar el DNI de victimario ingresado.", "Error!");
-                    this.setCamposIncompletos();
-                    return;
+                    this.setErrorCampoVictimario();
+                    return false;
                   }
                   this.victimario = res;
-                  document.getElementById("labelVictimario").innerHTML =
-                    "Victimario: " + this.victimario.apellido + ", " + this.victimario.nombre;
+                  return true;
                 })
-
+                
             }
 
+            /**
+             * Agrega a la damnificada, retorna un booleano indicando si la operación de agregar fue exitosa
+             * @returns boolean
+             */
             agregarDamnificada() {
-              //ACA TRAIGO LA DAMNIFICADA
-              this.spinner.show();
+              console.log("Hola")
+              console.log(this.damnificada.dni)
+              if (this.stringVacio(this.damnificada.dni)) {
+                  this.setErrorCampoDamnificada();
+                  this.toastr.error("Verificar el DNI de damnificada ingresado.", "Error!");
+                  return false;
+              }
               this.personaService.getDamnificadaByDNI(this.damnificada.dni)
                 .subscribe(res => {
-                  this.spinner.hide();
                   if (res == null) {
                     this.toastr.error("Verificar el DNI de damnificada ingresado.", "Error!");
-                    this.setCamposIncompletos();
-                    return;
+                    this.setErrorCampoDamnificada();
+                    return false;
                   }
                   this.damnificada = res;
-                  document.getElementById("labelDamnificada").innerHTML =
-                    "Damnificada: " + this.damnificada.apellido + ", " + this.damnificada.nombre;
+                  return true;
                 })
+
+                
             }
 
 
@@ -261,6 +289,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
                       this.damnificada = new Persona;
                       this.administrativo = new Usuario;
                       this.editarBandera = false;
+                      this.eliminarErroresCampos()
                     })
                 }
               }
@@ -270,12 +299,38 @@ export class AdministrarRestriccionesComponent implements OnInit {
             }
 
             agregarRestriccion(restriccionForm: NgForm) {
+              if(this.agregarDamnificada()==false||this.agregarVictimario()==false){
+                  return
+              }
+
+              if(this.grupoSeleccionado == null) {
+                this.setErrorCampoGrupo();
+                this.toastr.error("Seleccione un grupo", "Error!");
+                return
+              }
+
+              if(restriccionForm.value.dp== null){
+                  this.setErrorCampoFecha();
+                  this.toastr.error("Seleccione la fecha de inicio de la restricción", "Error!");
+                  return
+              }
+
+              if(this.restriccion.distancia<0){
+                this.setErrorCampoDistancia();
+                this.toastr.error("La distancia ingresada es invalida", "Error!");
+                return
+            }
+
               this.restriccion.idDamnificada = this.damnificada.idPersona;
               this.restriccion.idVictimario = this.victimario.idPersona;
               this.restriccion.idGrupo = this.grupoSeleccionado;
+            
+
+
               let ngbDate = restriccionForm.value.dp;
               let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
               this.restriccion.fechaSentencia = myDate;
+              
 
               if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
                 || this.restriccion.idDamnificada == 0) {
@@ -294,16 +349,15 @@ export class AdministrarRestriccionesComponent implements OnInit {
                       this.setCamposIncompletos();
                     }
                     else {
+                      this.eliminarErroresCampos()
                       this.toastr.success("La restricción se agrego correctamente", "Agregada!");
                       restriccionForm.reset();
                       this.getRestricciones();
-                      document.getElementById("labelVictimario").innerHTML = "";
-                      document.getElementById("labelDamnificada").innerHTML = "";
-                      document.getElementById("labelAdministrativo").innerHTML = "";
                       this.victimario = new Persona;
                       this.damnificada = new Persona;
                       this.administrativo = new Usuario;
                       this.restriccion = new Restriccion;
+                      this.restriccion.distancia = 200;
                     }
                   })
               }
@@ -315,23 +369,12 @@ export class AdministrarRestriccionesComponent implements OnInit {
               }
             }
 
-            setCamposIncompletos(): void {
-              this.camposIncompletos = true;
-              setTimeout(() => {
-                this.camposIncompletos = false;
-              }, 5000);
-            }
-
+            
             editarRestriccion(restriccionDTO: RestriccionDTO) {
               this.restriccion = restriccionDTO.restriccion;
               this.victimario = restriccionDTO.victimario;
               this.damnificada = restriccionDTO.damnificada;
               this.administrativo = restriccionDTO.administrativo;
-              //CARGAR NOMBRES
-              document.getElementById("labelDamnificada").innerHTML =
-                "Damnificada: " + this.damnificada.apellido + ", " + this.damnificada.nombre;
-              document.getElementById("labelVictimario").innerHTML =
-                "Victimario: " + this.victimario.apellido + ", " + this.victimario.nombre;
             }
 
             eliminarRestriccion(restriccionDTO: RestriccionDTO) {
@@ -409,6 +452,70 @@ export class AdministrarRestriccionesComponent implements OnInit {
               this.mostrarGrupoRestricciones = !this.mostrarGrupoRestricciones
               this.mostrarAbmRestricciones = !this.mostrarAbmRestricciones
             }
+
+            /**
+             * Setea booleano que indica que hay errores a true
+             */
+            setCamposIncompletos(): void {
+              this.errorCampos = true;
+            }
+
+            /**
+             * Setea booleano que indica que hay  errores en el campo damnificada
+             */
+            setErrorCampoDamnificada(){
+              this.errorCampoDamnificada = true;
+            }
+            
+            /**
+             * Setea booleano que indica que hay  errores en el campo victimario
+             */
+            setErrorCampoVictimario(){
+              this.errorCampoVictimario = true;
+            }
+
+            /**
+            * Setea booleano que indica que hay  errores en el campo grupo
+            */
+            setErrorCampoGrupo(){
+              this.errorCampoSelectorGrupo = true;
+            }
+            /**
+            * Setea booleano que indica que hay  errores en el campo fecha
+            */
+            setErrorCampoFecha(){
+              this.errorCampoFecha = true;
+            }
+
+             /**
+            * Setea booleano que indica que hay  errores en el campo fecha
+            */
+             setErrorCampoDistancia(){
+              this.errorCampoDistancia = true;
+            }
+
+            /**
+             * Elimina los errores en los campos del formulario
+             */
+            eliminarErroresCampos(){
+              this.errorCampoVictimario = false;
+              this.errorCampoSelectorGrupo=false;
+              this.errorCampoFecha = false
+              this.errorCampoDistancia = false
+              this.errorCampoDamnificada = false;
+            }
+
+            /**
+             * Verifica si el string campos estan vacíos
+             */
+            stringVacio(string : string){
+              console.log(string.length>0)
+              return string.length==0
+              
+            }
           }
+
+
+          
 
 

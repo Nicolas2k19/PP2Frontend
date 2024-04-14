@@ -5,47 +5,35 @@
     <div class="row">
         <!-- FORMULARIO DE RESTRICCIONES -->
         <div *ngIf="mostrarAbmRestricciones"  class="col-4">
-            <div class="card bg-light mb-3" style="max-width: 20rem;">
+            <div class="card" style="max-width: 20rem;">
                 <div class="card-body">
-                    <legend>Restricción Perimetral</legend>
+                    <legend>Añadir restricción</legend>
                     <form #restriccionForm="ngForm" (ngSubmit)="guardarRestriccion(restriccionForm)" novalidate>
-                        <div class="row">
-                            <div class="input-group">
-                                <input class="form-control" type="tel" name="dniVictimario" placeholder="DNI Victimario"
+                        <div class="personas-a-vigilar">
+                            <div class="row input-texto-before-damnificada" [ngClass]="{ 'error': errorCampoDamnificada}">
+                                <div class="input-group">
+                                    <input class="form-control input-texto" type="tel" name="dniDamnificada"
+                                         ngbTooltip="DNI damnificada"
+                                        [(ngModel)]="damnificada.dni">
+                                </div>
+                            </div>
+                            <div class="row input-texto-before-victimario" [ngClass]="{ 'error': errorCampoVictimario}">
+                                <div class="input-group">
+                                    <input class="form-control input-texto" type="tel" name="dniVictimario" 
                                     ngbTooltip="DNI victimario" [(ngModel)]="victimario.dni">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        (click)="agregarVictimario()" [disabled]="victimario.dni === ''">
-                                        <i class="small material-icons">person_add</i>
-                                    </button>
                                 </div>
                             </div>
-                            <label id="labelVictimario"></label>
                         </div>
-                        <div class="row">
-                            <div class="input-group">
-                                <input class="form-control" type="tel" name="dniDamnificada"
-                                    placeholder="DNI Damnificada" ngbTooltip="DNI damnificada"
-                                    [(ngModel)]="damnificada.dni">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button"
-                                        (click)="agregarDamnificada()" [disabled]="damnificada.dni === ''">
-                                        <i class="small material-icons">person_add</i>
-                                    </button>
-                                </div>
-                            </div>
-                            <label id="labelDamnificada"></label>
-                        </div>
-                        <div class="row">
-                            <select name="" id="" [(ngModel)]="grupoSeleccionado">
+                        <div class="row input-before-selector-grupos" [ngClass]="{ 'error': errorCampoSelectorGrupo}">
+                            <select class="select-estilo" name="" id="" [(ngModel)]="grupoSeleccionado">
                                 <option value={{grupo}} *ngFor="let grupo of grupos">
                                     {{"Grupo "+grupo}}
                                 </option>
                             </select>
                         </div>
-                        <div class="row">
-                            <input class="form-control" type="number" name="distancia" placeholder="Distancia"
-                                ngbTooltip="Distancia restricción" #distancia="ngModel"
+                        <div class="row input-before-selector-distancia" [ngClass]="{ 'error': errorCampoDistancia}">
+                            <input class="form-control select-estilo " type="number" name="distancia" placeholder="Distancia"
+                                ngbTooltip="Distancia restricción" #distancia="ngModel" min="200"
                                 [ngClass]="{ 'is-invalid': distancia.invalid && distancia.touched, 'is-valid': distancia.valid}"
                                 [(ngModel)]="restriccion.distancia" pattern="^[0-9]+" required>
                             <div class="invalid-feedback d-block"
@@ -53,7 +41,7 @@
                                 Distancia requerida
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row input-before-selector-fecha " [ngClass]="{ 'error': errorCampoFecha}">
                             <div class="input-group">
                                 <input class="form-control" placeholder="Fecha (Año-Mes-Día)" name="dp"
                                     [(ngModel)]="restriccion.fechaSentencia" ngbDatepicker #d="ngbDatepicker"
@@ -68,8 +56,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <button class="btn btn-primary btn-block" [disabled]="!restriccionForm.valid">
-                                Agregar</button>
+                            <!-- [disabled]="!restriccionForm.valid"-->
+                            <button class="btn">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -140,37 +128,37 @@
 
      <!-- Grupos-------------------------------------------------------------------------->
 
+    <div class="contenedor-grupos">
+        <form *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="crearGrupo()" class="card formulario-grupo">
+            <legend>Nuevo grupo</legend>
+                <input type="text" placeholder="Nombre del nuevo equipo" [(ngModel)]="nombreEquipo">
+                <select name="" id="" [(ngModel)]="turnoGrupo">
+                    <option value="MAÑANA">Mañana</option>
+                    <option value="TARDE">Tarde</option>
+                    <option value="NOCHE">Noche</option>
+                </select>
+                <button class="boton-nuevo-equipo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                    </svg>
+                </button>
+        </form>
 
-     <form *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="crearGrupo()">
-        <h1 class="titulo">Nuevo grupo</h1>
-        <div class="formulario-equipo">
-            <input type="text" placeholder="Nombre del nuevo equipo" [(ngModel)]="nombreEquipo">
-            <select name="" id="" [(ngModel)]="turnoGrupo">
-                <option value="MAÑANA">Mañana</option>
-                <option value="TARDE">Tarde</option>
-                <option value="NOCHE">Noche</option>
+
+
+
+        <form class="seleccionar-grupo" *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="(getGrupo())" class="card formulario-grupo">
+            <legend class="titulo">Seleccionar grupos</legend>
+            <select name="" id="" [(ngModel)]="grupoSeleccionado">
+                <option value={{grupo}} *ngFor="let grupo of grupos">
+                    {{"Grupo "+grupo}}
+                </option>
             </select>
-            <button class="boton-nuevo-equipo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
-                </svg>
-            </button>
-        </div>
-    </form>
 
+            <button>SI</button>
+        </form>
 
-
-
-    <form class="seleccionar-grupo" *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="(getGrupo())">
-        <h3 class="titulo">Seleccionar grupos</h3>
-        <select name="" id="" [(ngModel)]="grupoSeleccionado">
-            <option value={{grupo}} *ngFor="let grupo of grupos">
-                {{"Grupo "+grupo}}
-            </option>
-        </select>
-
-        <button>SI</button>
-    </form>
+    </div>  
 
     <div *ngIf="mostrarGrupo && mostrarGrupoRestricciones">
         <h4 class="titulo">{{"Grupo "+grupoActual.idGrupo}}</h4>
@@ -207,18 +195,12 @@
 
     <div>
         
-        <div class="boton-cambio-pantalla" *ngIf="mostrarAbmRestricciones" (click)="cambiarVista()">
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones" (click)="cambiarVista()">
             Grupos
-            <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
-            </svg>
-        </div>
-        <div  class="boton-cambio-pantalla"  *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
+        </button>
+        <button  class="boton-cambio-pantalla btn"  *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
             Restricciones
-            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
-            </svg>
-        </div>
+        </button>
 
         
        
