@@ -22,8 +22,8 @@ export class NavComponent implements OnInit {
     private comunicacionService: ComunicacionService, private usuarioService: UsuarioService) { }
 
   ngOnInit() {
-    console.log(" ROL DEL QUE INICIO ES : "+ this.comunicacionService.administrativo.rolDeUsuario);
-    this.rolDeUsuario = this.comunicacionService.administrativo.rolDeUsuario;
+    console.log(" ROL DEL QUE INICIO ES : "+  localStorage.getItem('rolUsuario'));
+    this.rolDeUsuario =  localStorage.getItem('rolUsuario');
     this.usuarioLogeado = localStorage.getItem('emailUsuario');
 
     /*
