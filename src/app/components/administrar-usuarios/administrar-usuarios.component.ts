@@ -20,13 +20,16 @@ export class AdministrarUsuariosComponent implements OnInit {
   hayError;
   usuarioSeleccionado = new Usuario;
   showSelect: boolean = false;
-  selectedOption: string;
+
   grupoSeleccionado: Number
   editarBandera: boolean = false;
   grupos: Number[];
 
-  grupoFilter: number;
 
+  //Filtros
+  grupoFilter: number;
+  selectedOptionRol: string;
+  selectedOptionEstado: string;
 
 
   //ordenamiento
@@ -139,20 +142,18 @@ export class AdministrarUsuariosComponent implements OnInit {
 
   filtrar() {
 
-    if (this.selectedOption == null) {
+    if (this.selectedOptionRol == null && this.selectedOptionEstado == null) {
+
+      console.log('filtrando x grupo');
 
       this.filtraridGrupo();
 
-    } else {
+    } if (this.grupoFilter == null && this.selectedOptionEstado == null) {
 
-      console.log(this.selectedOption);
-      switch (this.selectedOption) {
-        case 'conectado':
-          this.filtrarEstadoConectado();
-          break;
-        case 'ausente':
-          this.filtrarEstadoAusente();
-          break;
+      console.log('filtrando x rol');
+
+      switch (this.selectedOptionRol) {
+
         case 'supervisor':
           this.filtrarRolSupervisor();
           break;
@@ -162,16 +163,50 @@ export class AdministrarUsuariosComponent implements OnInit {
         case 'todos':
           this.getUsuarios();
           this.toggleSelect();
+          this.selectedOptionRol = null;
           break;
         default:
           console.log('Opción no válida');
       }
 
+    }
+
+    else {
+
+      console.log('filtrando x estado');
+
+      switch (this.selectedOptionEstado) {
+
+        case 'conectado':
+          this.filtrarEstadoConectado();
+          break;
+        case 'ausente':
+          this.filtrarEstadoAusente();
+          break;
+        case 'fuera de oficina':
+          this.filtrarEstadoFuera();
+          break;
+        case 'vacaciones':
+          this.filtrarEstadoVacaciones();
+          break;
+        case 'licencia':
+          this.filtrarEstadoLicencia();
+          break;
+        case 'todos':
+          this.getUsuarios();
+          this.selectedOptionEstado= null;
+          this.toggleSelect();
+          break;
+        default:
+          console.log('Opción no válida');
+
+      }
 
     }
 
   }
 
+  //FILTROS DE ESTADOS
 
   filtrarEstadoConectado() {
 
@@ -181,6 +216,8 @@ export class AdministrarUsuariosComponent implements OnInit {
       this.toggleSelect();
       console.log(res);
     });
+
+    this.selectedOptionEstado = null;
   }
   filtrarEstadoAusente() {
 
@@ -190,7 +227,41 @@ export class AdministrarUsuariosComponent implements OnInit {
       this.toggleSelect();
       console.log(res);
     });
+    this.selectedOptionEstado = null;
   }
+  filtrarEstadoFuera() {
+
+    this.usuarioService.filtrarEstado("FUERA_OFICINA").subscribe(res => {
+      this.spinner.hide();
+      this.usuarioService.usuarios = res as Usuario[];
+      this.toggleSelect();
+      console.log(res);
+    });
+    this.selectedOptionEstado = null;
+  }
+  filtrarEstadoVacaciones() {
+
+    this.usuarioService.filtrarEstado("VACACIONES").subscribe(res => {
+      this.spinner.hide();
+      this.usuarioService.usuarios = res as Usuario[];
+      this.toggleSelect();
+      console.log(res);
+    });
+    this.selectedOptionEstado = null;
+  }
+  filtrarEstadoLicencia() {
+
+    this.usuarioService.filtrarEstado("LICENCIA").subscribe(res => {
+      this.spinner.hide();
+      this.usuarioService.usuarios = res as Usuario[];
+      this.toggleSelect();
+      console.log(res);
+    });
+    this.selectedOptionEstado = null;
+  }
+
+
+  //FILTROS DE ROLES
 
   filtrarRolSupervisor() {
 
@@ -200,6 +271,7 @@ export class AdministrarUsuariosComponent implements OnInit {
       this.toggleSelect();
       console.log(res);
     });
+    this.selectedOptionRol = null;
   }
 
   filtrarRolAdministrativo() {
@@ -210,8 +282,11 @@ export class AdministrarUsuariosComponent implements OnInit {
       this.toggleSelect();
       console.log(res);
     });
+    this.selectedOptionRol = null;
   }
 
+
+  //FILTRO DE GRUPO
 
   filtraridGrupo() {
 
@@ -226,8 +301,6 @@ export class AdministrarUsuariosComponent implements OnInit {
     });
 
     this.grupoFilter = null;
-
-
   }
 
 

@@ -5,44 +5,48 @@
     <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
 </ngx-spinner>
 <div class="container">
-    <div class="row">
 
+
+    <div class="row">
+        <!--FORMULARIO DE AGREGAR NUEVO USUARIO-->
         <div class="col-4">
-            <div class="card bg-light mb-3" style="max-width: 20rem;">
+            <div class="card " style="max-width: 20rem;">
                 <div class="card-body">
-                    <legend>Usuario</legend>
+                    <legend>Añadir Usuario</legend>
                     <form #usuarioForm="ngForm" (ngSubmit)="agregarUsuario(usuarioForm)" novalidate>
-                        <div class="row">
-                            <input class="form-control" type="email" name="email" #email="ngModel" placeholder="Email"
-                                [ngClass]="{ 'is-invalid': email.invalid && email.touched, 'is-valid': email.valid}"
-                                [(ngModel)]="usuarioSeleccionado.email" ngbTooltip="Email"
-                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required email>
-                            <div class="invalid-feedback d-block"
-                                *ngIf="email.invalid && (email.dirty || email.touched)">
-                                Email inválido
+                        <div class="datos-solicitados">
+
+                            <div class="row input-texto-before-email">
+                                <div class=" " input-group>
+                                    <input class="form-control input-texto" type="email" name="email" #email="ngModel"
+                                        [ngClass]="{ 'is-invalid': email.invalid && email.touched, 'is-valid': email.valid}"
+                                        [(ngModel)]="usuarioSeleccionado.email"
+                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required email>
+                                    <div class="invalid-feedback d-block"
+                                        *ngIf="email.invalid && (email.dirty || email.touched)">
+                                        Email inválido
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group btn-block">
-                                <select class="form-control" name="rolSeleccionado" [(ngModel)]="rolSeleccionado"
-                                    ngbTooltip="Rol de usuario" required>
-                                    <option value="" selected disabled>Seleccione un rol</option>
-                                    <option *ngFor="let rol of roles">
-                                        {{rol}}
-                                    </option>
-                                </select>
 
-                                <select *ngIf="rolSeleccionado!='SUPERVISOR'" class="form-control" name=""
-                                    [(ngModel)]="grupoSeleccionado" ngbTooltip="Grupo a trabajar" required>
+                        <div class=" row form-group btn-block input-before-selector-rol">
+                            <select class="select-estilo" name="rolSeleccionado" [(ngModel)]="rolSeleccionado" required>
+                                <option value="" selected disabled>Seleccione un rol</option>
+                                <option *ngFor="let rol of roles">
+                                    {{rol}}
+                                </option>
+                            </select>
+                            <div class=" row form-group btn-block input-before-selector-grupos">
+                                <select class="select-estilo" name="" id="" [(ngModel)]="grupoSeleccionado" required>
                                     <option value="" selected disabled>Seleccione un grupo</option>
                                     <option value={{grupo}} *ngFor="let grupo of grupos">
                                         {{"Grupo "+ grupo}}
                                     </option>
                                 </select>
-
-
                             </div>
                         </div>
+                        <!-- [disabled]="!restriccionForm.valid"-->
                         <button class="btn btn-primary btn-block" [disabled]="!usuarioForm.valid">Agregar</button>
                     </form>
                 </div>
@@ -79,57 +83,75 @@
                 </tbody>
             </table>
 
-            <div class="contenedor-filtros">
+        </div>
 
-                <div class="filtro">
+        <div class="contenedor-filtros">
 
-                    <button class="image-button" (click)="toggleSelect()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
-                            <path
-                                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
-                        </svg>
+            <div class="filtro">
 
-                    </button>
+                <button class="image-button" (click)="toggleSelect()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
+                        <path
+                            d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                    </svg>
 
-
-                </div>
-
-
-                <div class="x">
-
-                    <button class="close-button" (click)="toggleSelect()" *ngIf="showSelect">&times;
-                    </button>
-
-                </div>
-
-
-                <div class="contenedor-filtros2" *ngIf="showSelect">
-
-                    <input type="text" [(ngModel)]="grupoFilter" placeholder="Ingresa el id grupo">
-
-
-                    <div class="select-container">
-
-
-                        <select [(ngModel)]="selectedOption">
-                            <option value="todos">Todos</option>
-                            <option value="conectado">Estado: Conectado</option>
-                            <option value="ausente">Estado: Ausente </option>
-                            <option value="administrativo">Rol: Administrativo</option>
-                            <option value="supervisor">Rol: Supervisor</option>
-                        </select>
-                    </div>
-                    <div class="aplicar-filtro">
-                        <button (click)="filtrar()">Filtrar</button>
-                    </div>
-
-                </div>
+                </button>
 
 
             </div>
 
-        </div>
 
+            <div class="card2" *ngIf="showSelect">
+
+                <div class="card-body">
+                    <legend>Filtror por:</legend>
+
+
+                    <div class="row input-texto-before-grupo">
+                        <div class=" " input-group>
+                            <input class="form-control input-texto" type="text" name="grupo" [(ngModel)]="grupoFilter">
+                        </div>
+                    </div>
+
+
+
+                    <div class="row form-group btn-block input-before-selector-rol2">
+
+                        <select class="select-estilo" name="rolSeleccionado" [(ngModel)]="selectedOptionRol">
+                            <option value="todos">Todos</option>
+                            <option value="administrativo">Administrativo </option>
+                            <option value="supervisor">Supervisor</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class=" row form-group btn-block input-before-selector-estado">
+
+                        <select class="select-estilo" name="estadoSeleccionado" [(ngModel)]="selectedOptionEstado">
+
+                            <option value="todos">Todos</option>
+                            <option value="conectado">Conectado</option>
+                            <option value="ausente">Ausente </option>
+                            <option value="fuera de oficina">Fuera de oficina</option>
+                            <option value="vacaciones">Vacaciones </option>
+                            <option value="licencia">Licencia</option>
+                            
+
+                        </select>
+                    </div>
+
+
+
+
+                </div>
+
+
+                <button class="btn btn-primary btn-block" (click)="filtrar()">Filtrar</button>
+
+
+            </div>
+        </div>
     </div>
 </div>

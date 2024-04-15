@@ -1,113 +1,224 @@
-.container{
-    color: #053667;
-}
-
-.row{
-    margin-top: 10px;
-}
-
-.card{
-    text-align: center
-}
-
-.table{
-    color: #053667;
-}
-
-.label{
-    margin-top: 15px;
-}
-
-.table tr:hover {
-    background-color: azure;
-    cursor: pointer;
-}
-
-.table i:hover{
-    opacity: .3;
-}
-
-.filter-icon {
-    cursor: pointer;
-  }
-  
-  .select-container {
-    display: block;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    position: relative;
-    top: 40px;
-  }
-  
-  .select-container select {
-    width: 200px; /* ajusta el ancho según tus necesidades */
-    padding: 10px;
-    border: none;
-    background-color: transparent;
-  }
-
-  .contenedor-filtros{
-    background-color: #ccc;
-    width: fit-content;
-    height: fit-content;
-  }
-
-  .contenedor-filtros2{
-    background-color: #ccc;
-    padding: 1rem;
-    width: fit-content;
-    height: 292px;
-
-
-  }
-
-.col{
-    display: flex;
-
-}
-
-.close-button {
-
-    float: right;
-    font-size: 20px;
-    font-weight: 700;
-    position: absolute;
-    top: 0px;
-    left: 1098px;
-  }
-
-  .close-button:hover,
-.close-button:focus {
-  color: black;
-  text-decoration: none;
+th {
+  background-color: black;
+  color: white;
   cursor: pointer;
 }
 
-.modal-header {
-    padding: 10px 0;
-    display: flex;
-  }
-  
-  .modal-title {
-    font-size: 20px;
-    font-weight: bold;
+td {
+  color: black;
+  cursor: default;
+}
+
+.material-icons {
+  cursor: pointer;
+}
+
+.datos-solicitados {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  flex-direction: column;
+}
+
+.input-texto {
+  background-color: #fff;
+  border: 0px solid #fff;
+  border-radius: 0;
+  border-bottom: 1px solid black;
+ 
+}
+
+/*Textos que describen los campos*/
+
+.input-texto-before-email,
+.input-before-selector-rol,
+.input-before-selector-grupos,
+.input-texto-before-email2
+.input-texto-before-grupo,
+.input-before-selector-rol2,
+.input-before-selector-estado
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.input-texto-before-email::before {
+  content: "Email *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+.input-texto-before-email2::before {
+  content: "Email:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+.input-texto-before-grupo::before {
+  content: "Grupo:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-before-selector-grupos::before {
+  content: "Asignar grupo *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-before-selector-rol::before {
+  content: "Asignar rol *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+.input-before-selector-rol2::before {
+  content: "Rol:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+.input-before-selector-estado::before {
+  content: "Estado:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+
+/*Container*/
+
+
+.container {
+  color: #053667;
+}
+
+.row {
+  margin-top: 10px;
+  flex-wrap: nowrap;
+}
+
+.card {
+  background-color: white;
+  color: black;
+  padding: 2.5rem;
+  border: 1px solid black;
+}
+
+.card2 {
+  background-color: white;
+  color: black;
+  padding: 2.5rem;
+  border: 1px solid black;
+  max-width: fit-content;
+}
+
+.table {
+  color: #053667;
+}
+
+
+.table tr:hover {
+  background-color: azure;
+  cursor: pointer;
+}
+
+.table i:hover {
+  opacity: .3;
+}
+
+.spinner-grow {
+  position: fixed;
+  margin-top: 20%;
+  z-index: 9999;
+}
+
+
+.image-button {
+
+  padding: 5px;
+  /* ajusta el relleno según tus necesidades */
+  background-color: transparent;
+  /* quita el fondo del botón */
+  border: none;
+  cursor: pointer;
+}
+
+/*Selects formulario*/
+
+.select-estilo {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 50px;
+  background-color: white;
+  color: black;
+}
+
+.select-estilo::before {
+  content: "*";
+  display: flex;
+}
+
+
+.btn {
+  background-color: black;
+  color: white;
+  border-radius: 50px;
+}
+
+
+
+
+/*Animación titulo css*/
+
+.titulo::after {
+  content: "";
+  border-bottom: 5px solid #212529;
+  display: flex;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+legend {
+  color: black;
+}
+
+legend::after {
+  content: "";
+  border-bottom: 5px solid #212529;
+  display: flex;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+@keyframes animacionafter {
+
+  0% {
+    width: 0;
   }
 
-  .aplicar-filtro {
-    text-align: right;
-    padding: 10px 10px;
-    position: absolute;
-    bottom: 0;
-    top: 277px;
-    left: 1050px;
-    
+  100% {
+    width: 100%;
   }
-  
-  .image-button{
 
-    padding: 5px; /* ajusta el relleno según tus necesidades */
-    background-color: transparent; /* quita el fondo del botón */
-    border: none;
-    cursor: pointer;
-  }
+}
+
+.bi-arrow-right {
+  font-size: 2rem;
+}
+
+
+body{
+
+  max-width: fit-content;
+}
+
+.filtro{
+  max-width: fit-content;
+}
+
+.contenedor-filtros{
+  max-width: fit-content;
+}
+
+.app-administrar-usuarios{
+  max-width: fit-content;
+}
