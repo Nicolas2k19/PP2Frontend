@@ -32,7 +32,7 @@ td{
 /*Textos que describen los campos*/
 
 .input-texto-before-victimario,.input-texto-before-damnificada,.input-before-selector-grupos,
-.input-before-selector-distancia,.input-before-selector-fecha{
+.input-before-selector-distancia,.input-before-selector-fecha, .input-texto-before-grupoF, .input-texto-before-dniV , .input-texto-before-dniD, .input-texto-before-emailA{
   display: flex;
   flex-direction: column;
 }
@@ -67,6 +67,27 @@ td{
   text-align: left;
 }
 
+.input-texto-before-grupoF::before{
+  content: "Grupo:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+.input-texto-before-dniV::before{
+  content: "DNI Victimario:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+.input-texto-before-dniD::before{
+  content: "DNI Damnificada:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+.input-texto-before-emailA::before{
+  content: "Email Administrativo:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
 /*Control de errores*/
 .error{
   color: red;
@@ -91,6 +112,14 @@ td{
 
 }
 
+.card2 {
+  background-color: white;
+  color: black;
+  padding: 1.5rem;
+  border: 1px solid black;
+  max-width: fit-content;
+}
+
 .table{
     color: #053667;
 }
@@ -110,16 +139,32 @@ td{
     z-index: 9999;
 }
 
-.filtros{
+.contenedor-filtros{
     display: flex;
     flex-direction: column;
-    gap: 30px;
+
     align-items: flex-start;
+    max-width: fit-content;
 }
 
 .filtro{
     display: flex;
     gap: 10px;
+    max-width: fit-content;
+}
+
+
+.boton-filtro{
+  padding: 10px;
+}
+
+.filtro-btn{
+  display:flex;
+}
+
+
+.app-administrar-restricciones{
+  max-width: fit-content;
 }
 
 .image-button{

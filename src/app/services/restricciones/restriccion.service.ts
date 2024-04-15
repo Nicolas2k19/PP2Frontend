@@ -74,4 +74,10 @@ export class RestriccionService {
     return this.http.get(this.URL_API_RESTRICCION_DTO+"/getByVictimario/"+ id);
   }
 
+  getRestriccionesGrupo(id: number){
+    return this.http.get(this.URL_API_RESTRICCION_DTO+"/getByIdGrupo/"+ id);
+  }
+
+
+
 }

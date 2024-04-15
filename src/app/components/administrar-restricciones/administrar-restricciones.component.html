@@ -4,23 +4,23 @@
 <div class="container">
     <div class="row">
         <!-- FORMULARIO DE RESTRICCIONES -->
-        <div *ngIf="mostrarAbmRestricciones"  class="col-4">
+        <div *ngIf="mostrarAbmRestricciones" class="col-4">
             <div class="card" style="max-width: 20rem;">
                 <div class="card-body">
                     <legend>Añadir restricción</legend>
                     <form #restriccionForm="ngForm" (ngSubmit)="guardarRestriccion(restriccionForm)" novalidate>
                         <div class="personas-a-vigilar">
-                            <div class="row input-texto-before-damnificada" [ngClass]="{ 'error': errorCampoDamnificada}">
+                            <div class="row input-texto-before-damnificada"
+                                [ngClass]="{ 'error': errorCampoDamnificada}">
                                 <div class="input-group">
                                     <input class="form-control input-texto" type="tel" name="dniDamnificada"
-                                         ngbTooltip="DNI damnificada"
-                                        [(ngModel)]="damnificada.dni">
+                                        ngbTooltip="DNI damnificada" [(ngModel)]="damnificada.dni">
                                 </div>
                             </div>
                             <div class="row input-texto-before-victimario" [ngClass]="{ 'error': errorCampoVictimario}">
                                 <div class="input-group">
-                                    <input class="form-control input-texto" type="tel" name="dniVictimario" 
-                                    ngbTooltip="DNI victimario" [(ngModel)]="victimario.dni">
+                                    <input class="form-control input-texto" type="tel" name="dniVictimario"
+                                        ngbTooltip="DNI victimario" [(ngModel)]="victimario.dni">
                                 </div>
                             </div>
                         </div>
@@ -32,8 +32,9 @@
                             </select>
                         </div>
                         <div class="row input-before-selector-distancia" [ngClass]="{ 'error': errorCampoDistancia}">
-                            <input class="form-control select-estilo " type="number" name="distancia" placeholder="Distancia"
-                                ngbTooltip="Distancia restricción" #distancia="ngModel" min="200"
+                            <input class="form-control select-estilo " type="number" name="distancia"
+                                placeholder="Distancia" ngbTooltip="Distancia restricción" #distancia="ngModel"
+                                min="200"
                                 [ngClass]="{ 'is-invalid': distancia.invalid && distancia.touched, 'is-valid': distancia.valid}"
                                 [(ngModel)]="restriccion.distancia" pattern="^[0-9]+" required>
                             <div class="invalid-feedback d-block"
@@ -95,38 +96,92 @@
         </div>
 
         <!-- FILTROS -->
-        <div class="filtros" *ngIf="mostrarAbmRestricciones">
-
-            <button class="image-button" (click)="toggleSelect()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
-                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
-                  </svg>
-
-             </button>
-
-            <div class="filtro"  *ngIf="showSelect">
-                <input type="text" [(ngModel)]="dniFilterDamnificada" placeholder="Ingresa el DNI Damnificada">
-                <button (click)="filtrarDamnificada()">Filtrar</button>
+        <div class="contenedor-filtros" *ngIf="mostrarAbmRestricciones">
 
 
-            </div>
 
-            <div class="filtro" *ngIf="showSelect">
-                <input type="text" [(ngModel)]="dniFilterVictimario" placeholder="Ingresa el DNI Victimario">
-                <button (click)="filtrarVictimario()">Filtrar</button>
+            <div class="filtro">
+
+                <button class="image-button" (click)="toggleSelect()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
+                        <path
+                            d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                    </svg>
+                </button>
 
 
             </div>
 
-            <div class="filtro" *ngIf="showSelect">
-                <input type="text" [(ngModel)]="emailFilter" placeholder="Ingresa el EMAIL Administrativo">
-                <button (click)="filtrarAdministrativo()">Filtrar</button>
+
+            <div class="card2" *ngIf="showSelect">
+
+                <div class="card-body">
+                    <legend>Filtrar por:</legend>
+
+                    <!-- FILTRO DNI DAMNIFICADA-->
+                    <div class="row input-texto-before-dniD filtro">
+                        <div class="filtro-btn" input-group>
+                            <input class="form-control input-texto" type="text" name="dniD"
+                                [(ngModel)]="dniFilterDamnificada">
+                                <div class="boton-filtro">
+                                    <button class="btn btn-primary btn-block" (click)="filtrarDamnificada()">Filtrar</button>
+                                </div>
+                            
+                        </div>
+                    </div>
+                    <!-- FILTRO DNI VICTIMARIO-->
+                    <div class="row input-texto-before-dniV filtro">
+                        <div class="filtro-btn " input-group>
+                            <input class="form-control input-texto" type="text" name="dniV"
+                                [(ngModel)]="dniFilterVictimario">
+
+                                <div class="boton-filtro">
+                                    <button class="btn btn-primary btn-block" (click)="filtrarVictimario()">Filtrar</button>
+                                </div>
+                            
+                        </div>
+                    </div>
+
+
+                    <!-- FILTRO EMAIL ADMIN-->
+                    <div class="row input-texto-before-emailA filtro">
+                        <div class="filtro-btn " input-group>
+                            <input class="form-control input-texto" type="text" name="emailA" [(ngModel)]="emailFilter">
+
+                            <div class="boton-filtro">
+                                <button class="btn btn-primary btn-block" (click)="filtrarAdministrativo()">Filtrar</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- FILTRO GRUPO-->
+                    <div class="row input-texto-before-grupoF filtro">
+                        <div class="filtro-btn " input-group>
+                            <input class="form-control input-texto" type="text" name="grupo" [(ngModel)]="grupoFilter">
+                            <div class="boton-filtro">
+                                <button class="btn btn-primary btn-block" (click)="filtrarGrupo()">Filtrar</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
+                </div>
+
+
             </div>
+
+
         </div>
+
+
+
 
     </div>
 
-     <!-- Grupos-------------------------------------------------------------------------->
+    <!-- Grupos-------------------------------------------------------------------------->
 
     <div class="contenedor-grupos">
         <form *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="crearGrupo()" class="card formulario-grupo">
@@ -134,23 +189,24 @@
             <div class="input-before-texto-grupo" [ngClass]="{ 'error': errorTextoEquipo}">
                 <input class="input-texto" type="text" [(ngModel)]="nombreEquipo">
             </div>
-                <div class="input-before-selector-nuevo-grupo" [ngClass]="{ 'error': errorTurno}">
-                    <select name="" id="" [(ngModel)]="turnoGrupo" class="select-estilo" >
-                        <option value="MAÑANA">Mañana</option>
-                        <option value="TARDE">Tarde</option>
-                        <option value="NOCHE">Noche</option>
-                    </select>
-                </div>
-                <button class="btn btn-form-grupo">Agregar</button>
+            <div class="input-before-selector-nuevo-grupo" [ngClass]="{ 'error': errorTurno}">
+                <select name="" id="" [(ngModel)]="turnoGrupo" class="select-estilo">
+                    <option value="MAÑANA">Mañana</option>
+                    <option value="TARDE">Tarde</option>
+                    <option value="NOCHE">Noche</option>
+                </select>
+            </div>
+            <button class="btn btn-form-grupo">Agregar</button>
         </form>
 
 
 
 
-        <form class="seleccionar-grupo" *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="(getGrupo())" class="card formulario-grupo">
+        <form class="seleccionar-grupo" *ngIf="mostrarGrupoRestricciones" action="GET" (ngSubmit)="(getGrupo())"
+            class="card formulario-grupo">
             <legend class="titulo">Seleccionar grupos</legend>
             <div class="input-before-selector-seleccion-grupo">
-                <select name="" id="" [(ngModel)]="grupoSeleccionado" class="select-estilo" >
+                <select name="" id="" [(ngModel)]="grupoSeleccionado" class="select-estilo">
                     <option value={{grupo}} *ngFor="let grupo of grupos">
                         {{"Grupo "+grupo}}
                     </option>
@@ -160,7 +216,7 @@
             <button class="btn btn-form-grupo">Seleccionar</button>
         </form>
 
-    </div>  
+    </div>
 
     <div *ngIf="mostrarGrupo && mostrarGrupoRestricciones">
         <legend class="titulo">{{grupoActual.nombreGrupo}}</legend>
@@ -168,7 +224,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                   <th >Administrativos</th>
+                    <th>Administrativos</th>
                 </tr>
             </thead>
             <tbody>
@@ -177,12 +233,12 @@
                 </tr>
             </tbody>
 
-        </table> 
+        </table>
         <table class="table table-striped">
             <thead>
                 <tr>
-                   <th>Identificación de la Restricciónes</th>
-                   <th>Distancias</th>
+                    <th>Identificación de la Restricciónes</th>
+                    <th>Distancias</th>
                 </tr>
             </thead>
             <tbody>
@@ -192,20 +248,20 @@
                 </tr>
             </tbody>
         </table>
-        
+
     </div>
 
     <div>
-        
+
         <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones" (click)="cambiarVista()">
             Grupos
         </button>
-        <button  class="boton-cambio-pantalla btn"  *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
             Restricciones
         </button>
 
-        
-       
+
+
     </div>
 
 

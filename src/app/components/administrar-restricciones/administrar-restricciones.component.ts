@@ -485,7 +485,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
   }
 
   filtrarGrupo() {
-    this.restriccionService.getByidGrupo(this.grupoFilter).subscribe(res => {
+    this.restriccionService.getRestriccionesGrupo(this.grupoFilter).subscribe(res => {
       this.spinner.hide();
       this.restriccionService.restricciones = res as RestriccionDTO[];
       console.log(res);
