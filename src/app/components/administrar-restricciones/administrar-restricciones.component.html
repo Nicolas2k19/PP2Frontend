@@ -1,7 +1,7 @@
 <ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
     <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
 </ngx-spinner>
-<div class="container">
+<div class="container" [ngClass]="{'blurred': modalAbierta}">
     <div class="row">
         <!-- FORMULARIO DE RESTRICCIONES -->
         <div *ngIf="mostrarAbmRestricciones" class="col-4">
@@ -82,18 +82,24 @@
                         <td>{{restriccion.damnificada.dni}}</td>
                         <td>{{restriccion.administrativo.email}}</td>
                         <td>{{restriccion.restriccion.idGrupo}}</td>
-                        <td>
+                        <td class="iconos">
                             <a (click)="editarRestriccion(restriccion)">
-                                <i class="material-icons">editar</i>
+                                <i class="material-icons">edit</i>
                             </a>
                             <a (click)="eliminarRestriccion(restriccion)">
                                 <i class="material-icons">delete</i>
+                            </a>
+                            <a (click)="masInfo(restriccion)">
+                                <i class="material-icons">info</i>
                             </a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+
+
 
         <!-- FILTROS -->
         <div class="contenedor-filtros" *ngIf="mostrarAbmRestricciones">
@@ -124,10 +130,11 @@
                         <div class="filtro-btn" input-group>
                             <input class="form-control input-texto" type="text" name="dniD"
                                 [(ngModel)]="dniFilterDamnificada">
-                                <div class="boton-filtro">
-                                    <button class="btn btn-primary btn-block" (click)="filtrarDamnificada()">Filtrar</button>
-                                </div>
-                            
+                            <div class="boton-filtro">
+                                <button class="btn btn-primary btn-block"
+                                    (click)="filtrarDamnificada()">Filtrar</button>
+                            </div>
+
                         </div>
                     </div>
                     <!-- FILTRO DNI VICTIMARIO-->
@@ -136,10 +143,10 @@
                             <input class="form-control input-texto" type="text" name="dniV"
                                 [(ngModel)]="dniFilterVictimario">
 
-                                <div class="boton-filtro">
-                                    <button class="btn btn-primary btn-block" (click)="filtrarVictimario()">Filtrar</button>
-                                </div>
-                            
+                            <div class="boton-filtro">
+                                <button class="btn btn-primary btn-block" (click)="filtrarVictimario()">Filtrar</button>
+                            </div>
+
                         </div>
                     </div>
 
@@ -150,9 +157,10 @@
                             <input class="form-control input-texto" type="text" name="emailA" [(ngModel)]="emailFilter">
 
                             <div class="boton-filtro">
-                                <button class="btn btn-primary btn-block" (click)="filtrarAdministrativo()">Filtrar</button>
+                                <button class="btn btn-primary btn-block"
+                                    (click)="filtrarAdministrativo()">Filtrar</button>
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -163,7 +171,7 @@
                             <div class="boton-filtro">
                                 <button class="btn btn-primary btn-block" (click)="filtrarGrupo()">Filtrar</button>
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -264,5 +272,56 @@
 
     </div>
 
+
+</div>
+
+
+<!-- DIV MAS INFO VENTANA MODAL-->
+<div class="modal-info" *ngIf="modalAbierta" (click)="cerrarModal()">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>Restricción Perimetral #<strong>{{ infoResId }} </strong></h2>
+            <i class="material-icons" (click)="cerrarModal()">close</i>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- INFO ADMINISTRADOR-->
+            <div class="modal-infoAdm input-texto-before-admin">
+                <p><strong>{{ infoResAdmin }} </strong></p>
+            </div>
+            <!-- INFO RESTRICCION-->
+            <div class="modal-infoRes">
+
+                <!-- INFO DAMINIFICADA Y AGRESOR-->
+                <div class="modal-infoP">
+                    <p class ="input-texto-before-nameDam"><strong>
+                        {{ infoDamnificadaNombre }}
+                    </strong></p>
+                    <p class ="input-texto-before-dniDam"><strong>
+                        {{ infoDamnificadaDNI }}
+                    </strong></p>
+                    <p class ="input-texto-before-nameVic"> <strong> {{ infoVictimarioNombre }}</strong> </p>
+                    <p class ="input-texto-before-dniVic"> <strong> {{ infoVictimarioDNI }}</strong></p>
+                </div>
+
+                <!-- INFO DISTANCIA Y PROX COMISARIA/JUZGADO-->
+                <div class="modal-infoRes1">
+                    <p class ="input-texto-before-distancia"> <strong> {{ infoResDistancia }}</strong></p>
+                    <p class ="input-texto-before-comisaria"> <strong> xxxxxxxxxxxxxxxxxxxxx </strong> </p>
+                    <p class ="input-texto-before-juzgado"> <strong> xxxxxxxxxxxxxxxxxxxxx</strong></p>
+
+                </div>
+
+                <!-- INFO FECHA SENTENCIA Y PROX NIVEL DE PELIGROSIDAD-->
+                <div class="modal-infoRes2">
+                    <p class ="input-texto-before-peligrosidad"> <strong> xxxxxxxxxxxxxx</strong> </p>
+                    <p class ="input-texto-before-fecha"> <strong>{{ infoResFecha }} </strong></p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 </div>

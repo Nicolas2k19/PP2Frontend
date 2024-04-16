@@ -1,27 +1,31 @@
-th{
+th {
   background-color: black;
   color: white;
-  cursor:pointer;
-}
-td{
-  color: black;
-  cursor:default; 
-}
-
-.material-icons{
   cursor: pointer;
 }
 
+td {
+  color: black;
+  cursor: default;
+}
 
+.material-icons {
+  cursor: pointer;
+}
 
-.personas-a-vigilar{
+.iconos {
+  display: flex;
+  gap: 10px;
+}
+
+.personas-a-vigilar {
   display: flex;
   width: fit-content;
   height: fit-content;
   flex-direction: column;
 }
 
-.input-texto{
+.input-texto {
   background-color: #fff;
   border: 0px solid #fff;
   border-radius: 0;
@@ -31,84 +35,181 @@ td{
 
 /*Textos que describen los campos*/
 
-.input-texto-before-victimario,.input-texto-before-damnificada,.input-before-selector-grupos,
-.input-before-selector-distancia,.input-before-selector-fecha, .input-texto-before-grupoF, .input-texto-before-dniV , .input-texto-before-dniD, .input-texto-before-emailA{
+.input-texto-before-victimario,
+.input-texto-before-damnificada,
+.input-before-selector-grupos,
+.input-before-selector-distancia,
+.input-before-selector-fecha,
+.input-texto-before-grupoF,
+.input-texto-before-dniV,
+.input-texto-before-dniD,
+.input-texto-before-emailA,
+.input-texto-before-admin,
+.input-texto-before-nameVic,
+.input-texto-before-dniVic,
+.input-texto-before-nameDam,
+.input-texto-before-dniDam,
+.input-texto-before-distancia,
+.input-texto-before-comisaria,
+.input-texto-before-juzgado,
+.input-texto-before-peligrosidad,
+.input-texto-before-fecha
+
+
+ {
   display: flex;
   flex-direction: column;
 }
 
-.input-texto-before-victimario::before{
-  content: "DNI Agresor*";
+.input-texto-before-victimario::before {
+  content: "DNI agresor*";
   font-size: 0.7rem;
   text-align: left;
 }
 
-.input-texto-before-damnificada::before{
-  content: "Dni Damnificada *";
+.input-texto-before-damnificada::before {
+  content: "Dni damnificada *";
   font-size: 0.7rem;
   text-align: left;
 }
 
-.input-before-selector-grupos::before{
+.input-before-selector-grupos::before {
   content: "Grupo de trabajo *";
   font-size: 0.7rem;
   text-align: left;
 }
 
-.input-before-selector-distancia::before{
+.input-before-selector-distancia::before {
   content: "Distancia *";
   font-size: 0.7rem;
   text-align: left;
 }
 
-.input-before-selector-fecha::before{
+.input-before-selector-fecha::before {
   content: "Inicio de restricción *";
   font-size: 0.7rem;
   text-align: left;
 }
 
-.input-texto-before-grupoF::before{
+.input-texto-before-grupoF::before {
   content: "Grupo:";
   font-size: 0.7rem;
   text-align: left;
 }
-.input-texto-before-dniV::before{
-  content: "DNI Victimario:";
-  font-size: 0.7rem;
-  text-align: left;
-}
-.input-texto-before-dniD::before{
-  content: "DNI Damnificada:";
-  font-size: 0.7rem;
-  text-align: left;
-}
-.input-texto-before-emailA::before{
-  content: "Email Administrativo:";
+
+.input-texto-before-dniV::before {
+  content: "DNI victimario:";
   font-size: 0.7rem;
   text-align: left;
 }
 
+.input-texto-before-dniD::before {
+  content: "DNI damnificada:";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-emailA::before {
+  content: "Email administrativo:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+}
+
+.input-texto-before-dniVic::before {
+  content: "DNI victimario:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+
+}
+
+.input-texto-before-nameVic::before {
+  content: "Nombre y apellido victimario:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+
+}
+
+.input-texto-before-dniDam::before {
+  content: "DNI damnificada:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+
+}
+
+.input-texto-before-nameDam::before {
+  content: "Nombre y apellido damnificada:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+
+}
+.input-texto-before-admin::before {
+  content: "Administrador responsable:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+
+}
+
+.input-texto-before-distancia::before {
+  content: "Distancia:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+
+}
+.input-texto-before-comisaria::before {
+  content: "Comisaria responsable:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+
+}
+.input-texto-before-juzgado::before {
+  content: "Juzgado responsable:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+
+}
+.input-texto-before-fecha::before {
+  content: "Fecha de sentencia:";
+  font-size: 0.7rem;
+  text-align: left;
+  
+}
+.input-texto-before-peligrosidad::before {
+  content: "Nivel de peligrosidad:";
+  font-size: 0.7rem;
+  text-align: left;
+
+}
+
 /*Control de errores*/
-.error{
+.error {
   color: red;
 }
 
 
 /*Container*/
-.container{
-    color: #053667;
+.container {
+  color: #053667;
 }
 
-.row{
-    margin-top: 10px;
-    flex-wrap: nowrap;
+.row {
+  margin-top: 10px;
+  flex-wrap: nowrap;
 }
 
-.card{
-    background-color: white;
-    color: black;
-    padding: 2.5rem;
-    border: 1px solid black;
+.card {
+  background-color: white;
+  color: black;
+  padding: 2.5rem;
+  border: 1px solid black;
 
 }
 
@@ -120,198 +221,235 @@ td{
   max-width: fit-content;
 }
 
-.table{
-    color: #053667;
+.table {
+  color: #053667;
 }
 
 .table tr:hover {
-    background-color: azure;
-    cursor: pointer;
+  background-color: azure;
+  cursor: pointer;
 }
 
-.table i:hover{
-    opacity: .3;
+.table i:hover {
+  opacity: .3;
 }
 
-.spinner-grow{
-    position: fixed;
-    margin-top: 20%;
-    z-index: 9999;
+.spinner-grow {
+  position: fixed;
+  margin-top: 20%;
+  z-index: 9999;
 }
 
-.contenedor-filtros{
-    display: flex;
-    flex-direction: column;
+.contenedor-filtros {
+  display: flex;
+  flex-direction: column;
 
-    align-items: flex-start;
-    max-width: fit-content;
-}
-
-.filtro{
-    display: flex;
-    gap: 10px;
-    max-width: fit-content;
-}
-
-
-.boton-filtro{
-  padding: 10px;
-}
-
-.filtro-btn{
-  display:flex;
-}
-
-
-.app-administrar-restricciones{
+  align-items: flex-start;
   max-width: fit-content;
 }
 
-.image-button{
-
-    padding: 5px; /* ajusta el relleno según tus necesidades */
-    background-color: transparent; /* quita el fondo del botón */
-    border: none;
-    cursor: pointer;
-  }
+.filtro {
+  display: flex;
+  gap: 10px;
+  max-width: fit-content;
+}
 
 
+.boton-filtro {
+  padding: 10px;
+}
 
-  /*Formulario agregar nuevo equipo*/
+.filtro-btn {
+  display: flex;
+}
+
+
+.app-administrar-restricciones {
+  max-width: fit-content;
+}
+
+.image-button {
+
+  padding: 5px;
+  /* ajusta el relleno según tus necesidades */
+  background-color: transparent;
+  /* quita el fondo del botón */
+  border: none;
+  cursor: pointer;
+}
 
 
 
-  .formulario-equipo{
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
+/*Formulario agregar nuevo equipo*/
 
-  }
 
-  .boton-nuevo-equipo{
-    padding: 1rem;
-    border: 1px solid black;
-    background-color: #fff;
-    margin: 0;
-    padding: 0.5rem 1.5rem 0.5rem
-  
-  }
 
- 
+.formulario-equipo {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
 
-  /*Selects formulario*/
+}
 
-  .select-estilo{
-    width: 100%;
-    border: 1px solid black;
-    border-radius: 5px;
-    height: 50px;
-    background-color: white;
-    color: black;
-  }
+.boton-nuevo-equipo {
+  padding: 1rem;
+  border: 1px solid black;
+  background-color: #fff;
+  margin: 0;
+  padding: 0.5rem 1.5rem 0.5rem
+}
 
-  .select-estilo::before{
+
+
+/*Selects formulario*/
+
+.select-estilo {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 50px;
+  background-color: white;
+  color: black;
+}
+
+.select-estilo::before {
   content: "*";
   display: flex;
+}
+
+.input-before-selector-nuevo-grupo::before {
+  content: "Agregar nuevo grupo *";
+  text-align: left;
+}
+
+.input-before-texto-grupo {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-before-selector-seleccion-grupo::before {
+  content: "Seleccionar nuevo grupo *";
+  text-align: left;
+}
+
+/*Texto formulario*/
+.input-before-texto-grupo::before {
+  content: "Nombre nuevo equipo *";
+  text-align: left;
+
+}
+
+/*Boton formulario */
+
+.btn {
+  background-color: black;
+  color: white;
+}
+
+.btn-form-grupo {
+  width: fit-content;
+}
+
+.contenedor-grupos {
+  display: flex;
+  gap: 3rem;
+}
+
+.formulario-grupo {
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+
+/*Animación titulo css*/
+
+.titulo::after {
+  content: "";
+  border-bottom: 5px solid #212529;
+  display: flex;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+legend {
+  color: black;
+}
+
+legend::after {
+  content: "";
+  border-bottom: 5px solid #212529;
+  display: flex;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+@keyframes animacionafter {
+
+  0% {
+    width: 0;
   }
 
-  .input-before-selector-nuevo-grupo::before{
-    content: "Agregar nuevo grupo *";
-    text-align: left;
+  100% {
+    width: 100%;
   }
 
-  .input-before-texto-grupo{
-    display: flex;
-    flex-direction: column;
-  }
+}
 
-  .input-before-selector-seleccion-grupo::before{
-    content: "Seleccionar nuevo grupo *";
-    text-align: left;
-  }
+.bi-arrow-right {
+  font-size: 2rem;
+}
 
-  /*Texto formulario*/
-  .input-before-texto-grupo::before{
-    content: "Nombre nuevo equipo *";
-    text-align: left;
-
-  }
-
-  /*Boton formulario */
-
-  .btn{
-    background-color: black;
-    color: white;
-  }
-
-  .btn-form-grupo{
-    width: fit-content;
-  }
-
-  .contenedor-grupos{
-    display: flex;
-    gap: 3rem;
-  }
-
-  .formulario-grupo{
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
-  }
+.seleccionar-grupo {
+  margin-bottom: 2rem;
+}
 
 
-  /*Animación titulo css*/
+/*Boton cambio de formulario*/
 
-  .titulo::after{
-    content: "";
-    border-bottom: 5px solid #212529;
-    display: flex;
-    animation-name: animacionafter;
-    animation-duration: 3s;
-    animation-iteration-count: 1;
-  }
-
-  legend{
-    color: black;
-  }
-
-  legend::after{
-    content: "";
-    border-bottom: 5px solid #212529;
-    display: flex;
-    animation-name: animacionafter;
-    animation-duration: 3s;
-    animation-iteration-count: 1;
-  }
-
-  @keyframes animacionafter {
-
-    0%{
-        width: 0;
-    }
-
-    100%{
-        width: 100%;
-    }
-    
-  }
-
-  .bi-arrow-right{
-    font-size: 2rem;
-  }
-
-  .seleccionar-grupo{
-    margin-bottom: 2rem;
-  }
+.boton-cambio-pantalla {
+  cursor: pointer;
+  width: fit-content;
+}
 
 
-  /*Boton cambio de formulario*/
+/* ventana modal info*/
 
-  .boton-cambio-pantalla{
-    cursor: pointer;
-    width: fit-content;
-  }
+.modal-info {
+
+  position: absolute;
+  background-color: #fff;
+  left: 50%;
+  top: 10%;
+  border: 1px solid;
+  border-color: #000;
+}
 
 
+.blurred {
+  filter: blur(3px) saturate(0.7);
+
+}
+
+.modal-infoAdm{
+  display: block;
+}
+
+.modal-infoRes{
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+
+}
+
+.modal-body{
+  display: grid;
+}
+
+.modal-infoRes1, .modal-infoRes2, .modal-infoP{
+  padding-right: 50px;
+}

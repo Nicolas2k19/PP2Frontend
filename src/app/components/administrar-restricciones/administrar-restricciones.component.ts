@@ -56,9 +56,21 @@ export class AdministrarRestriccionesComponent implements OnInit {
   idFilterVictimario: number;
   //ordenamiento
   contadorA = 0;
-  contadorV=0;
-  contadorD= 0;
-  contadorGR=0;
+  contadorV = 0;
+  contadorD = 0;
+  contadorGR = 0;
+
+  //ventana modal
+
+  modalAbierta: boolean = false;
+  infoResId: number;
+  infoDamnificadaNombre: string;
+  infoDamnificadaDNI: string;
+  infoVictimarioNombre: string;
+  infoVictimarioDNI: string;
+  infoResFecha: Date;
+  infoResAdmin: string;
+  infoResDistancia: number;
 
 
   turnoGrupo: String
@@ -443,6 +455,33 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   }
 
+  masInfo(restriccionDTO: RestriccionDTO) {
+
+    this.infoResId = restriccionDTO.restriccion.idRestriccion;
+    this.infoDamnificadaNombre = restriccionDTO.damnificada.nombre + " " + restriccionDTO.damnificada.apellido;
+    this.infoDamnificadaDNI = restriccionDTO.damnificada.dni;
+    this.infoVictimarioNombre = restriccionDTO.victimario.nombre + " " + restriccionDTO.victimario.apellido;
+    this.infoVictimarioDNI = restriccionDTO.victimario.dni;
+    this.infoResFecha = restriccionDTO.restriccion.fechaSentencia;
+    this.infoResAdmin = restriccionDTO.administrativo.email;
+    this.infoResDistancia = restriccionDTO.restriccion.distancia;
+
+
+
+    this.modalAbierta = true;
+
+
+    console.log("mas info");
+  }
+
+
+  cerrarModal() {
+
+    this.modalAbierta = false;
+
+    console.log("cerrar ventana modal")
+  }
+
 
   //filtros
 
@@ -521,7 +560,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
       this.restriccionService.getRestricciones().subscribe(res => {
         this.restriccionService.restricciones = res as RestriccionDTO[];
         this.restriccionService.restricciones.sort((a, b) => {
-         if (a.administrativo.email > b.administrativo.email) {
+          if (a.administrativo.email > b.administrativo.email) {
             return -1;
           }
           if (a.administrativo.email < b.administrativo.email) {
@@ -560,7 +599,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
       this.restriccionService.getRestricciones().subscribe(res => {
         this.restriccionService.restricciones = res as RestriccionDTO[];
         this.restriccionService.restricciones.sort((a, b) => {
-         if (a.victimario.dni > b.victimario.dni) {
+          if (a.victimario.dni > b.victimario.dni) {
             return -1;
           }
           if (a.victimario.dni < b.victimario.dni) {
@@ -598,7 +637,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
       this.restriccionService.getRestricciones().subscribe(res => {
         this.restriccionService.restricciones = res as RestriccionDTO[];
         this.restriccionService.restricciones.sort((a, b) => {
-         if (a.restriccion.idGrupo > b.restriccion.idGrupo) {
+          if (a.restriccion.idGrupo > b.restriccion.idGrupo) {
             return -1;
           }
           if (a.restriccion.idGrupo < b.restriccion.idGrupo) {
@@ -636,7 +675,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
       this.restriccionService.getRestricciones().subscribe(res => {
         this.restriccionService.restricciones = res as RestriccionDTO[];
         this.restriccionService.restricciones.sort((a, b) => {
-         if (a.damnificada.dni > b.damnificada.dni) {
+          if (a.damnificada.dni > b.damnificada.dni) {
             return -1;
           }
           if (a.damnificada.dni < b.damnificada.dni) {
