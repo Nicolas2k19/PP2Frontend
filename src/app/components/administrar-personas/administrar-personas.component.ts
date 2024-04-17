@@ -44,6 +44,11 @@ export class AdministrarPersonasComponent implements OnInit {
   hayError = false;
   editarBandera: boolean = false;
 
+
+  mostrarDomicilio : boolean;
+
+
+
   constructor(
     public personaService: PersonaService,
     private toastr: ToastrService,
@@ -51,6 +56,7 @@ export class AdministrarPersonasComponent implements OnInit {
     private fotoIdentificacionService: FotoIdentificacionService,
     private spinner: NgxSpinnerService) {
     this.roles = ['DAMNIFICADA', 'VICTIMARIO'];
+    this.mostrarDomicilio = false;
   }
 
   ngOnInit() {
@@ -286,5 +292,14 @@ export class AdministrarPersonasComponent implements OnInit {
           }
         });
     }
+
+
+    /**
+     * Cambio el valor de mostrar domicilio, a su contrario
+     */
+    negarMostrarDomicilio(){
+      this.mostrarDomicilio = !this.mostrarDomicilio;
+    }
+    
   
 }

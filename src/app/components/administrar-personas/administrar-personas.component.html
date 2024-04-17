@@ -8,12 +8,12 @@
     <div class="row">
         <!-- FORMULARIO DE PERSONAS -->
         <div class="col-4">
-            <div class="card bg-light mb-3" style="max-width: 20rem;">
-                <div class="card-body">
-                    <legend>Persona</legend>
+            <div class="card" style="max-width: 20rem;">
+                <div *ngIf="!mostrarDomicilio" class="card-body">
                     <form #personaForm="ngForm" (ngSubmit)="guardarPersona(personaForm)" novalidate>
+                        <legend>Agregar nueva persona</legend>
                         <div class="row">
-                            <input class="form-control" type="text" name="nombre" placeholder="Nombre"
+                            <input class="form-control input-texto" type="text" name="nombre" placeholder="Nombre"
                                 [ngClass]="{ 'is-invalid': nombre.invalid && nombre.touched, 'is-valid': nombre.valid}"
                                 #nombre="ngModel" [(ngModel)]="personaDTOSelleccionada.persona.nombre"
                                 ngbTooltip="Nombre" required maxlength="50">
@@ -76,6 +76,7 @@
                                 </div>
                             </div>
                         </div>
+                   
                         <div class="row">
                             <label>Rol Persona</label>
                             <div class="form-group btn-block">
@@ -87,7 +88,16 @@
                                 </select>
                             </div>
                         </div>
-                        <legend>Domicilio</legend>
+
+                        <button class="btn">Verificar</button>
+
+                    </form>
+                </div>
+
+            <!--Formulario de domicilio-->
+                <div *ngIf="mostrarDomicilio" class="card-body">
+                    <form>
+                        <legend>Agregar domilicio persona</legend>
                         <div class="row">
                             <input class="form-control" type="text" name="calle" placeholder="Calle" #calle="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.direccion.calle"
@@ -154,9 +164,9 @@
                         </div>
                         <br>
                         <div class="row">
-                            <button class="btn btn-primary btn-block" [disabled]="!personaForm.valid">Agregar</button>
+                            <button class="btn btn-primary btn-block">Agregar</button>
                         </div>
-                    </form>
+                    </form>     
                 </div>
             </div>
         </div>

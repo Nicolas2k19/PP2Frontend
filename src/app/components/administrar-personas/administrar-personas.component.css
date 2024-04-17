@@ -6,9 +6,23 @@
     margin-top: 10px;
 }
 
+
+/*Estilos card*/
+
 .card{
-    text-align: center
+    text-align: left;
+    background-color: #fff;
+    padding: 2.5rem;
 }
+
+/*Estilos tabla*/
+
+
+th{
+    background-color: #000;
+    color: #fff;
+}
+
 
 .table{
     color: #053667;
@@ -30,3 +44,51 @@
 }
 
 
+
+
+/*Estilos campos de ingreso de datos de texto */
+.input-texto {
+    background-color: #fff;
+    border: 0px solid #fff;
+    border-radius: 0;
+    border-bottom: 1px solid black;
+    padding: 0;
+  }
+
+/*Botones*/
+
+.btn{
+    width: fit-content;
+    background-color: black;
+    color: white;
+}
+
+
+
+
+/*Animación legend*/
+
+legend {
+    color: black;
+  }
+  
+  legend::after {
+    content: "";
+    border-bottom: 5px solid #212529;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+  }
+  
+  @keyframes animacionafter {
+  
+    0% {
+      width: 0;
+    }
+  
+    100% {
+      width: 100%;
+    }
+  
+  }
