@@ -49,23 +49,27 @@ export class PruebasDeVidaComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.comunicacion.restriccionDTO != null){
+    if (this.comunicacion.restriccionDTO != null) {
       this.restriccion = this.comunicacion.restriccionDTO;
-      if( this.seleccionado != null )
+      if (this.seleccionado != null) {
         this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+      }
       this.spinnerService.show();
-    this.fotoIdentificacionService.getFotoPefil(this.comunicacion.restriccionDTO.victimario.idPersona).
-     subscribe( res => {
-      this.spinnerService.hide();
-        var foto = res as FotoIdentificacion;
-        this.imgPerfil = foto.foto;
-        console.log(res);
-      });
+      this.fotoIdentificacionService.getFotoPefil(this.comunicacion.restriccionDTO.victimario.idPersona)
+        .subscribe(res => {
+          this.spinnerService.hide();
+          var foto = res as FotoIdentificacion;
+          this.imgPerfil = foto.foto;
+          console.log(res);
+        });
     }
-    this.opcionesDesplegable=[this.restriccion.victimario, this.restriccion.damnificada]
+    this.opcionesDesplegable = [this.restriccion.victimario, this.restriccion.damnificada];
+    console.log("Opciones desplegable:", this.opcionesDesplegable);
   }
+  
 
   seleccionarOpcion(opcion: Persona) {
+    console.log('Seleccionar opción:', opcion);
     this.personaService.getPersona(opcion.idPersona)
       .subscribe(
         (res: Persona) => {
@@ -95,11 +99,11 @@ export class PruebasDeVidaComponent implements OnInit {
             this.pruevaDeVidaService.postPruebaDeVida(this.pruebaDeVida)
               .subscribe(
                 (res) => {
+                  this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
                   this.spinnerService.hide();
                   console.log(res);
                   pruebaDeVidaForm.reset();
                   this.pruebaDeVida = new PruebaDeVida;
-                  this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
                 },
                 (error) => {
                   console.error('Error al enviar prueba de vida:', error);
