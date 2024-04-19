@@ -36,15 +36,24 @@
             </nav>
         </div>
         <div class="col">
-            <div class="dropdown mt-lg-0 mt-3"> 
-                <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown mt-lg-0 mt-3">
+                <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     {{ 'Seleccionar opción' }}
-                </button>            
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" *ngFor="let opcion of opcionesDesplegable" (click)="seleccionarOpcion(opcion); getPruebasDeVidaPersona(opcion.idPersona)">{{ opcion.apellido }}</a>
-                </div>
+                </button>
+                
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li *ngFor="let opcion of opcionesDesplegable" class="dropdown-item"
+                        (click)="seleccionarOpcion(opcion); getPruebasDeVidaPersona(opcion.idPersona) ">
+                        {{ opcion.apellido }}
+                    </li>
+                </ul>
             </div>
         </div>
+        
+        
+        
+        
     </div>
     <br>
     <div class="row">
