@@ -10,28 +10,28 @@
                     <legend>Añadir restricción</legend>
                     <form #restriccionForm="ngForm" (ngSubmit)="guardarRestriccion(restriccionForm)" novalidate>
                         <div class="personas-a-vigilar">
-                            <div class="row input-texto-before-damnificada"
+                            <div class="input-texto-before-damnificada"
                                 [ngClass]="{ 'error': errorCampoDamnificada}">
                                 <div class="input-group">
                                     <input class="form-control input-texto" type="tel" name="dniDamnificada"
                                         ngbTooltip="DNI damnificada" [(ngModel)]="damnificada.dni">
                                 </div>
                             </div>
-                            <div class="row input-texto-before-victimario" [ngClass]="{ 'error': errorCampoVictimario}">
+                            <div class="input-texto-before-victimario" [ngClass]="{ 'error': errorCampoVictimario}">
                                 <div class="input-group">
                                     <input class="form-control input-texto" type="tel" name="dniVictimario"
                                         ngbTooltip="DNI victimario" [(ngModel)]="victimario.dni">
                                 </div>
                             </div>
                         </div>
-                        <div class="row input-before-selector-grupos" [ngClass]="{ 'error': errorCampoSelectorGrupo}">
+                        <div class="input-before-selector-grupos" [ngClass]="{ 'error': errorCampoSelectorGrupo}">
                             <select class="select-estilo" name="" id="" [(ngModel)]="grupoSeleccionado">
                                 <option value={{grupo}} *ngFor="let grupo of grupos">
                                     {{"Grupo "+grupo}}
                                 </option>
                             </select>
                         </div>
-                        <div class="row input-before-selector-distancia" [ngClass]="{ 'error': errorCampoDistancia}">
+                        <div class="input-before-selector-distancia" [ngClass]="{ 'error': errorCampoDistancia}">
                             <input class="form-control select-estilo " type="number" name="distancia"
                                 placeholder="Distancia" ngbTooltip="Distancia restricción" #distancia="ngModel"
                                 min="200"
@@ -42,7 +42,7 @@
                                 Distancia requerida
                             </div>
                         </div>
-                        <div class="row input-before-selector-fecha " [ngClass]="{ 'error': errorCampoFecha}">
+                        <div class="input-before-selector-fecha " [ngClass]="{ 'error': errorCampoFecha}">
                             <div class="input-group">
                                 <input class="form-control" placeholder="Fecha (Año-Mes-Día)" name="dp"
                                     [(ngModel)]="restriccion.fechaSentencia" ngbDatepicker #d="ngbDatepicker"
@@ -56,10 +56,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
                             <!-- [disabled]="!restriccionForm.valid"-->
-                            <button class="btn">Agregar</button>
-                        </div>
+                            <button class="btn btn-restriccion">Agregar</button>
                     </form>
                 </div>
             </div>

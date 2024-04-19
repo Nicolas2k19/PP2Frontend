@@ -348,6 +348,10 @@ td {
   color: white;
 }
 
+.btn-restriccion{
+  margin-top: 1rem;
+}
+
 .btn-form-grupo {
   width: fit-content;
 }
@@ -414,6 +418,7 @@ legend::after {
 .boton-cambio-pantalla {
   cursor: pointer;
   width: fit-content;
+  margin-top: 1rem;
 }
 
 

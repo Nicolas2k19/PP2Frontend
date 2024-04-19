@@ -10,9 +10,9 @@
         <div class="col-4">
             <div class="card" style="max-width: 20rem;">
                 <div *ngIf="!mostrarDomicilio" class="card-body">
-                    <form #personaForm="ngForm" (ngSubmit)="guardarPersona(personaForm)" novalidate>
+                    <form #personaForm="ngForm" (ngSubmit)="negarMostrarDomicilio()">
                         <legend>Agregar nueva persona</legend>
-                        <div class="row">
+                        <div class=" input-texto-before input-texto-before-nombre">
                             <input class="form-control input-texto" type="text" name="nombre" placeholder="Nombre"
                                 [ngClass]="{ 'is-invalid': nombre.invalid && nombre.touched, 'is-valid': nombre.valid}"
                                 #nombre="ngModel" [(ngModel)]="personaDTOSelleccionada.persona.nombre"
@@ -22,8 +22,8 @@
                                 Nombre requerido
                             </div>
                         </div>
-                        <div class="row">
-                            <input class="form-control" type="text" name="apellido" placeholder="Apellido"
+                        <div class=" input-texto-before input-texto-before-apellido">
+                            <input class="form-control input-texto" type="text" name="apellido" placeholder="Apellido"
                                 [ngClass]="{ 'is-invalid': apellido.invalid && apellido.touched, 'is-valid': apellido.valid}"
                                 #apellido="ngModel" [(ngModel)]="personaDTOSelleccionada.persona.apellido"
                                 ngbTooltip="Apellido" required maxlength="50">
@@ -32,8 +32,8 @@
                                 Apellido requerido
                             </div>
                         </div>
-                        <div class="row">
-                            <input class="form-control" type="number" name="DNI" placeholder="DNI" #DNI="ngModel"
+                        <div class=" input-texto-before input-texto-before-dni">
+                            <input class="form-control input-texto" type="text" name="DNI" placeholder="DNI" #DNI="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.persona.dni"
                                 [ngClass]="{ 'is-invalid': DNI.invalid && DNI.touched, 'is-valid': DNI.valid}"
                                 ngbTooltip="DNI" required maxlength="10" pattern="^[0-9]+">
@@ -41,8 +41,8 @@
                                 DNI requerido
                             </div>
                         </div>
-                        <div class="row">
-                            <input class="form-control" type="number" name="telefono" placeholder="Teléfono"
+                        <div class=" input-texto-before input-texto-before-telefono">
+                            <input class="form-control input-texto" type="text" name="telefono" placeholder="Teléfono"
                                 #telefono="ngModel" [(ngModel)]="personaDTOSelleccionada.persona.telefono"
                                 [ngClass]="{ 'is-invalid': telefono.invalid && telefono.touched, 'is-valid': telefono.valid}"
                                 ngbTooltip="Teléfono" required maxlength="30" pattern="^[0-9]+">
@@ -51,8 +51,8 @@
                                 Telefono requerido
                             </div>
                         </div>
-                        <div class="row">
-                            <input class="form-control" type="text" name="email" placeholder="Email" #email="ngModel"
+                        <div class=" input-texto-before input-texto-before-email">
+                            <input class="form-control input-texto" type="text" name="email" placeholder="Email" #email="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.usuario.email"
                                 [ngClass]="{ 'is-invalid': email.invalid && email.touched, 'is-valid': email.valid}"
                                 ngbTooltip="Email" required email maxlength="50"
@@ -62,7 +62,7 @@
                                 Email requerido
                             </div>
                         </div>
-                        <div class="row">
+                        <div class=" input-texto-before input-texto-before-nacimiento">
                             <div class="input-group">
                                 <input class="form-control" placeholder="Fecha nacimiento (Año-Mes-Día)"
                                     name="fechaNacimiento" [(ngModel)]="personaDTOSelleccionada.persona.fechaNacimiento"
@@ -77,10 +77,9 @@
                             </div>
                         </div>
                    
-                        <div class="row">
-                            <label>Rol Persona</label>
-                            <div class="form-group btn-block">
-                                <select class="form-control" name="rolSeleccionado" [(ngModel)]="rolSeleccionado"
+                        <div class="input-texto-before input-texto-before-tipo">
+                            <div class="input-selector-before-tipo">
+                                <select class="select-estilo" name="rolSeleccionado" [(ngModel)]="rolSeleccionado"
                                     ngbTooltip="Rol de persona" (change)="cambioRol()" required>
                                     <option *ngFor="let rol of roles">
                                         {{rol}}
@@ -88,8 +87,9 @@
                                 </select>
                             </div>
                         </div>
+                        <button class="btn btn-verificar">Verificar</button>
 
-                        <button class="btn">Verificar</button>
+                        
 
                     </form>
                 </div>
@@ -98,8 +98,8 @@
                 <div *ngIf="mostrarDomicilio" class="card-body">
                     <form>
                         <legend>Agregar domilicio persona</legend>
-                        <div class="row">
-                            <input class="form-control" type="text" name="calle" placeholder="Calle" #calle="ngModel"
+                        <div class="input-texto-before-altura">
+                            <input class="form-control input-texto" type="text" name="calle" placeholder="Calle" #calle="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.direccion.calle"
                                 [ngClass]="{ 'is-invalid': calle.invalid && calle.touched, 'is-valid': calle.valid}"
                                 ngbTooltip="Calle" required maxlength="50">
@@ -108,8 +108,8 @@
                                 Calle requerida
                             </div>
                         </div>
-                        <div class="row">
-                            <input class="form-control" type="number" name="altura" placeholder="Altura"
+                        <div class="input-texto-before-altura">
+                            <input class="form-control input-texto " type="text" name="altura" placeholder="Altura"
                                 #altura="ngModel" [(ngModel)]="personaDTOSelleccionada.direccion.altura"
                                 [ngClass]="{ 'is-invalid': altura.invalid && altura.touched, 'is-valid': altura.valid}"
                                 ngbTooltip="Altura" required maxlength="8" pattern="^[0-9]+">
@@ -118,19 +118,18 @@
                                 Altura requerida
                             </div>
                         </div>
-                        <div class="row">
-                            <input class="form-control" type="number" name="piso" placeholder="Piso" #piso="ngModel"
+                        <div class="input-texto-before-piso">
+                            <input class="form-control input-texto" type="text" name="piso" placeholder="Piso" #piso="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.direccion.piso" ngbTooltip="Piso" maxlength="3">
                         </div>
-                        <div class="row">
-                            <input class="form-control" type="text" name="departamento" placeholder="Departamento"
+                        <div class="input-texto-before-departamento">
+                            <input class="form-control input-texto input-texto-before-departamento" type="text" name="departamento" placeholder="Departamento"
                                 #departamento="ngModel" [(ngModel)]="personaDTOSelleccionada.direccion.departamento"
                                 ngbTooltip="Departamento" maxlength="8">
                         </div>
-                        <div class="row">
-                            <label>Provincia</label>
-                            <div class="form-group btn-block">
-                                <select class="form-control" name="provinciaSeleccionada"
+                        <div class="">
+                            <div class="form-group btn-block input-selector-before-provincia">
+                                <select class="select-estilo" name="provinciaSeleccionada"
                                     [(ngModel)]="provinciaSeleccionada" ngbTooltip="Provincia"
                                     (change)="cambioProvincia()" required>
                                     <option>-Seleccionar Provincia-</option>
@@ -140,10 +139,9 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <label>Localidad</label>
-                            <div class="form-group btn-block">
-                                <select class="form-control" name="localidadSeleccionada"
+                        <div class="">
+                            <div class="form-group btn-block input-selector-before-localidad">
+                                <select class="select-estilo" name="localidadSeleccionada"
                                     [(ngModel)]="localidadSeleccionada" ngbTooltip="Localidad"
                                     (change)="cambioLocalidad()" required>
                                     <option>-Seleccionar localidad-</option>
@@ -154,7 +152,7 @@
                             </div>
                         </div>
                         <legend *ngIf="mostrarImagen">Foto Agresor</legend>
-                        <div class="row" *ngIf="mostrarImagen">
+                        <div class="" *ngIf="mostrarImagen">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="customFile" name="imagen"
                                     (change)="archivoSeleccionado($event)" accept="image/*">
@@ -163,7 +161,7 @@
                             </div>
                         </div>
                         <br>
-                        <div class="row">
+                        <div class="">
                             <button class="btn btn-primary btn-block">Agregar</button>
                         </div>
                     </form>     

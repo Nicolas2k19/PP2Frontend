@@ -55,6 +55,86 @@ th{
     padding: 0;
   }
 
+
+  .input-texto-before{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-texto-before-apellido::before{
+    content: "Apellido de la persona *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .input-texto-before-nombre::before{
+    content: "Nombre de la persona *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+  .input-texto-before-dni::before{
+    content: "DNI de la persona *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .input-texto-before-telefono::before{
+    content: "Teléfono de la persona *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .input-texto-before-email::before{
+    content: "Email de la persona *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .input-texto-before-nacimiento::before{
+    content: "Fecha de nacimiento de la persona *";
+    font-size: 0.7rem;
+    text-align: left;
+
+  }
+
+  .input-texto-before-altura{
+    content: "Altura *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+
+
+  /*Estilo selector*/
+  .select-estilo {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 50px;
+    background-color: white;
+    color: black;
+  }
+
+  .input-selector-before-provincia::before{
+    content: "Provincia *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .input-selector-before-localidad::before{
+    content: "Localidad *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .input-selector-before-tipo::before{
+    content: "Tipo de persona*";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  
+
 /*Botones*/
 
 .btn{
@@ -62,6 +142,12 @@ th{
     background-color: black;
     color: white;
 }
+
+
+.btn-verificar{
+  margin-top: 1rem;
+}
+
 
 
 

@@ -16,7 +16,7 @@
                     <form #usuarioForm="ngForm" (ngSubmit)="agregarUsuario(usuarioForm)" novalidate>
                         <div class="datos-solicitados">
 
-                            <div class="row input-texto-before-email">
+                            <div class="input-texto-before-email">
                                 <div class=" " input-group>
                                     <input class="form-control input-texto" type="email" name="email" #email="ngModel"
                                         [ngClass]="{ 'is-invalid': email.invalid && email.touched, 'is-valid': email.valid}"
@@ -30,14 +30,14 @@
                             </div>
                         </div>
 
-                        <div class=" row form-group btn-block input-before-selector-rol">
+                        <div class="form-group btn-block input-before-selector-rol">
                             <select class="select-estilo" name="rolSeleccionado" [(ngModel)]="rolSeleccionado" required>
                                 <option value="" selected disabled>Seleccione un rol</option>
                                 <option *ngFor="let rol of roles">
                                     {{rol}}
                                 </option>
                             </select>
-                            <div class=" row form-group btn-block input-before-selector-grupos">
+                            <div class="form-group btn-block input-before-selector-grupos">
                                 <select class="select-estilo" name="" id="" [(ngModel)]="grupoSeleccionado" required>
                                     <option value="" selected disabled>Seleccione un grupo</option>
                                     <option value={{grupo}} *ngFor="let grupo of grupos">
