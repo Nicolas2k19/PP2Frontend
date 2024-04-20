@@ -49,11 +49,14 @@ export class RutinasComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit() {
+    console.log("estoy iniciando la pantalla rutina")
     this.iniciarMapa();
     if (this.comunicacion.restriccionDTO != null) {
       var victimario = this.comunicacion.restriccionDTO.victimario;
       this.victimarioSeleccionado = victimario.apellido + ", " + victimario.nombre;
       this.seleccioneRestriccion = true;
+      console.log("este es mi victimario" + this.victimarioSeleccionado);
+      
     }
   }
 
