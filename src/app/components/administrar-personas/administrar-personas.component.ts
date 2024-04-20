@@ -12,6 +12,7 @@ import { FotoIdentificacion } from 'src/app/models/foto-identificacion';
 import { FotoIdentificacionService } from 'src/app/services/fotoIdentificacion/foto-identificacion.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
+
 @Component({
   selector: 'app-administrar-personas',
   templateUrl: './administrar-personas.component.html',
@@ -82,42 +83,52 @@ export class AdministrarPersonasComponent implements OnInit {
    * Guarda a una persona con la informacion del formulario pasada por parametro
    * @param personaForm 
    */
-  guardarPersona(personaForm: NgForm){
-    this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
-    let ngbDate = personaForm.value.fechaNacimiento;
-    let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day+1);
-    this.personaDTOSelleccionada.persona.fechaNacimiento = myDate;
+  guardarPersona(personaForm: NgForm){   
+    console.log("Estoy guardando")
+    console.log(this.editarBandera)
+    //let ngbDate = personaForm.value.fechaNacimiento;
+    //let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day+1);
+    //this.personaDTOSelleccionada.persona.fechaNacimiento = myDate;
+    //this.personaDTOSelleccionada.persona.fechaNacimiento = myDate;
     
-    if(this.editarBandera == true){
+    if(this.editarBandera){
       this.spinner.show();
       this.personaService.putPersona(this.personaDTOSelleccionada)
         .subscribe(res => {
+          console.log("Estoy en true")
           console.log(res);
           this.getPersonas();
           personaForm.reset();
           this.editarBandera = false;
           this.personaDTOSelleccionada = new FormPersonaDTO;
           this.spinner.hide();
+          this.toastr.success("Se ha modificado al usuario");
         });
     }
     else{
+      console.log("Estoy en el else")
       this.agregarPersona(personaForm);
     }
+
+
+
+    console.log("nO ESTOY ENTRANDO EN NADA")
     this.editarBandera = false;
 
   }
 
   /**
-   * Agrega a una peronsa
+   * Agrega a una perosona
    * @param personaForm 
    */
   agregarPersona(personaForm: NgForm) {
     this.spinner.show();
+    console.log("Estoy en agregar")
     //CARGO DATOS DEL FORM A PERSONA
-    this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
+    /*this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
     let ngbDate = personaForm.value.fechaNacimiento;
     let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
-    this.personaDTOSelleccionada.persona.fechaNacimiento = myDate;
+    this.personaDTOSelleccionada.persona.fechaNacimiento = myDate;*/
 
     //Logica para leer el archivo y guardarlo
     //Guardo la instancia del componente para usar dentro de la promesa, y el BLOB
@@ -134,15 +145,17 @@ export class AdministrarPersonasComponent implements OnInit {
       thisjr.personaDTOSelleccionada.foto = img;
       thisjr.personaService.postPersona(thisjr.personaDTOSelleccionada)
         .subscribe(res => {
+          console.log("Estoy en el post con error")
           var error = res as ErrorDTO;
           if (error.hayError) {
             //MOSTRAR ERROR
-            thisjr.toastr.error("" + error.mensajeError, "Error!");
+            thisjr.toastr.error("Ha ocurrido un error" + error.mensajeError, "Error!");
             thisjr.setHayError();
             this.spinner.hide();
           }
           else {
             thisjr.toastr.success("Persona agregada correctamente", "Agregada!");
+            console.log("Agregue correctamente")
             console.log(thisjr.personaDTOSelleccionada);
             thisjr.getPersonas();
             personaForm.reset();
@@ -273,7 +286,7 @@ export class AdministrarPersonasComponent implements OnInit {
 
     this.getLocalidad(persona.direccion.idLocalidad);
     this.cambioRol();
-    console.log(persona);
+    this.negarMostrarDomicilio(persona);
   }
 
     //BUSCO LA LOCALIDAD DE LA PERSONA PARA TOMAR LA PROVINCIA 
@@ -297,8 +310,32 @@ export class AdministrarPersonasComponent implements OnInit {
     /**
      * Cambio el valor de mostrar domicilio, a su contrario
      */
-    negarMostrarDomicilio(){
+    negarMostrarDomicilio(personaForm){ 
+      let nombre : string = this.personaDTOSelleccionada.persona.nombre
+      let apellido : string = this.personaDTOSelleccionada.persona.apellido
+      let dni : string = this.personaDTOSelleccionada.persona.dni
+      let telefono : string = this.personaDTOSelleccionada.persona.telefono
+      let fechaNac : Date = this.personaDTOSelleccionada.persona.fechaNacimiento
+      let email : string  = this.personaDTOSelleccionada.usuario.email;
+      this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
+      let tipo : string  = this.personaDTOSelleccionada.usuario.rolDeUsuario;
+
+     
+
+
+      if(nombre==""||apellido==""||dni==""||telefono==""||fechaNac==null||tipo==""||email==""){    
+        this.toastr.error("Faltan campos que llenar", "Error!");
+        return;
+      } 
+
+      let ngbDate = personaForm.value.fechaNacimiento;
+      let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+      this.personaDTOSelleccionada.persona.fechaNacimiento = myDate
+
+      this.toastr.success("Se ha verificado al usuario");
       this.mostrarDomicilio = !this.mostrarDomicilio;
+      console.log(this.editarBandera)
+      console.log("Esta es la bandera")
     }
     
   

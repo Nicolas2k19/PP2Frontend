@@ -46,6 +46,7 @@ export class PersonaService {
   }
 
   putPersona(personaDTO: FormPersonaDTO){
+    console.log("Me estoy llamando")
     return this.http.put(this.URL_API + "/ModificarPersona", personaDTO);
   }
 

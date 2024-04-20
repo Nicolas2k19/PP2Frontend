@@ -10,10 +10,10 @@
         <div class="col-4">
             <div class="card" style="max-width: 20rem;">
                 <div *ngIf="!mostrarDomicilio" class="card-body">
-                    <form #personaForm="ngForm" (ngSubmit)="negarMostrarDomicilio()">
+                    <form #personaForm="ngForm" (ngSubmit)="negarMostrarDomicilio(personaForm)">
                         <legend>Agregar nueva persona</legend>
                         <div class=" input-texto-before input-texto-before-nombre">
-                            <input class="form-control input-texto" type="text" name="nombre" placeholder="Nombre"
+                            <input class="form-control input-texto" type="text" name="nombre" 
                                 [ngClass]="{ 'is-invalid': nombre.invalid && nombre.touched, 'is-valid': nombre.valid}"
                                 #nombre="ngModel" [(ngModel)]="personaDTOSelleccionada.persona.nombre"
                                 ngbTooltip="Nombre" required maxlength="50">
@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <div class=" input-texto-before input-texto-before-apellido">
-                            <input class="form-control input-texto" type="text" name="apellido" placeholder="Apellido"
+                            <input class="form-control input-texto" type="text" name="apellido" 
                                 [ngClass]="{ 'is-invalid': apellido.invalid && apellido.touched, 'is-valid': apellido.valid}"
                                 #apellido="ngModel" [(ngModel)]="personaDTOSelleccionada.persona.apellido"
                                 ngbTooltip="Apellido" required maxlength="50">
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class=" input-texto-before input-texto-before-dni">
-                            <input class="form-control input-texto" type="text" name="DNI" placeholder="DNI" #DNI="ngModel"
+                            <input class="form-control input-texto" type="text" name="DNI"  #DNI="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.persona.dni"
                                 [ngClass]="{ 'is-invalid': DNI.invalid && DNI.touched, 'is-valid': DNI.valid}"
                                 ngbTooltip="DNI" required maxlength="10" pattern="^[0-9]+">
@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class=" input-texto-before input-texto-before-telefono">
-                            <input class="form-control input-texto" type="text" name="telefono" placeholder="Teléfono"
+                            <input class="form-control input-texto" type="text" name="telefono" 
                                 #telefono="ngModel" [(ngModel)]="personaDTOSelleccionada.persona.telefono"
                                 [ngClass]="{ 'is-invalid': telefono.invalid && telefono.touched, 'is-valid': telefono.valid}"
                                 ngbTooltip="Teléfono" required maxlength="30" pattern="^[0-9]+">
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         <div class=" input-texto-before input-texto-before-email">
-                            <input class="form-control input-texto" type="text" name="email" placeholder="Email" #email="ngModel"
+                            <input class="form-control input-texto" type="text" name="email"  #email="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.usuario.email"
                                 [ngClass]="{ 'is-invalid': email.invalid && email.touched, 'is-valid': email.valid}"
                                 ngbTooltip="Email" required email maxlength="50"
@@ -87,19 +87,25 @@
                                 </select>
                             </div>
                         </div>
+                        <p *ngIf="mostrarImagen">Foto Agresor</p>
+                        <div class="" *ngIf="mostrarImagen">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile" name="imagen"
+                                    (change)="archivoSeleccionado($event)" accept="image/*">
+                                <label class="custom-file-label" id="labelImagen" for="customFile">Seleccionar
+                                    imagen</label>
+                            </div>
+                        </div>
                         <button class="btn btn-verificar">Verificar</button>
-
-                        
-
                     </form>
                 </div>
 
             <!--Formulario de domicilio-->
-                <div *ngIf="mostrarDomicilio" class="card-body">
-                    <form>
+                <div  *ngIf="mostrarDomicilio" class="card-body">
+                    <form #domicilioForm="ngForm" (ngSubmit)="guardarPersona(domicilioForm)">
                         <legend>Agregar domilicio persona</legend>
-                        <div class="input-texto-before-altura">
-                            <input class="form-control input-texto" type="text" name="calle" placeholder="Calle" #calle="ngModel"
+                        <div class="input-texto-before-calle">
+                            <input class="form-control input-texto" type="text" name="calle" #calle="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.direccion.calle"
                                 [ngClass]="{ 'is-invalid': calle.invalid && calle.touched, 'is-valid': calle.valid}"
                                 ngbTooltip="Calle" required maxlength="50">
@@ -109,7 +115,7 @@
                             </div>
                         </div>
                         <div class="input-texto-before-altura">
-                            <input class="form-control input-texto " type="text" name="altura" placeholder="Altura"
+                            <input class="form-control input-texto " type="text" name="altura" 
                                 #altura="ngModel" [(ngModel)]="personaDTOSelleccionada.direccion.altura"
                                 [ngClass]="{ 'is-invalid': altura.invalid && altura.touched, 'is-valid': altura.valid}"
                                 ngbTooltip="Altura" required maxlength="8" pattern="^[0-9]+">
@@ -119,11 +125,11 @@
                             </div>
                         </div>
                         <div class="input-texto-before-piso">
-                            <input class="form-control input-texto" type="text" name="piso" placeholder="Piso" #piso="ngModel"
+                            <input class="form-control input-texto" type="text" name="piso" #piso="ngModel"
                                 [(ngModel)]="personaDTOSelleccionada.direccion.piso" ngbTooltip="Piso" maxlength="3">
                         </div>
                         <div class="input-texto-before-departamento">
-                            <input class="form-control input-texto input-texto-before-departamento" type="text" name="departamento" placeholder="Departamento"
+                            <input class="form-control input-texto input-texto-before-departamento" type="text" name="departamento" 
                                 #departamento="ngModel" [(ngModel)]="personaDTOSelleccionada.direccion.departamento"
                                 ngbTooltip="Departamento" maxlength="8">
                         </div>
@@ -149,15 +155,6 @@
                                         {{localidad.nombre}}
                                     </option>
                                 </select>
-                            </div>
-                        </div>
-                        <legend *ngIf="mostrarImagen">Foto Agresor</legend>
-                        <div class="" *ngIf="mostrarImagen">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="customFile" name="imagen"
-                                    (change)="archivoSeleccionado($event)" accept="image/*">
-                                <label class="custom-file-label" id="labelImagen" for="customFile">Seleccionar
-                                    imagen</label>
                             </div>
                         </div>
                         <br>

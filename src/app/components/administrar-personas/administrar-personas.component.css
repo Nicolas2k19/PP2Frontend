@@ -97,7 +97,7 @@ th{
 
   }
 
-  .input-texto-before-altura{
+  .input-texto-before-altura::before{
     content: "Altura *";
     font-size: 0.7rem;
     text-align: left;
@@ -129,6 +129,25 @@ th{
 
   .input-selector-before-tipo::before{
     content: "Tipo de persona*";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .input-texto-before-calle::before{
+    content: "Calle *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+  .input-texto-before-piso::before{
+    content: "Piso *";
+    font-size: 0.7rem;
+    text-align: left;
+  }
+
+
+  .input-texto-before-departamento::before{
+    content: "Departamento *";
     font-size: 0.7rem;
     text-align: left;
   }
