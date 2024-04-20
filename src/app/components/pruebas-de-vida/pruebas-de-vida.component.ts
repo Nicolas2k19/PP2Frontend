@@ -21,7 +21,6 @@ import { UsuarioService } from 'src/app/services/login/usuario.service';
 })
 export class PruebasDeVidaComponent implements OnInit {
 
-  pruebasDeVida: PruebaDeVida[];
 
   pruebaDeVida = new PruebaDeVida;
   spinnerBoolean: boolean = false;
@@ -33,6 +32,12 @@ export class PruebasDeVidaComponent implements OnInit {
   seleccionado: Persona;
   selectedUserLabel: string = "Seleccione un usuario";
   usuarioSeleccionado: Usuario;
+  pruebasDeVida: PruebaDeVida[] = [];
+  pruebasFiltradas: PruebaDeVida[] = [];
+  fechaFiltro: string = '';
+  estadoFiltro: string = '';
+  showSelect: boolean = false;
+  showFiltros: boolean = false;
 
 
   constructor(
@@ -40,12 +45,12 @@ export class PruebasDeVidaComponent implements OnInit {
     private comunicacion: ComunicacionService,
     config: NgbModalConfig, private modalService: NgbModal,
     private spinnerService: NgxSpinnerService,
-    private personaService :PersonaService,
-    private usuarioService : UsuarioService,
+    private personaService: PersonaService,
+    private usuarioService: UsuarioService,
     private fotoIdentificacionService: FotoIdentificacionService) {
-    
+
     config.backdrop = 'static';
-    config.keyboard = false; 
+    config.keyboard = false;
   }
 
   ngOnInit() {
@@ -66,7 +71,7 @@ export class PruebasDeVidaComponent implements OnInit {
     this.opcionesDesplegable = [this.restriccion.victimario, this.restriccion.damnificada];
     console.log("Opciones desplegable:", this.opcionesDesplegable);
   }
-  
+
 
   seleccionarOpcion(opcion: Persona) {
     console.log('Seleccionar opción:', opcion);
@@ -81,7 +86,7 @@ export class PruebasDeVidaComponent implements OnInit {
         }
       );
   }
-  
+
 
   enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
     this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
@@ -89,11 +94,11 @@ export class PruebasDeVidaComponent implements OnInit {
       .subscribe(
         (res: Usuario) => {
           this.usuarioSeleccionado = res;
-          
+
           if (this.usuarioSeleccionado) {
             //Según el rol, verifico a quién enviar
             this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
-  
+
             this.pruebaDeVida.estado = "Pendiente";
             this.spinnerService.show();
             this.pruevaDeVidaService.postPruebaDeVida(this.pruebaDeVida)
@@ -110,7 +115,7 @@ export class PruebasDeVidaComponent implements OnInit {
                   this.spinnerService.hide();
                 }
               );
-              return false;
+            return false;
           } else {
             console.error('Usuario seleccionado no está definido.');
           }
@@ -120,7 +125,7 @@ export class PruebasDeVidaComponent implements OnInit {
         }
       );
   }
-  
+
 
   getPruebasDeVidaPersona(idPersona: number) {
     this.spinnerService.show();
@@ -129,61 +134,93 @@ export class PruebasDeVidaComponent implements OnInit {
         this.spinnerService.hide();
         this.pruebasDeVida = res as PruebaDeVida[];
         console.log(res);
+        this.aplicarFiltros();
       })
   }
 
-  aceptarPruebaDeVida(){
+  aplicarFiltros() {
+    this.pruebasFiltradas = this.pruebasDeVida.filter(prueba => {
+      const fechaPrueba = new Date(prueba.fecha); // Convertir fecha de prueba a objeto Date
+      const cumpleFecha = !this.fechaFiltro || this.formatoFecha(fechaPrueba) === this.fechaFiltro;
+      const cumpleEstado = !this.estadoFiltro || prueba.estado === this.estadoFiltro;
+      return cumpleFecha && cumpleEstado;
+    });
+  }
+
+  formatoFecha(fecha: Date): string {
+    // Formatear la fecha como 'YYYY-MM-DD' para comparación con el filtro
+    const year = fecha.getFullYear();
+    const month = fecha.getMonth() + 1; // Sumar 1 porque los meses van de 0 a 11
+    const day = fecha.getDate();
+
+    const monthStr = (month < 10) ? `0${month}` : `${month}`;
+    const dayStr = (day < 10) ? `0${day}` : `${day}`;
+
+    return `${year}-${monthStr}-${dayStr}`;
+  }
+
+
+  aceptarPruebaDeVida() {
     this.spinnerService.show();
     this.pruebaDeVida.estado = "Aceptada";
     this.pruevaDeVidaService.putPruebaDeVida(this.pruebaDeVida)
-    .subscribe(res => {
-      console.log(res);
-      this.pruebaDeVida = new PruebaDeVida;
-      this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
-      this.modalService.dismissAll();
-      this.spinnerService.hide();
-    })
+      .subscribe(res => {
+        console.log(res);
+        this.pruebaDeVida = new PruebaDeVida;
+        this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+        this.modalService.dismissAll();
+        this.spinnerService.hide();
+      })
   }
 
-  rechazarPruebaDeVida(){
+  rechazarPruebaDeVida() {
     this.spinnerService.show();
     this.pruebaDeVida.estado = "Rechazada";
     this.pruevaDeVidaService.putPruebaDeVida(this.pruebaDeVida)
-    .subscribe(res => {
-      console.log(res);
-      this.pruebaDeVida = new PruebaDeVida;
-      this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
-      this.modalService.dismissAll();
-      this.spinnerService.hide();
-    })
+      .subscribe(res => {
+        console.log(res);
+        this.pruebaDeVida = new PruebaDeVida;
+        this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+        this.modalService.dismissAll();
+        this.spinnerService.hide();
+      })
   }
 
   open(content, prueba: PruebaDeVida) {
     this.pruebaDeVida = prueba;
-    this.imgPruebaDeVida ="";
+    this.imgPruebaDeVida = "";
     this.respondio = true;
     this.getRespuestaPruebaDeVida();
-    this.modalService.open(content, {size: 'xl'});
+    this.modalService.open(content, { size: 'xl' });
   }
 
-  getRespuestaPruebaDeVida(){
+  getRespuestaPruebaDeVida() {
     this.spinnerService.show();
     this.pruevaDeVidaService.getFotoPruebaDeVida(this.pruebaDeVida.idPruebaDeVida).
-    subscribe( res => {
-      this.spinnerService.hide();
-       var foto = res as FotoPruebaDeVida;
-       if (foto == null){
-        this.respondio = false;
-      }
-      else{
-       this.imgPruebaDeVida = foto.foto;
-       console.log(res);
-      }
-     });
+      subscribe(res => {
+        this.spinnerService.hide();
+        var foto = res as FotoPruebaDeVida;
+        if (foto == null) {
+          this.respondio = false;
+        }
+        else {
+          this.imgPruebaDeVida = foto.foto;
+          console.log(res);
+        }
+      });
   }
 
-  cerrarModal(){
+  cerrarModal() {
     this.pruebaDeVida = new PruebaDeVida;
     this.modalService.dismissAll();
   }
+
+  toggleSelect() {
+    this.showSelect = !this.showSelect;
+  }
+
+  toggleFiltros() {
+    this.showFiltros = !this.showFiltros;
+  }
+
 }

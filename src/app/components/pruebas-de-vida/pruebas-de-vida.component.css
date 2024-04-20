@@ -7,7 +7,8 @@
 }
 
 .card{
-    text-align: center
+    text-align: center;
+    width: 300px;
 }
 
 .row{
@@ -52,3 +53,86 @@ img {
 ::ng-deep .modal-backdrop {
     z-index: 1040 !important; 
 }
+
+
+/*Container*/
+
+
+  .row {
+    margin-top: 10px;
+    flex-wrap: nowrap;
+  }
+  
+  .card {
+    background-color: white;
+    color: black;
+    padding: 2.5rem;
+    border: 1px solid black;
+  }
+  
+  .card2 {
+    background-color: white;
+    color: black;
+    padding: 2.5rem;
+    border: 1px solid black;
+    max-width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .table {
+    color: #053667;
+  }
+  
+  
+  .table tr:hover {
+    background-color: azure;
+    cursor: pointer;
+  }
+  
+  .table i:hover {
+    opacity: .3;
+  }
+  
+  .spinner-grow {
+    position: fixed;
+    margin-top: 20%;
+    z-index: 9999;
+  }
+  
+  
+  .image-button {
+  
+    padding: 5px;
+    /* ajusta el relleno según tus necesidades */
+    background-color: transparent;
+    /* quita el fondo del botón */
+    border: none;
+    cursor: pointer;
+  }
+
+  .select-estilo {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 50px;
+    margin-left: 10px;
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .select-estilo::before {
+    content: "*";
+    display: flex;
+  }
+  
+  label{
+    margin-top: 10px;
+  }
+ 
+  
+  

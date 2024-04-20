@@ -92,19 +92,60 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let prueba of pruebasDeVida">
-                        <td class="joinedDate">{{prueba.fecha | date:'dd-MM-yyyy HH:mm'}}</td>
-                        <td>{{prueba.descripcion}}</td>
-                        <td>{{prueba.estado}}</td>
+                    <tr *ngFor="let prueba of pruebasFiltradas">
+                        <td class="joinedDate">{{ prueba.fecha | date:'dd-MM-yyyy HH:mm' }}</td>
+                        <td>{{ prueba.descripcion }}</td>
+                        <td>{{ prueba.estado }}</td>
                         <td>
-                            <a (click)="open(content, prueba)" *ngIf="prueba.estado=='Pendiente'">
-                                <i class="material-icons">insert_photo </i>
+                            <a (click)="open(content, prueba)" *ngIf="prueba.estado === 'Pendiente'">
+                                <i class="material-icons">insert_photo</i>
                             </a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+                <!-- Filtros -->
+                <div class="contenedor-filtros">
+                    <div class="filtro">
+                        <button class="image-button" (click)="toggleFiltros()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
+                                <path
+                                    d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                            </svg>
+                        </button>
+                    </div>
+            
+                    <div class="card2" *ngIf="showFiltros">
+                        <div class="card-body">
+                            <legend>Filtrar por:</legend>
+            
+                            <!-- Filtro por Fecha -->
+                            <label>Fecha:</label>
+                            <div class="row input-texto-before-grupo">
+                                <div class="input-group">
+                                    <input class="form-control input-texto" type="date" name="fechaFiltro" [(ngModel)]="fechaFiltro">
+                                </div>
+                            </div>
+            
+                            <!-- Filtro por Estado -->
+                            <div class="row form-group btn-block input-before-selector-estado">
+                                <label>Estado:</label>
+                                <select class="select-estilo" name="estadoFiltro" [(ngModel)]="estadoFiltro">
+                                    <option value="">Todos</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Aceptada">Aceptada</option>
+                                    <option value="Rechazada">Rechazada</option>
+                                </select>
+                            </div>
+            
+                            <!-- Botón de Filtrar -->
+                            <button class="btn btn-primary btn-block" (click)="aplicarFiltros()">Filtrar</button>
+                        </div>
+                    </div>
+                </div>
     </div>
 
+    
 </div>
