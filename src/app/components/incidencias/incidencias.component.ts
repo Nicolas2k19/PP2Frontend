@@ -26,6 +26,7 @@ export class IncidenciasComponent implements OnInit {
 
 
   //filtros
+  showSelect :boolean = false;
   filtroSeleccionado: string;
 
 
@@ -43,10 +44,8 @@ export class IncidenciasComponent implements OnInit {
   getRestriccion() {
     this.restriccion = this.comunicacionServicio.restriccionDTO;
     if (this.restriccion != null) {
-      document.getElementById("restriccionSeleccionada").innerHTML = ""
-        + this.restriccion.victimario.apellido + ", " + this.restriccion.victimario.nombre +
-        " - "
-        + this.restriccion.damnificada.apellido + ", " + this.restriccion.damnificada.nombre;
+      document.getElementById("restriccionSeleccionada").innerHTML ="Incidencias de la restricción #"
+        + this.restriccion.restriccion.idRestriccion;
     }
   }
 
@@ -167,5 +166,13 @@ export class IncidenciasComponent implements OnInit {
       this.parseIncidencias();
     });}
   }
+
+toggleSelect(){
+
+  this.showSelect = !this.showSelect;
+}
+
+
+
 
 }

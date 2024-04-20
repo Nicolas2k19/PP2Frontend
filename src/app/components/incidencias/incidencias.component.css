@@ -1,12 +1,12 @@
-.container{
+.container {
     color: #053667;
 }
 
-.table{
+.table {
     color: #053667;
 }
 
-.row{
+.row {
     margin-top: 10px;
 }
 
@@ -15,10 +15,113 @@
     cursor: pointer;
 }
 
-.table i:hover{
+.table i:hover {
     opacity: .3;
 }
-th{
-    background-color: black;
-    color:white;
+
+th {
+    background-color: #480971;
+    color: white;
+}
+
+.incidencia-head {
+    background-color: #8d3aff63 ! important;
+    color: black;
+
+}
+
+
+
+.select-estilo {
+    border: 1px solid white;
+    border-radius: 10px;
+    height: 40px;
+    background-color: white;
+    color: black;
+}
+
+.select-estilo::before {
+    content: "*";
+    display: flex;
+}
+
+
+
+.btn-incidencia-filtro {
+
+    background-color: #4f0083;
+    color: white;
+    border-radius: 50px;
+    border-color: white;
+    font-size: 12px;
+    height: 32px;
+    width: 70px;
+
+}
+
+.navbar-brand::after {
+
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+
+
+}
+
+
+@keyframes animacionafter {
+
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+
+    
+}
+
+.image-button {
+    background-color: #8d3aff63;
+    border-color: transparent;
+    color: #480971;
+}
+
+.filtro{
+
+    position: absolute;
+    display: contents;
+}
+
+.form-filtro{
+    gap: 10px;
+}
+
+.edit-icon{
+    color: #480971;
+}
+
+
+.btn-save{
+
+    background-color: #4f0083;
+    color: white;
+    border-radius: 50px;
+    border-color: white;
+    font-size: 12px;
+    height: 32px;
+    width: 70px;
+
+
+}
+
+.pelig{
+    display: flex;
+    gap: 10px;
+    height: 80px;
+    align-items: center;
 }

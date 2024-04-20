@@ -4,14 +4,13 @@
     </ngx-spinner>
     <div class="row">
         <div class="col">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand">Restricción: </a>
-                <a id="restriccionSeleccionada"></a>
-                <div class="collapse navbar-collapse" id="navbarColor03">
-                    <ul class="navbar-nav mr-auto">
+            <nav class="navbar navbar-expand-lg navbar-light incidencia-head">
+                <a class="navbar-brand" id="restriccionSeleccionada"> </a>
+                <div class="collapse navbar-collapse" id="navbarColor03" >
+                    <ul class="navbar-nav mr-auto" *ngIf="showSelect">
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <select class="form-control" name="tipoIncidencia" [(ngModel)]="filtroSeleccionado" ngbTooltip="Filtrar por:" required>
+                    <form class="form-inline my-2 my-lg-0 form-filtro" *ngIf="showSelect">
+                        <select class=" select-estilo" name="tipoIncidencia" [(ngModel)]="filtroSeleccionado" ngbTooltip="Filtrar por:" required>
                             <option value="1">Todas</option>
                             <option value="VictimarioIlocalizable">Victimario ilocalizable</option>
                             <option value="DamnificadaIlocalizable">Damnificada ilocalizable</option>
@@ -24,11 +23,20 @@
 
                             
                         </select>
-                        <button class="btn btn-secondary my-2 my-sm-0" type="button"
+                        <button class="btn-incidencia-filtro btn-secondary my-2 my-sm-0" *ngIf="showSelect" type="button"
                             (click)="filtroIncidencia()">Search</button>
                     </form>
                 </div>
             </nav>
+        </div>
+        <div class="filtro" >
+            <button class="image-button" (click)="toggleSelect()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" 
+                    class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
+                    <path
+                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                </svg>
+            </button>
         </div>
     </div>
     <br>
@@ -48,7 +56,7 @@
                         <td>{{incidencia.topico}}</td>
                         <td class="joinedDate">{{incidencia.fecha | date:'dd-MM-yyyy HH:mm'}}</td>
                         <td>{{incidencia.descripcion}}</td>
-                        <td>
+                        <td class="pelig">
                             <div
                                 *ngIf="!editandoPeligrosidad && incidencia.peligrosidad !== 'NO_CATEGORIZADO'; else editPeligrosidad">
                                 {{ incidencia.peligrosidad }}
@@ -57,7 +65,7 @@
                             <ng-template #editPeligrosidad>
 
                                 <a (click)="guardarPeligrosidad = !guardarPeligrosidad" *ngIf=" guardarPeligrosidad === false ">
-                                    No definido <i class="material-icons">edit</i>
+                                    No definido <i class="material-icons edit-icon">edit</i>
                                 </a>
 
 
@@ -68,7 +76,7 @@
                                     <option value="MEDIA">Media</option>
                                     <option value="BAJA">Baja</option>
                                 </select>
-                                <button (click)=" guardandoPeligrosidad(incidencia) " 
+                                <button class = "btn-save" (click)=" guardandoPeligrosidad(incidencia) " 
                                 *ngIf=" guardarPeligrosidad" >Guardar</button>
 
 
