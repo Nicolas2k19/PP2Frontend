@@ -22,4 +22,8 @@ export class IncidenciaService {
     return this.http.get(this.URL_API + '/' + idRestriccion + '/' + cant);
   }
 
+  updateIncidencia(incidencia : Incidencia){
+    console.log(incidencia.topico);
+    return this.http.post(this.URL_API + "/agregar", incidencia);
+  }
 }

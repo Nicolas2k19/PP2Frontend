@@ -18,3 +18,7 @@
 .table i:hover{
     opacity: .3;
 }
+th{
+    background-color: black;
+    color:white;
+}

@@ -1,11 +1,12 @@
 export class Incidencia {
 
-    constructor(idIncidencia = 0, fecha = null, descripcion = '', topico = '', idRestriccion = 0) {
+    constructor(idIncidencia = 0, fecha = null, descripcion = '', topico = '', idRestriccion = 0, peligrosidad= '') {
             this.idIncidencia=idIncidencia;
             this.fecha=fecha;
             this.descripcion=descripcion;
             this.topico=topico;
             this.idRestriccion=idRestriccion;
+            this.peligrosidad = peligrosidad;
     }
 
     idIncidencia: number;
@@ -13,4 +14,5 @@ export class Incidencia {
     descripcion: string;
     topico: string;
     idRestriccion: number;
+    peligrosidad: string;
 }
