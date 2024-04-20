@@ -11,10 +11,18 @@
                     <ul class="navbar-nav mr-auto">
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
-                        <select class="form-control" name="tipoIncidencia" ngbTooltip="Tipo de Incidencia" required>
+                        <select class="form-control" name="tipoIncidencia" [(ngModel)]="filtroSeleccionado" ngbTooltip="Filtrar por:" required>
                             <option value="1">Todas</option>
-                            <option value="2">Infracciones</option>
-                            <option value="3">Pruebas de vida</option>
+                            <option value="VictimarioIlocalizable">Victimario ilocalizable</option>
+                            <option value="DamnificadaIlocalizable">Damnificada ilocalizable</option>
+                            <option value="PruebaDeVidaFallida">Prueba de vida</option>
+                            <option value="InfraccionDeRestriccion">Infracción</option>
+                            <option value="FueraDeRutina">Fuera de rutina</option>
+                            <option value="PeligrosidadA">Peligrosidad alta</option>
+                            <option value="PeligrosidadM">Peligrosidad media</option>
+                            <option value="PeligrosidadB">Peligrosidad baja</option>
+
+                            
                         </select>
                         <button class="btn btn-secondary my-2 my-sm-0" type="button"
                             (click)="filtroIncidencia()">Search</button>

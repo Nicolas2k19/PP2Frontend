@@ -20,16 +20,13 @@ export class IncidenciasComponent implements OnInit {
 
 
   //peligrosidad
-
   editandoPeligrosidad: boolean = false;
-
   guardarPeligrosidad: boolean = false;
-
-  guardado: boolean = false;
-
-
   peligrosidadElegida: string;
 
+
+  //filtros
+  filtroSeleccionado: string;
 
 
   constructor(private comunicacionServicio: ComunicacionService,
@@ -58,25 +55,29 @@ export class IncidenciasComponent implements OnInit {
     this.incideciaServicio.getIncidenciasPorRestriccion(idRestriccion, this.cantidadIncidencias)
       .subscribe(res => {
         this.incidencias = res as Incidencia[];
-        for (var i = 0; i < this.incidencias.length; i++) {
-          if (this.incidencias[i].topico == "VictimarioIlocalizable") {
-            this.incidencias[i].topico = "Victimario ilocalizable";
-          }
-          if (this.incidencias[i].topico == "DamnificadaIlocalizable") {
-            this.incidencias[i].topico = "Damnificada ilocalizable";
-          }
-          if (this.incidencias[i].topico == "PruebaDeVidaFallida") {
-            this.incidencias[i].topico = "Prueba de vida fallida";
-          }
-          if (this.incidencias[i].topico == "InfraccionDeRestriccion") {
-            this.incidencias[i].topico = "Infraccion de restriccion";
-          }
-          if (this.incidencias[i].topico == "FueraDeRutina") {
-            this.incidencias[i].topico = "Fuera de rutina";
-          }
-        };
+        this.parseIncidencias();
         this.spinnerService.hide();
       });
+  }
+
+  private parseIncidencias() {
+    for (var i = 0; i < this.incidencias.length; i++) {
+      if (this.incidencias[i].topico == "VictimarioIlocalizable") {
+        this.incidencias[i].topico = "Victimario ilocalizable";
+      }
+      if (this.incidencias[i].topico == "DamnificadaIlocalizable") {
+        this.incidencias[i].topico = "Damnificada ilocalizable";
+      }
+      if (this.incidencias[i].topico == "PruebaDeVidaFallida") {
+        this.incidencias[i].topico = "Prueba de vida fallida";
+      }
+      if (this.incidencias[i].topico == "InfraccionDeRestriccion") {
+        this.incidencias[i].topico = "Infraccion de restriccion";
+      }
+      if (this.incidencias[i].topico == "FueraDeRutina") {
+        this.incidencias[i].topico = "Fuera de rutina";
+      }
+    };
   }
 
   getIncidenciasPorTopico(topico: string) {
@@ -156,8 +157,15 @@ export class IncidenciasComponent implements OnInit {
   }
 
 
+  /** Filtro de incidencias, filtra las incidencias según el select seleccionado.*/
 
   filtroIncidencia() {
-    console.log("filtrando ando")
+    if (this.filtroSeleccionado == "1") {
+      this.getIncidenciasPorRestriccion(this.restriccion.restriccion.idRestriccion);
+    } else{ this.incideciaServicio.getIncidenciasPorTopico(this.filtroSeleccionado, this.restriccion.restriccion.idRestriccion).subscribe(res => {
+      this.incidencias = res as Incidencia[];
+      this.parseIncidencias();
+    });}
   }
+
 }
