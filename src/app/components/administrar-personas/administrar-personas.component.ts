@@ -103,6 +103,7 @@ export class AdministrarPersonasComponent implements OnInit {
           this.personaDTOSelleccionada = new FormPersonaDTO;
           this.spinner.hide();
           this.toastr.success("Se ha modificado al usuario");
+          this.cambiarAVentanaPersona()
         });
     }
     else{
@@ -118,18 +119,13 @@ export class AdministrarPersonasComponent implements OnInit {
   }
 
   /**
-   * Agrega a una perosona
+   * Agrega a una persona
    * @param personaForm 
    */
   agregarPersona(personaForm: NgForm) {
     this.spinner.show();
     console.log("Estoy en agregar")
     //CARGO DATOS DEL FORM A PERSONA
-    /*this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
-    let ngbDate = personaForm.value.fechaNacimiento;
-    let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
-    this.personaDTOSelleccionada.persona.fechaNacimiento = myDate;*/
-
     //Logica para leer el archivo y guardarlo
     //Guardo la instancia del componente para usar dentro de la promesa, y el BLOB
     var imgSeleccionadaBlob;
@@ -144,14 +140,16 @@ export class AdministrarPersonasComponent implements OnInit {
       let img: string = imgBase64 as string;
       thisjr.personaDTOSelleccionada.foto = img;
       thisjr.personaService.postPersona(thisjr.personaDTOSelleccionada)
-        .subscribe(res => {
+        .subscribe(res => {   
           console.log("Estoy en el post con error")
           var error = res as ErrorDTO;
+          
           if (error.hayError) {
             //MOSTRAR ERROR
             thisjr.toastr.error("Ha ocurrido un error" + error.mensajeError, "Error!");
-            thisjr.setHayError();
-            this.spinner.hide();
+            thisjr.spinner.hide();
+            personaForm.reset();
+            
           }
           else {
             thisjr.toastr.success("Persona agregada correctamente", "Agregada!");
@@ -159,12 +157,11 @@ export class AdministrarPersonasComponent implements OnInit {
             console.log(thisjr.personaDTOSelleccionada);
             thisjr.getPersonas();
             personaForm.reset();
-            this.spinner.hide();
+            thisjr.spinner.hide();
           }
+          thisjr.cambiarAVentanaPersona()
+         
         })
-
-
-
     })
 
     /**
@@ -188,6 +185,7 @@ export class AdministrarPersonasComponent implements OnInit {
   setHayError(): void {
     this.hayError = true;
     setTimeout(() => {
+      console.log("Ahora estoy en falso señor")
       this.hayError = false;
     }, 5000);
   }
@@ -286,7 +284,7 @@ export class AdministrarPersonasComponent implements OnInit {
 
     this.getLocalidad(persona.direccion.idLocalidad);
     this.cambioRol();
-    this.negarMostrarDomicilio(persona);
+    this.cambiarAVentanaPersona()
   }
 
     //BUSCO LA LOCALIDAD DE LA PERSONA PARA TOMAR LA PROVINCIA 
@@ -320,9 +318,6 @@ export class AdministrarPersonasComponent implements OnInit {
       this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
       let tipo : string  = this.personaDTOSelleccionada.usuario.rolDeUsuario;
 
-     
-
-
       if(nombre==""||apellido==""||dni==""||telefono==""||fechaNac==null||tipo==""||email==""){    
         this.toastr.error("Faltan campos que llenar", "Error!");
         return;
@@ -333,9 +328,13 @@ export class AdministrarPersonasComponent implements OnInit {
       this.personaDTOSelleccionada.persona.fechaNacimiento = myDate
 
       this.toastr.success("Se ha verificado al usuario");
-      this.mostrarDomicilio = !this.mostrarDomicilio;
-      console.log(this.editarBandera)
-      console.log("Esta es la bandera")
+      this.mostrarDomicilio = !this.mostrarDomicilio;  
+    }
+
+
+    cambiarAVentanaPersona(){
+      this.mostrarDomicilio = false;
+      console.log("Este es el valor "+ this.mostrarDomicilio)
     }
     
   
