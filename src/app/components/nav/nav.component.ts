@@ -26,13 +26,14 @@ export class NavComponent implements OnInit {
     this.rolDeUsuario =  localStorage.getItem('rolUsuario');
     this.usuarioLogeado = localStorage.getItem('emailUsuario');
 
-    /*
+    
     clearInterval(this.intervalo);
     let thisjr = this;
     this.intervalo = setInterval(function () {
       thisjr.controlarNotificaciones(thisjr);
-    }, 6000);
-    */
+    }, 2000); 
+    
+    
   }
 
   controlarNotificaciones(thisjr) {
