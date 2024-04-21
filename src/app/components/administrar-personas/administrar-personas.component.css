@@ -11,15 +11,16 @@
 
 .card{
     text-align: left;
-    background-color: #fff;
+    background-color: #8d3aff63;
     padding: 2.5rem;
+    transition: all 10s ease-in-out;
 }
 
 /*Estilos tabla*/
 
 
 th{
-    background-color: #000;
+    background-color: #480971;
     color: #fff;
 }
 
@@ -48,7 +49,7 @@ th{
 
 /*Estilos campos de ingreso de datos de texto */
 .input-texto {
-    background-color: #fff;
+    background-color: inherit;
     border: 0px solid #fff;
     border-radius: 0;
     border-bottom: 1px solid black;
@@ -91,7 +92,7 @@ th{
   }
 
   .input-texto-before-nacimiento::before{
-    content: "Fecha de nacimiento de la persona *";
+    content: "Fecha de nacimiento *";
     font-size: 0.7rem;
     text-align: left;
 
@@ -108,7 +109,6 @@ th{
   /*Estilo selector*/
   .select-estilo {
     width: 100%;
-    border: 1px solid black;
     border-radius: 5px;
     height: 50px;
     background-color: white;
@@ -179,7 +179,7 @@ legend {
   
   legend::after {
     content: "";
-    border-bottom: 5px solid #212529;
+    border-bottom: 5px solid #480971;
     display: flex;
     animation-name: animacionafter;
     animation-duration: 3s;

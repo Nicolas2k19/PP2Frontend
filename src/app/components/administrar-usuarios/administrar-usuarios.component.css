@@ -1,5 +1,5 @@
 th {
-  background-color: black;
+  background-color: #480971;
   color: white;
   cursor: pointer;
 }
@@ -21,7 +21,7 @@ td {
 }
 
 .input-texto {
-  background-color: #fff;
+  background-color: inherit;
   border: 0px solid #fff;
   border-radius: 0;
   border-bottom: 1px solid black;
@@ -94,7 +94,7 @@ td {
 }
 
 .card {
-  background-color: white;
+  background-color: #8d3aff63;
   color: black;
   padding: 2.5rem;
   border: 1px solid black;
@@ -182,7 +182,7 @@ legend {
 
 legend::after {
   content: "";
-  border-bottom: 5px solid #212529;
+  border-bottom: 5px solid #480971;
   display: flex;
   animation-name: animacionafter;
   animation-duration: 3s;
