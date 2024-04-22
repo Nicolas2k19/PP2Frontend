@@ -158,7 +158,7 @@ th{
 
 .btn{
     width: fit-content;
-    background-color: black;
+    background-color: #480971;
     color: white;
 }
 
@@ -167,6 +167,18 @@ th{
   margin-top: 1rem;
 }
 
+.image-button {
+  border-color: transparent;
+  color: #480971;
+}
+
+
+
+/*Iconos google fonts*/
+
+.material-icons{
+  color: #480971;
+}
 
 
 

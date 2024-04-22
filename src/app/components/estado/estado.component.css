@@ -12,6 +12,15 @@ form{
     
 }
 
+/*Iconos google fonts*/
+
+.material-icons{
+    color: #480971;
+}
+  
+
+
+
 button{
     margin-top: 1rem;
     padding: .5rem;
