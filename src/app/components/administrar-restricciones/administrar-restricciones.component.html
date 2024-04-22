@@ -67,6 +67,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th scope="col" >N°</th>
                         <th scope="col" (click)="ordenarPorVictimario()">Victimario</th>
                         <th scope="col" (click)="ordenarPorDamnificada()">Damnificada</th>
                         <th scope="col" (click)="ordenarPorAdministrativo()">Administrativo</th>
@@ -76,10 +77,11 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let restriccion of restriccionService.restricciones">
+                        <td>{{restriccion.restriccion.idRestriccion}}</td>
                         <td>{{restriccion.victimario.dni}}</td>
                         <td>{{restriccion.damnificada.dni}}</td>
                         <td>{{restriccion.administrativo.email}}</td>
-                        <td>{{restriccion.restriccion.idGrupo}}</td>
+                        <td>#{{restriccion.restriccion.idGrupo}}-{{restriccion.grupo.nombreGrupo}}</td>
                         <td class="iconos">
                             <a (click)="editarRestriccion(restriccion)">
                                 <i class="material-icons">edit</i>

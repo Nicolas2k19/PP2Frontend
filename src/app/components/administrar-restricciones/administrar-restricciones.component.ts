@@ -238,7 +238,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
    * Obtiene todas las restricciones
    */
   getRestricciones() {
-    console.log("Estoy llamando y te rompo todo")
     this.spinner.show();
     this.restriccionService.getRestricciones()
       .subscribe(res => {
@@ -276,7 +275,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
    * @returns boolean
    */
   agregarDamnificada() {
-    console.log("Hola")
     console.log(this.damnificada.dni)
     if (this.stringVacio(this.damnificada.dni)) {
       this.setErrorCampoDamnificada();
@@ -469,17 +467,12 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
 
     this.modalAbierta = true;
-
-
-    console.log("mas info");
   }
 
 
   cerrarModal() {
 
     this.modalAbierta = false;
-
-    console.log("cerrar ventana modal")
   }
 
 
