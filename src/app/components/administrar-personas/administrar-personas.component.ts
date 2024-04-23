@@ -50,6 +50,13 @@ export class AdministrarPersonasComponent implements OnInit {
 
 
 
+  ordenApellido : boolean;
+  ordenNombre : boolean;
+  ordenEdad : boolean;
+  ordenFechaNac : boolean;
+  ordenDni : boolean;
+
+
   constructor(
     public personaService: PersonaService,
     private toastr: ToastrService,
@@ -58,6 +65,11 @@ export class AdministrarPersonasComponent implements OnInit {
     private spinner: NgxSpinnerService) {
     this.roles = ['DAMNIFICADA', 'VICTIMARIO'];
     this.mostrarDomicilio = false;
+    this.ordenApellido = false;
+    this.ordenNombre = false;
+    this.ordenEdad = false;
+    this.ordenFechaNac = false;
+    this.ordenDni = false;
   }
 
   ngOnInit() {
@@ -336,6 +348,88 @@ export class AdministrarPersonasComponent implements OnInit {
       this.mostrarDomicilio = false;
       console.log("Este es el valor "+ this.mostrarDomicilio)
     }
+
+
+    /**Ordena por orden alfabetico  la tabla de personas, tomando como referencia los nombres.
+     * @returns void
+     * @author Nicolás
+     */
+    ordenarPorNombreAscendente(){
+      let orden : number = this.ordenNombre ?  1:-1
+
+      let personas : FormPersonaDTO[] = this.personaService.personas;
+      personas.sort((a,b)=>{
+        if(a.persona.nombre > b.persona.nombre){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenNombre = !this.ordenNombre;
+
+    }
+
+
+    /**Ordena por orden alfabetico  la tabla de personas, tomando como referencia los nombres.
+     * @returns void
+     * @author Nicolás
+     */
+    ordenarPorApellidoAscendente(){
+      let orden : number = this.ordenApellido ?  1:-1
+      let personas : FormPersonaDTO[] = this.personaService.personas;
+      personas.sort((a,b)=>{
+        if(a.persona.apellido > b.persona.apellido){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenApellido = !this.ordenApellido;
+
+    }
+
+    /**Ordena la tabla de personas, tomando como referencia el dni.
+     * @returns void
+     * @author Nicolás
+     */
+
+    ordenarPorDNIAscendente(){
+      let orden : number = this.ordenDni ?  1:-1
+
+
+      let personas : FormPersonaDTO[] = this.personaService.personas;
+      personas.sort((a,b)=>{
+        if(a.persona.dni > b.persona.dni){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenDni = !this.ordenDni;
+
+    }
+
+    /**Ordena la tabla de personas, tomando como referencia la edad.
+     * @returns void
+     * @author Nicolás
+     */
+
+    ordenarPorEdad(){
+      let orden : number = this.ordenEdad ?  1:-1
+
+
+      let personas : FormPersonaDTO[] = this.personaService.personas;
+      personas.sort((a,b)=>{
+        if(a.persona.fechaNacimiento > b.persona.fechaNacimiento){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenEdad = !this.ordenEdad;
+
+    }
+    
     
   
 }
