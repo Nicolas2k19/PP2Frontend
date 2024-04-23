@@ -24,6 +24,10 @@ th{
     color: #fff;
 }
 
+td{
+  cursor: default;
+}
+
 
 .table{
     color: #053667;
