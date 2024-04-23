@@ -17,6 +17,7 @@ import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Persona } from 'src/app/models/persona';
 import { UbicacionDto } from 'src/app/models/ubicacion-dto';
 import { ToastrService } from 'ngx-toastr';
+import { MapService } from '../../services/mapa/mapa.service';
 
 @Component({
   selector: 'app-rutinas',
@@ -36,53 +37,21 @@ export class RutinasComponent implements OnInit {
   seleccioneRestriccion = false;
   ubicacionesRestriccion: UbicacionDto;
 
-  //VARIABLES PARA EL MAPA
-  map: OlMap;
-  mapSource: OlXYZ;
-  capaMapa: OlTileLayer;
-  vistaMapa: OlView;
-  vectorUbicaciones: VectorSource;
-  capaUbicaciones: VectorLayer;
 
 
   constructor(private ubicacionService: UbicacionService, private comunicacion: ComunicacionService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService, private mapService: MapService) { }
 
   ngOnInit() {
     console.log("estoy iniciando la pantalla rutina")
-    this.iniciarMapa();
+    this.mapService.iniciarMapa('map2');
     if (this.comunicacion.restriccionDTO != null) {
       var victimario = this.comunicacion.restriccionDTO.victimario;
       this.victimarioSeleccionado = victimario.apellido + ", " + victimario.nombre;
       this.seleccioneRestriccion = true;
       console.log("este es mi victimario" + this.victimarioSeleccionado);
-      
+      this.mostrarRutina()
     }
-  }
-
-  iniciarMapa() {
-    //Fuente del mapa,
-    this.mapSource = new OlXYZ({
-      url: 'http://tile.osm.org/{z}/{x}/{y}.png'
-    });
-
-    //Capa para mostrar el mapa
-    this.capaMapa = new OlTileLayer({
-      source: this.mapSource
-    });
-
-    //Centro el mapa en la UNGS O en cualquier lado
-    this.vistaMapa = new OlView({
-      center: fromLonLat([-58.700233, -34.522249]),
-      zoom: 17
-    });
-
-    //Creo el mapa con las capas y la vista
-    this.map = new OlMap({
-      target: 'map',
-      layers: [this.capaMapa],
-      view: this.vistaMapa
-    });
   }
 
   mostrarRutina() {
@@ -97,7 +66,7 @@ export class RutinasComponent implements OnInit {
             if(this.ubicacionPromedio==null){
               this.toastr.error("No hay ubicación rutinaria para los datos seleccionados");
               return;
-            }
+            }else{
 
             var markerVictimario: Feature;
             var perimetro: Feature;
@@ -126,25 +95,18 @@ export class RutinasComponent implements OnInit {
             }));
 
             //Borro lo dibujado anteriormente en el mapa
-            var layers = this.map.getLayers().getArray();
-            for (var i = layers.length - 1; i >= 1; --i) {
-              var layer = layers[i];
-              this.map.removeLayer(layer);
-            }
+            this.mapService.clearLayers()
 
             //Creo el vector y capa para mostrar Area rutinaria y la ubicacion
-            this.vectorUbicaciones = new VectorSource({
-              features: [markerVictimario, perimetro]
-            });
-            this.capaUbicaciones = new VectorLayer({
-              source: this.vectorUbicaciones
-            });
+            this.mapService.mostrarUbicaciones(markerVictimario,null,perimetro)
 
             //CENTRO EL MAPA EN LA UBICACION VICTIMARIO Y AÑADO LA CAPA
-            this.vistaMapa.setCenter(fromLonLat([this.ubicacionesRestriccion.ubicacionVictimario.longitud,
-            this.ubicacionesRestriccion.ubicacionVictimario.latitud]));
-            this.map.addLayer(this.capaUbicaciones);
+            this.mapService.centrarMapa(this.ubicacionesRestriccion.ubicacionVictimario.longitud,
+              this.ubicacionesRestriccion.ubicacionVictimario.latitud);
+                         
+            }
           });
+             
       });
   }
 

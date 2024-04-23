@@ -19,6 +19,7 @@ import { UbicacionDto } from 'src/app/models/ubicacion-dto';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
 import { Usuario } from 'src/app/models/usuario';
+import { MapService } from '../../services/mapa/mapa.service';
 
 @Component({
   selector: 'app-restricciones',
@@ -28,14 +29,6 @@ import { Usuario } from 'src/app/models/usuario';
 })
 export class RestriccionesComponent implements OnInit {
 
-  //VARIABLES PARA EL MAPA
-  map: OlMap;
-  mapSource: OlXYZ;
-  capaMapa: OlTileLayer;
-  vistaMapa: OlView;
-  vectorUbicaciones: VectorSource;
-  capaUbicaciones: VectorLayer;
-
   //UBICACIONES UTILIZADAS PARA MOSTRAR EN EL MAPA
   ubicacionVictimario: Ubicacion;
   ubicacionDamnificada: Ubicacion;
@@ -44,12 +37,12 @@ export class RestriccionesComponent implements OnInit {
 
   constructor(public restriccionService: RestriccionService, private comunicacion: ComunicacionService,
     private ubicacionService: UbicacionService, private spinnerService: NgxSpinnerService,
-    private usuarioService: UsuarioService) { }
+    private usuarioService: UsuarioService,private mapService: MapService) { }
 
   ngOnInit() {
     this.getRestricciones(localStorage.getItem("emailUsuario"));
     this.getUsuarioByEmail(localStorage.getItem("emailUsuario"));
-    this.iniciarMapa();
+    this.mapService.iniciarMapa('map');
     console.log(this.comunicacion.administrativo.email);
   }
 
@@ -81,30 +74,7 @@ export class RestriccionesComponent implements OnInit {
     })
   }
 
-  iniciarMapa() {
-    //Fuente del mapa,
-    this.mapSource = new OlXYZ({
-      url: 'http://tile.osm.org/{z}/{x}/{y}.png'
-    });
-
-    //Capa para mostrar el mapa
-    this.capaMapa = new OlTileLayer({
-      source: this.mapSource
-    });
-
-    //Centro el mapa en la UNGS O en cualquier lado
-    this.vistaMapa = new OlView({
-      center: fromLonLat([-58.700233, -34.522249]),
-      zoom: 17
-    });
-
-    //Creo el mapa con las capas y la vista
-    this.map = new OlMap({
-      target: 'map',
-      layers: [this.capaMapa],
-      view: this.vistaMapa
-    });
-  }
+  
 
   mostrarRestriccion() {
     var markerVictimario: Feature;
@@ -151,23 +121,14 @@ export class RestriccionesComponent implements OnInit {
         this.pintarPerimetro(perimetro);
 
         //Borro lo dibujado anteriormente en el mapa
-        var layers = this.map.getLayers().getArray();
-        for (var i = layers.length - 1; i >= 1; --i) {
-          var layer = layers[i];
-          this.map.removeLayer(layer);
-        }
+        this.mapService.clearLayers();
 
         //Creo el vector y capa para mostrar las ubicaciones
-        this.vectorUbicaciones = new VectorSource({
-          features: [markerVictimario, markerDamnificada, perimetro]
-        });
-        this.capaUbicaciones = new VectorLayer({
-          source: this.vectorUbicaciones
-        });
+        this.mapService.mostrarUbicaciones(markerVictimario, markerDamnificada, perimetro)
 
         //CENTRO EL MAPA EN LA UBICACION DE LA DAMNIFICADA Y AÑADO LA CAPA
-        this.vistaMapa.setCenter(fromLonLat([this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud]));
-        this.map.addLayer(this.capaUbicaciones);
+        this.mapService.centrarMapa(this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud)
+
       });
 
 
