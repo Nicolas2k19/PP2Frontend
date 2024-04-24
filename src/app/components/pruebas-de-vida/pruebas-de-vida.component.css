@@ -1,138 +1,275 @@
-.container{
-    color: #053667;
+.container {
+  color: black;
 }
 
-.table{
-    color: #053667;
+.table {
+  color: #480971; 
 }
 
-.card{
-    text-align: center;
-    width: 300px;
+
+
+.card {
+  background-color: #8d3aff63;
+  color: black;
+  padding: 2.5rem;
+  border: 1px solid black;
+  width: 290px;
 }
 
-.row{
-    margin-top: 10px;
+legend{
+  text-align: center;
+  margin-bottom: 10px;
 }
 
-.form-group{
-    margin-top: 10px;
+.contenedor-filtros{
+  margin-left: -15px;
 }
+
+.card2 {
+  background-color: white; 
+  color: black; 
+  padding: 1.5rem;
+  border: 1px solid black;
+  max-width: 300px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card2 legend {
+  color: #480971;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.card2 label {
+  color: #480971;
+}
+
+.card2 input[type="date"],
+.card2 select {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 15px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.card2 button {
+  background-color: #480971;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.card2 button:hover {
+  background-color: #6e1eff;
+}
+
+.form-group {
+  margin-bottom: 10px; 
+}
+
+
+.btn-block {
+  background-color: #480971;
+  color: white;
+}
+
+.row {
+  margin-top: 10px;
+}
+
+.form-group {
+  margin-top: 10px;
+}
+
 .table tr:hover {
-    background-color: azure;
-    cursor: pointer;
+  background-color: #480971;
+  cursor: pointer;
 }
 
-.table i:hover{
-    opacity: .3;
+.table i:hover {
+  opacity: 0.3;
 }
 
-.modal-body{
-    text-align: center;
+.modal-body {
+  text-align: center;
 }
 
-.modal-footer{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.modal-footer {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
-.spinner-grow{
-    position: fixed;
-    margin-top: 20%;
-    z-index: 9999;
+.spinner-grow {
+  position: fixed;
+  margin-top: 20%;
+  z-index: 9999;
 }
 
 ::ng-deep .modal-backdrop {
-    z-index: 1040 !important; 
+  z-index: 1040 !important;
+}
+
+.navbar {
+  background-color: #8d3aff63;
+}
+
+.row {
+  margin-top: 10px;
+  flex-wrap: nowrap;
+}
+
+.table {
+  color: #8d3aff63;
+}
+
+.table tr:hover {
+  background-color: azure;
+  cursor: pointer;
+}
+
+.table i:hover {
+  opacity: .3;
+}
+
+.table thead th {
+  background-color: #480971;
+  color: white;
+  padding: 5px; 
+  text-align: left;
+  padding-left: 20px;
+  vertical-align: middle; 
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 
-/*Container*/
+.icon-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px; 
+  display: flex;
+  align-items: center; 
+}
+
+.icon-button .material-icons {
+  vertical-align: middle; 
+  margin-left: 4px; 
+}
+
+.material-icons {
+  color: white; 
+}
+
+.photo-icon{
+  color: #480971;
+}
 
 
-  .row {
-    margin-top: 10px;
-    flex-wrap: nowrap;
-  }
-  
-  .card {
-    background-color: white;
-    color: black;
-    padding: 2.5rem;
-    border: 1px solid black;
-  }
-  
-  .card2 {
-    background-color: white;
-    color: black;
-    padding: 2.5rem;
-    border: 1px solid black;
-    max-width: fit-content;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .table {
-    color: #053667;
-  }
-  
-  
-  .table tr:hover {
-    background-color: azure;
-    cursor: pointer;
-  }
-  
-  .table i:hover {
-    opacity: .3;
-  }
-  
-  .spinner-grow {
-    position: fixed;
-    margin-top: 20%;
-    z-index: 9999;
-  }
-  
-  
-  .image-button {
-  
-    padding: 5px;
-    /* ajusta el relleno según tus necesidades */
-    background-color: transparent;
-    /* quita el fondo del botón */
-    border: none;
-    cursor: pointer;
-  }
+.table i:hover {
+  opacity: 0.3;
+}
 
-  .select-estilo {
-    width: 100%;
-    border: 1px solid black;
-    border-radius: 10px;
-    height: 50px;
-    margin-left: 10px;
-    background-color: white;
-    color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.spinner-grow {
+  position: fixed;
+  margin-top: 20%;
+  z-index: 9999;
+}
+
+.image-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  border-color: transparent;
+  color: #480971;
+  margin-right: 15px;
+  margin-top: 10px;
+}
+
+.image-button svg {
+  vertical-align: middle; 
+}
+
+.select-estilo {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 50px;
+  background-color: white;
+  color: black;
+}
+
+.select-estilo::before {
+  content: "*";
+  display: flex;
+}
+
+.dropdown-toggle{
+  background-color: white;
+
+}
+
+.dropdown-toggle:hover {
+  background-color: #480971;
+  color: white;
+}
+
+label {
+  margin-top: 10px;
+}
+
+.input-texto {
+  background-color: inherit;
+  border: 0px solid #fff;
+  border-radius: 0;
+  border-bottom: 1px solid black;
+  padding: 0;
+}
+
+.input-texto-before-descripcion
+ {
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.input-texto-before-descripcion::before {
+  content: "Descripción prueba de vida *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.navbar-brand::after,legend::after {
+  content: "";
+  border-bottom: 5px solid #480971;
+  display: flex;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+
+
+@keyframes animacionafter {
+  0% {
+      width: 0;
   }
-  
-  .select-estilo::before {
-    content: "*";
-    display: flex;
+  100% {
+      width: 100%;
   }
-  
-  label{
-    margin-top: 10px;
-  }
- 
-  
-  
+}

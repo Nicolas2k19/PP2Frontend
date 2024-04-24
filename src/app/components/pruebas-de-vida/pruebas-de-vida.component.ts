@@ -30,7 +30,7 @@ export class PruebasDeVidaComponent implements OnInit {
   respondio: boolean = true;
   opcionesDesplegable: Persona[];
   seleccionado: Persona;
-  selectedUserLabel: string = "Seleccione un usuario";
+  selectedUserLabel: string = "Pruebas de vida para: ";
   usuarioSeleccionado: Usuario;
   pruebasDeVida: PruebaDeVida[] = [];
   pruebasFiltradas: PruebaDeVida[] = [];
@@ -38,8 +38,9 @@ export class PruebasDeVidaComponent implements OnInit {
   estadoFiltro: string = '';
   showSelect: boolean = false;
   showFiltros: boolean = false;
-
-
+  orderedColumn: string = ''; 
+  ascendingOrder: boolean = true; 
+  
   constructor(
     private pruevaDeVidaService: PruebaDeVidaService,
     private comunicacion: ComunicacionService,
@@ -58,6 +59,10 @@ export class PruebasDeVidaComponent implements OnInit {
       this.restriccion = this.comunicacion.restriccionDTO;
       if (this.seleccionado != null) {
         this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+      }else{
+        this.selectedUserLabel += this.comunicacion.restriccionDTO.victimario.apellido;
+        this.seleccionado = this.comunicacion.restriccionDTO.victimario;//Por defecto toma al agresor
+        this.getPruebasDeVidaPersona(this.seleccionado.idPersona); 
       }
       this.spinnerService.show();
       this.fotoIdentificacionService.getFotoPefil(this.comunicacion.restriccionDTO.victimario.idPersona)
@@ -74,12 +79,11 @@ export class PruebasDeVidaComponent implements OnInit {
 
 
   seleccionarOpcion(opcion: Persona) {
-    console.log('Seleccionar opción:', opcion);
     this.personaService.getPersona(opcion.idPersona)
       .subscribe(
         (res: Persona) => {
           this.seleccionado = res;
-          this.selectedUserLabel = "Usuario seleccionado: " + this.seleccionado.apellido;
+          this.selectedUserLabel = "Pruebas de vida para: " + this.seleccionado.apellido;
         },
         (error) => {
           console.error('Error al obtener persona:', error);
@@ -223,4 +227,28 @@ export class PruebasDeVidaComponent implements OnInit {
     this.showFiltros = !this.showFiltros;
   }
 
+  sortColumn(columnName: string): void {
+    if (this.orderedColumn === columnName) {
+      // Cambia el estado de orden entre ascendente y descendente
+      this.ascendingOrder = !this.ascendingOrder;
+    } else {
+      // Establece el orden ascendente como predeterminado
+      this.ascendingOrder = true;
+      this.orderedColumn = columnName;
+    }
+  
+    // Ordena el arreglo pruebasFiltradas según la columna y el estado de orden
+    this.pruebasFiltradas.sort((a, b) => {
+      const valueA = a[columnName];
+      const valueB = b[columnName];
+  
+      if (valueA < valueB) {
+        return this.ascendingOrder ? -1 : 1;
+      }
+      if (valueA > valueB) {
+        return this.ascendingOrder ? 1 : -1;
+      }
+      return 0;
+    });
+  }
 }

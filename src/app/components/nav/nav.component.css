@@ -7,7 +7,11 @@
 }
 
 .nav-link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color:aliceblue;
+    width: auto;
 }
 
 .nav-link:hover{
@@ -16,4 +20,13 @@
 
 .navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
     color: #b780ff;
+}
+
+.png{
+    height: 40px;
+    padding: 0;
+}
+
+.dropdown-toggle{
+    padding-left: 10px;
 }

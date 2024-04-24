@@ -27,49 +27,51 @@
             <button type="button" class="btn btn-danger" (click)="rechazarPruebaDeVida()">Rechazar</button>
         </div>
     </ng-template>
-
     <div class="row">
         <div class="col">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand"></a>
-                <a>{{ selectedUserLabel }}</a>
+            <nav class="navbar navbar-expand-lg ">
+                <!-- Elemento en el lado izquierdo -->
+                <a class="navbar-brand">{{ selectedUserLabel }}</a>
+    
+                <!-- Contenedor para el botón desplegable -->
+                <div class="d-flex justify-content-end w-100">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ 'Cambiar' }}
+                        </button>
+    
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                            <!-- Iteración sobre las opciones desplegables -->
+                            <li *ngFor="let opcion of opcionesDesplegable" class="dropdown-item"
+                                (click)="seleccionarOpcion(opcion); getPruebasDeVidaPersona(opcion.idPersona)">
+                                {{ opcion.apellido }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </nav>
         </div>
-        <div class="col">
-            <div class="dropdown mt-lg-0 mt-3">
-                <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button"
-                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ 'Seleccionar opción' }}
-                </button>
-                
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li *ngFor="let opcion of opcionesDesplegable" class="dropdown-item"
-                        (click)="seleccionarOpcion(opcion); getPruebasDeVidaPersona(opcion.idPersona) ">
-                        {{ opcion.apellido }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-        
-        
-        
     </div>
+    
     <br>
     <div class="row">
         <div class="col">
-            <div class="card bg-light mb-3" style="max-width: 20rem;">
+            <div class="card " style="max-width: 40rem;">
                 <div class="card-body" text-center>
                     <legend>Generar prueba de vida</legend>
-                    <form #pruebaDeVidaForm="ngForm" (ngSubmit)="enviarPruebaDeVida(pruebaDeVidaForm)" >
-                        <p>Prueba de vida para: {{ seleccionado?.nombre }} {{ seleccionado?.apellido }}</p>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Descripción" name="descripcion"
-                            [(ngModel)]="pruebaDeVida.descripcion" required>
+                    <form #pruebaDeVidaForm="ngForm" (ngSubmit)="enviarPruebaDeVida(pruebaDeVidaForm)">
+                        <div class="input-texto-before-descripcion">
+                                <div class="input-group">
+                                    <input type="text" class="form-control input-texto" placeholder="" name="descripcion" 
+                                    ngbTooltip="Descripción" [(ngModel)]="pruebaDeVida.descripcion" required>
+                                </div>
                         </div>
+                        
+                        
                         <div class="form-group">
                             <button class="btn btn-primary btn-block"
-                                [disabled]="!pruebaDeVidaForm.valid" >Enviar</button>
+                                [disabled]="!pruebaDeVidaForm.valid">Enviar</button>
                         </div>
                     </form>
                 </div>
@@ -81,16 +83,45 @@
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-
+        
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Ver</th>
+                        <th scope="col">
+                            Fecha
+                            <button class="btn btn-link" (click)="sortColumn('fecha')">
+                              <i class="material-icons">
+                                {{ orderedColumn === 'fecha' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
+                              </i>
+                            </button>
+                          </th>
+                          <th scope="col">
+                            Descripción
+                            <button class="btn btn-link" (click)="sortColumn('descripcion')">
+                              <i class="material-icons">
+                                {{ orderedColumn === 'descripcion' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
+                              </i>
+                            </button>
+                          </th>
+                          <th scope="col">
+                            Estado
+                            <button class="btn btn-link" (click)="sortColumn('estado')">
+                              <i class="material-icons">
+                                {{ orderedColumn === 'estado' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
+                              </i>
+                            </button>
+                          </th>
+                          <th scope="col">Ver
+                            <button class="btn btn-link" >
+                                <i class="material-icons">
+                                
+                                </i>
+                              </button>
+                          </th>
+                          
                     </tr>
                 </thead>
+            
                 <tbody>
                     <tr *ngFor="let prueba of pruebasFiltradas">
                         <td class="joinedDate">{{ prueba.fecha | date:'dd-MM-yyyy HH:mm' }}</td>
@@ -98,54 +129,54 @@
                         <td>{{ prueba.estado }}</td>
                         <td>
                             <a (click)="open(content, prueba)" *ngIf="prueba.estado === 'Pendiente'">
-                                <i class="material-icons">insert_photo</i>
+                                <i class="material-icons photo-icon">insert_photo</i>
                             </a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-                <!-- Filtros -->
-                <div class="contenedor-filtros">
-                    <div class="filtro">
-                        <button class="image-button" (click)="toggleFiltros()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
-                                <path
-                                    d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
-                            </svg>
-                        </button>
-                    </div>
-            
-                    <div class="card2" *ngIf="showFiltros">
-                        <div class="card-body">
-                            <legend>Filtrar por:</legend>
-            
-                            <!-- Filtro por Fecha -->
-                            <label>Fecha:</label>
-                            <div class="row input-texto-before-grupo">
-                                <div class="input-group">
-                                    <input class="form-control input-texto" type="date" name="fechaFiltro" [(ngModel)]="fechaFiltro">
-                                </div>
-                            </div>
-            
-                            <!-- Filtro por Estado -->
-                            <div class="row form-group btn-block input-before-selector-estado">
-                                <label>Estado:</label>
-                                <select class="select-estilo" name="estadoFiltro" [(ngModel)]="estadoFiltro">
-                                    <option value="">Todos</option>
-                                    <option value="Pendiente">Pendiente</option>
-                                    <option value="Aceptada">Aceptada</option>
-                                    <option value="Rechazada">Rechazada</option>
-                                </select>
-                            </div>
-            
-                            <!-- Botón de Filtrar -->
-                            <button class="btn btn-primary btn-block" (click)="aplicarFiltros()">Filtrar</button>
-                        </div>
-                    </div>
-                </div>
+        
+ <!-- Filtros -->
+ <div class="contenedor-filtros">
+    <div class="filtro">
+        <button class="image-button" (click)="toggleFiltros()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px; margin-right: 15px;">
+                <path
+                    d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+            </svg>
+        </button>
     </div>
 
-    
+    <div class="card2" *ngIf="showFiltros">
+        <div class="card-body">
+            <legend>Filtrar por:</legend>
+
+            <!-- Filtro por Fecha -->
+            <label>Fecha:</label>
+            <div class="row input-texto-before-grupo">
+                <div class="input-group">
+                    <input class="form-control" type="date" name="fechaFiltro" [(ngModel)]="fechaFiltro">
+                </div>
+            </div>
+
+            <!-- Filtro por Estado -->
+            <div class="form-group">
+                <label for="estadoFiltro">Estado:</label>
+                <select class="form-control" id="estadoFiltro" name="estadoFiltro" [(ngModel)]="estadoFiltro">
+                    <option value="">Todos</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Aceptada">Aceptada</option>
+                    <option value="Rechazada">Rechazada</option>
+                </select>
+            </div>
+
+            <!-- Botón de Filtrar -->
+            <button class="btn btn-primary btn-block" (click)="aplicarFiltros()">Filtrar</button>
+        </div>
+    </div>
+</div>
+
+    </div>
 </div>
