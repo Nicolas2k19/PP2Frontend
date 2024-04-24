@@ -70,7 +70,7 @@
                         <td>{{usuario.email}}</td>
                         <td>{{usuario.estadoUsuario}}</td>
                         <td>{{usuario.rolDeUsuario}}</td>
-                        <td>{{usuario.idGrupo}}</td>
+                        <td>{{getNombreGrupo(usuario.idGrupo)}} </td>
                         <td>
                             <a (click)="editarUsuario(usuario)">
                                 <i class="material-icons">editar</i>

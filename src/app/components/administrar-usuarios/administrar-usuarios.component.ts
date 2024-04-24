@@ -24,6 +24,8 @@ export class AdministrarUsuariosComponent implements OnInit {
   grupoSeleccionado: Number
   editarBandera: boolean = false;
   grupos: Number[];
+  nombreGrupo: string;
+  grupoSelec: any;
 
 
   //Filtros
@@ -194,7 +196,7 @@ export class AdministrarUsuariosComponent implements OnInit {
           break;
         case 'todos':
           this.getUsuarios();
-          this.selectedOptionEstado= null;
+          this.selectedOptionEstado = null;
           this.toggleSelect();
           break;
         default:
@@ -457,5 +459,8 @@ export class AdministrarUsuariosComponent implements OnInit {
     }
   }
 
+  getNombreGrupo(idGrupo: number): string {
 
+    return this.grupoService.getNombreGrupo(idGrupo);
+  }
 }
