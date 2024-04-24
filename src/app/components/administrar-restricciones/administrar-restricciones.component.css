@@ -310,6 +310,8 @@ td {
 
 
 
+
+
 /*Selects formulario*/
 
 .select-estilo {
@@ -434,6 +436,13 @@ legend::after {
   cursor: pointer;
   width: fit-content;
   margin-top: 1rem;
+}
+
+/*Botonera Restricciones*/
+.botonera-restricciones{
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
 
 

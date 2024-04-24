@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Persona } from 'src/app/models/persona';
 import { Usuario } from 'src/app/models/usuario';
 import { Restriccion } from 'src/app/models/restriccion';
-import { NgForm } from '@angular/forms';
+import { NgForm} from '@angular/forms';
 import { RestriccionService } from 'src/app/services/restricciones/restriccion.service';
 import { PersonaService } from 'src/app/services/personas/persona.service';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
@@ -14,18 +14,23 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import GrupoService from 'src/app/services/grupo/grupoService';
 import Grupo from 'src/app/models/grupo/Grupo';
 import GrupoNuevo from 'src/app/models/grupo/grupoNuevo';
+import { AdministrarRestriccionesFisicasComponent } from '../administrar-restricciones-fisicas/administrar-restricciones-fisicas.component';
 
 @Component({
   selector: 'app-administrar-restricciones',
   templateUrl: './administrar-restricciones.component.html',
-  styleUrls: ['./administrar-restricciones.component.css']
+  styleUrls: ['./administrar-restricciones.component.css'],
+  
 })
+
 export class AdministrarRestriccionesComponent implements OnInit {
   damnificada = new Persona;
   victimario = new Persona;
   administrativo = new Usuario;
   restriccion = new Restriccion;
 
+
+  restriccionFisica : boolean
   errorCampos: Boolean
   errorCampoDamnificada: Boolean
 
@@ -109,7 +114,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.errorCampoFecha = false;
     this.errorTextoEquipo = false
     this.errorTurno = false;
-
+    this.restriccionFisica = false;
   }
 
 

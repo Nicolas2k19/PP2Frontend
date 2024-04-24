@@ -24,6 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { RutinasComponent } from './components/rutinas/rutinas.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { RecuperarContrasenaComponent } from './components/recuperar-contrasena/recuperar-contrasena.component';
+import { AdministrarRestriccionesFisicasComponent } from './components/administrar-restricciones-fisicas/administrar-restricciones-fisicas.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { RecuperarContrasenaComponent } from './components/recuperar-contrasena/
   ],
   imports: [
     BrowserModule,
+    AdministrarRestriccionesFisicasComponent,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,

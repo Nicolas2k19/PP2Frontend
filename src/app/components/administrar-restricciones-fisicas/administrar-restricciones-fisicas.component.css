@@ -1,0 +1,39 @@
+
+.container{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+
+/*Tabla de restricciones*/
+th{
+    background-color: #480971;
+    color: #ffffff;
+}
+
+.material-icons{
+    color: #480971;
+    cursor: pointer;
+}
+
+
+
+
+/*Formulario para nuevas restricciones*/
+.card {
+    background-color: #8d3aff63;
+    color: black;
+    padding: 2.5rem;
+    border: 1px solid black;
+    width: fit-content;
+    height: fit-content;
+  
+  }
+
+  
+.btn {
+    background-color: #480971;
+    color: white;
+    width: fit-content;
+  }

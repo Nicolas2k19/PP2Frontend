@@ -4,7 +4,7 @@
 <div class="container" [ngClass]="{'blurred': modalAbierta}">
     <div class="row">
         <!-- FORMULARIO DE RESTRICCIONES -->
-        <div *ngIf="mostrarAbmRestricciones" class="col-4">
+        <div *ngIf="mostrarAbmRestricciones && !restriccionFisica" class="col-4">
             <div class="card" style="max-width: 20rem;">
                 <div class="card-body">
                     <legend>Añadir restricción</legend>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <!-- TABLA DE RESTRICCIONES -->
-        <div class="col" *ngIf="mostrarAbmRestricciones">
+        <div class="col" *ngIf="mostrarAbmRestricciones && !restriccionFisica">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -102,7 +102,7 @@
 
 
         <!-- FILTROS -->
-        <div class="contenedor-filtros" *ngIf="mostrarAbmRestricciones">
+        <div class="contenedor-filtros" *ngIf="mostrarAbmRestricciones && !restriccionFisica">
 
 
 
@@ -259,14 +259,22 @@
 
     </div>
 
-    <div>
+    <!--Componente de restricciones fisicas-->
+    <app-administrar-restricciones-fisicas *ngIf="restriccionFisica" ></app-administrar-restricciones-fisicas>
 
-        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones" (click)="cambiarVista()">
+    <div class="botonera-restricciones">
+
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones||restriccionFisica" (click)="cambiarVista()">
             Grupos
+        </button>
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones" (click)="restriccionFisica=true">
+            Restricciones Fisicas
         </button>
         <button class="boton-cambio-pantalla btn" *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
             Restricciones
         </button>
+        
+        
 
 
 

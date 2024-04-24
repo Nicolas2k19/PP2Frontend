@@ -10,15 +10,23 @@ import { environment } from '../../../environments/environment';
 })
 export class RestriccionService {
 
+  /**
+   * Restriccion perimetral
+   */
   restriccionSeleccionada: Restriccion;
   restricciones: RestriccionDTO[];  
   readonly URL_API = environment.apiUrl+'/RestriccionPerimetral';
   readonly URL_API_RESTRICCION_DTO = environment.apiUrl+'/RestriccionDTO';
-  
-  
   readonly URL_API_GETByid= environment.apiUrl+"RestriccionPerimetral/getByRestriccion/";
-
   readonly URL_API_GETByidGrupo= environment.apiUrl+"RestriccionPerimetral/ObtenerPorIdGrupo/";
+
+  /**
+   * 
+   * Restricción física
+   */
+  readonly URL_API_FISICA = environment.apiUrl+"/LugaresRestringidos";
+
+
 
   constructor(private http:HttpClient) { 
     this.restriccionSeleccionada = new Restriccion();
@@ -44,6 +52,14 @@ export class RestriccionService {
   }
 
 
+
+  /**
+   * Obtiene las restricciones fisicas
+   * @returns RestriccionFisica
+   */
+  getRestriccionesFisicas(){
+    return this.http.get(this.URL_API_FISICA);
+  }
 
 
   getRestricciones(){
