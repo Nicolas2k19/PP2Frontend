@@ -37,3 +37,29 @@ th{
     color: white;
     width: fit-content;
   }
+
+
+
+/*Animación titulo*/
+  legend::after {
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+  }
+
+
+  @keyframes animacionafter {
+
+    0% {
+      width: 0;
+    }
+  
+    100% {
+      width: 100%;
+    }
+  
+  }
+  
