@@ -1,10 +1,70 @@
+ <!--Spinner ---------------------------------------------->
 
-
+<ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
+    <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
+</ngx-spinner>
 <div class="container">
-    
-    <form class="card"  action="POST" (ngSubmit)="agregarRestriccionFisica()">
+    <!--Agregar restricciones fisicas ---------------------------------------------->
+    <form #restriccionLForm="ngForm" class="card form-control"  action="POST" (ngSubmit)="agregarRestriccionFisica()" novalidate>
         <legend class="titulo">Agregar restriccion fisica</legend>
-        <button class="btn">Seleccionar</button>
+
+        <div class="input-texto-before input-texto-before-nombre">
+            <input class="input-texto" #nombre="ngModel" [(ngModel)]="nombre" type="text">
+        </div>
+
+        <div class="input-texto-before input-texto-before-calle">
+            <input class="input-texto" #calle="ngModel" [(ngModel)]="calle" type="text">
+        </div>
+
+        <div class="input-texto-before input-texto-before-altura">
+            <input class="input-texto" #altura="ngModel" [(ngModel)]="altura" type="text">
+        </div>
+
+        <div class="input-texto-before input-texto-before-piso">
+            <input class="input-texto" #piso="ngModel" [(ngModel)]="piso" type="text">
+        </div>
+
+        <div class="input-texto-before input-texto-before-departamento">
+            <input class="input-texto" #departamento="ngModel" [(ngModel)]="departamento" type="text">
+        </div>
+
+        <div class="input-texto-before input-texto-before-distancia">
+            <input class="input-texto" #distancia="ngModel" [(ngModel)]="distancia" type="number" min="200" value="200">
+        </div>
+
+        
+
+
+
+        <div class="input-select-before input-select-before-provincia">
+            <select  [(ngModel)]="provinciaSeleccionada" class="select-estilo">
+                <option disabled>Elegí una provincia</option>
+                <option value={{provincia.idProvincia}}  *ngFor="let provincia of provincias" (click)="obtenerLocalidades()">
+                    {{provincia.nombre}}
+                </option>
+            </select>
+        </div>
+        <div class="input-select-before  input-select-before-localidad">
+            <select   [(ngModel)]="localidadSeleccionada" class="select-estilo">
+                <option disabled>Elegí una localidad</option>
+                <option value={{localidad.idLocalidad}}  *ngFor="let localidad of localidades">
+                    {{localidad.nombre}}
+                </option>
+            </select>
+        </div>
+
+
+
+        <button class="btn" *ngIf="editar">
+           Editar
+        </button>
+        <button class="btn" *ngIf="editar" (click)="editar=false">
+           Volver
+        </button>
+        <button class="btn" *ngIf="!editar">
+           Agregar
+        </button>
+
     </form>
     <!-- TABLA DE RESTRICCIONES FISICAS --------------------->
     <div class="col">
@@ -27,8 +87,8 @@
                     <td>Prueba</td>
                     <td>Prueba</td>
                     <td>
-                        <a >
-                            <i class="material-icons">edit</i>
+                        <a>
+                            <i class="material-icons" (click)="editar=true">edit</i>
                         </a>
                         <a>
                             <i class="material-icons">delete</i>

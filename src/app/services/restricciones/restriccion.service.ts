@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Restriccion } from '../../models/restriccion';
 import { RestriccionDTO } from 'src/app/models/restriccion-dto';
 import { environment } from '../../../environments/environment';
+import RestriccionFisica from 'src/app/models/RestriccionFisica/RestriccionFisica';
 
 
 @Injectable({
@@ -56,10 +57,22 @@ export class RestriccionService {
   /**
    * Obtiene las restricciones fisicas
    * @returns RestriccionFisica
+   * @author Nicolás
    */
   getRestriccionesFisicas(){
     return this.http.get(this.URL_API_FISICA);
   }
+
+   /**
+   * Guarda una nueva restricción
+   * @returns RestriccionFisica
+   * @author Nicolás
+   */
+   postRestriccioFisica(restriccionFisica : RestriccionFisica){
+    console.log("Hola estoy agregando")
+    return this.http.post(this.URL_API_FISICA,restriccionFisica);
+  }
+
 
 
   getRestricciones(){

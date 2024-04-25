@@ -30,6 +30,7 @@ import { AdministrarRestriccionesFisicasComponent } from './components/administr
   declarations: [
     AppComponent,
     UsuarioComponent,
+    AdministrarRestriccionesFisicasComponent,
     InicioComponent,
     NavComponent,
     RestriccionesComponent,
@@ -45,7 +46,6 @@ import { AdministrarRestriccionesFisicasComponent } from './components/administr
   ],
   imports: [
     BrowserModule,
-    AdministrarRestriccionesFisicasComponent,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
