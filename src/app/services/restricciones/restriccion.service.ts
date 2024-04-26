@@ -10,6 +10,7 @@ import RestriccionFisica from 'src/app/models/RestriccionFisica/RestriccionFisic
   providedIn: 'root'
 })
 export class RestriccionService {
+ 
 
   /**
    * Restriccion perimetral
@@ -25,7 +26,7 @@ export class RestriccionService {
    * 
    * Restricción física
    */
-  readonly URL_API_FISICA = environment.apiUrl+"/LugaresRestringidos";
+  readonly URL_API_FISICA = environment.apiUrl+"LugaresRestringidos";
 
 
 
@@ -94,6 +95,16 @@ export class RestriccionService {
   deleteRestriccion(idRestriccion: number){
     return this.http.delete(this.URL_API + "/borrar/" + idRestriccion);
   }
+
+  /**
+   * Elimina la restricción física que coincida con el id pasado por parámetro
+   * @param restriccionId 
+   */
+  deleteRestriccionFisica(restriccionId: Number) {
+    console.log(this.URL_API_FISICA+"/"+restriccionId)
+     return this.http.delete(this.URL_API_FISICA+"/"+restriccionId);
+  }
+
 
   getRestriccionesDamnificada(id: number){
     return this.http.get(this.URL_API_RESTRICCION_DTO+"/getByDamnificada/"+ id);

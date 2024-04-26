@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Direccion } from 'src/app/models/direccion';
 import { ToastrService } from 'ngx-toastr';
 import { Restriccion } from 'src/app/models/restriccion';
+import RestriccionFisicaEditar from 'src/app/models/RestriccionFisica/RestriccionFisicaEditar';
 
 @Component({
   selector: 'app-administrar-restricciones-fisicas',
@@ -19,7 +20,7 @@ import { Restriccion } from 'src/app/models/restriccion';
 
 export class AdministrarRestriccionesFisicasComponent implements OnInit{
   
-  restriccionesFisicasAMostrar : RestriccionFisica[]
+  restriccionesFisicasAMostrar : RestriccionFisicaEditar[]
   provincias : Provincia[]
   provinciaSeleccionada : number;
   localidadSeleccionada : number;
@@ -48,7 +49,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
 
   
   ngOnInit(): void {
-  //  this.obtenerRestriccionesFisicas();
+    this.obtenerRestriccionesFisicas();
     this.obtenerRestriccionesPerimetrales()
     this.obtenerProvincias();
     this.obtenerLocalidades();
@@ -62,6 +63,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     this.restriccionService.getRestricciones().subscribe(
       restriccionesPerimetrales => {
         this.restriccionesPerimetrales = restriccionesPerimetrales as Restriccion[];
+       
      }
    )  
   
@@ -70,14 +72,13 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
    * Obtiene todas las restricciones fisicas de la base de datos
    * @author Nicolás
    */
-  obtenerRestriccionesFisicas() : RestriccionFisica[]{
-     let restriccinesFisicas : RestriccionFisica[];
+  obtenerRestriccionesFisicas() : void{
      this.restriccionService.getRestriccionesFisicas().subscribe(
       resFisicas => {
-           restriccinesFisicas = resFisicas as RestriccionFisica[];
+           this.restriccionesFisicasAMostrar = resFisicas as RestriccionFisicaEditar[];
+           console.log( this.restriccionesFisicasAMostrar )
       }
     )  
-    return restriccinesFisicas;
   }
   /**
    * Obtiene las provincias necesarias 
@@ -135,6 +136,23 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     direccion.idLocalidad = this.localidadSeleccionada
     direccion.piso = this.piso;
     return direccion;
+  }
+
+  /**
+   * Elimana la restriccion física pasada por parámetro
+   * @param restriccion 
+   */
+
+  eliminarRpFisica(restriccionId : number){
+
+     this.restriccionService.deleteRestriccionFisica(restriccionId).subscribe(
+      res=>{
+        this.restriccionesFisicasAMostrar = this.restriccionesFisicasAMostrar
+                                            .filter( restriccionFisica=>{return restriccionFisica.idRPLugar==restriccionId});
+      }
+     );
+    
+
   }
 
 }

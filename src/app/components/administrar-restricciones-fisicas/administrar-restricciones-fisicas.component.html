@@ -76,7 +76,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" >Id</th>
+                    <th scope="col" >Id Perimetral</th>
                     <th scope="col" >Nombre</th>
                     <th scope="col" >Direccion</th>
                     <th scope="col" >Localidad</th>
@@ -85,18 +85,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Prueba</td>
-                    <td>Prueba</td>
-                    <td>Prueba</td>
-                    <td>Prueba</td>
-                    <td>Prueba</td>
+                <tr *ngFor="let restriccion of restriccionesFisicasAMostrar">
+                    <td>{{restriccion.idRestriccion}}</td>
+                    <td>{{restriccion.nombre}}</td>
+                    <td>{{restriccion.direccion.calle+" "+restriccion.direccion.altura}}</td>
+                    <td>Me falta la localidad en la respuesta</td>
+                    <td>Me falta la provincia en la respuesta</td>
                     <td>
                         <a>
                             <i class="material-icons" (click)="editar=true">edit</i>
                         </a>
                         <a>
-                            <i class="material-icons">delete</i>
+                            <i class="material-icons" (click)="eliminarRpFisica(restriccion.idRPLugar)">delete</i>
                         </a>
                         <a >
                             <i class="material-icons">info</i>
