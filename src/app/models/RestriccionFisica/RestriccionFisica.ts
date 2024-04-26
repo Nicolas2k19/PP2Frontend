@@ -8,7 +8,7 @@ import { Direccion } from "../direccion";
 export default class RestriccionFisica{
 
 
-    constructor(idRestriccion=0,nombre ="", direccion ="",longitud="",latitud=0,distancia=200){
+    constructor(idRestriccion=0,nombre ="", direccion = new Direccion,longitud="",latitud=0,distancia=200){
         
     }
     idRestriccion : number

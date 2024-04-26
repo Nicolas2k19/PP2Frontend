@@ -82,9 +82,17 @@ th{
 
   /*Select before*/
 
+
+
+
   .input-select-before{
     display: flex;
     flex-direction: column;
+  }
+
+  .input-select-before-perimetral::before{
+    content: "Elegí la restricción perimetral vinculada *";
+    text-align: left;
   }
 
   .input-select-before-provincia::before{

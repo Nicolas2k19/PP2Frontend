@@ -5,37 +5,42 @@
 </ngx-spinner>
 <div class="container">
     <!--Agregar restricciones fisicas ---------------------------------------------->
-    <form #restriccionLForm="ngForm" class="card form-control"  action="POST" (ngSubmit)="agregarRestriccionFisica()" novalidate>
+    <form #restriccionLForm="ngForm" class="card form-control"  action="POST" (ngSubmit)="agregarRestriccionFisica(restriccionLForm)" novalidate>
         <legend class="titulo">Agregar restriccion fisica</legend>
 
         <div class="input-texto-before input-texto-before-nombre">
-            <input class="input-texto" #nombre="ngModel" [(ngModel)]="nombre" type="text">
+            <input class="input-texto"  [(ngModel)]="nombre" type="text">
         </div>
 
         <div class="input-texto-before input-texto-before-calle">
-            <input class="input-texto" #calle="ngModel" [(ngModel)]="calle" type="text">
+            <input class="input-texto"  [(ngModel)]="calle" type="text">
         </div>
 
         <div class="input-texto-before input-texto-before-altura">
-            <input class="input-texto" #altura="ngModel" [(ngModel)]="altura" type="text">
+            <input class="input-texto"  [(ngModel)]="altura" type="text">
         </div>
 
         <div class="input-texto-before input-texto-before-piso">
-            <input class="input-texto" #piso="ngModel" [(ngModel)]="piso" type="text">
+            <input class="input-texto"  [(ngModel)]="piso" type="text">
         </div>
 
         <div class="input-texto-before input-texto-before-departamento">
-            <input class="input-texto" #departamento="ngModel" [(ngModel)]="departamento" type="text">
+            <input class="input-texto" [(ngModel)]="departamento" type="text">
         </div>
 
         <div class="input-texto-before input-texto-before-distancia">
-            <input class="input-texto" #distancia="ngModel" [(ngModel)]="distancia" type="number" min="200" value="200">
+            <input class="input-texto" [(ngModel)]="distancia" type="number" min="200" value="200">
         </div>
 
         
-
-
-
+        <div class="input-select-before input-select-before-perimetral">
+            <select  [(ngModel)]="restriccionSeleccionada" class="select-estilo">
+                <option disabled>Restriccion perimetral</option>
+                <option value={{restriccionP.restriccion.idRestriccion}}  *ngFor="let restriccionP of restriccionesPerimetrales">
+                    {{"Restriccion Nro°"+restriccionP.restriccion.idRestriccion}}
+                </option>
+            </select>
+        </div>
         <div class="input-select-before input-select-before-provincia">
             <select  [(ngModel)]="provinciaSeleccionada" class="select-estilo">
                 <option disabled>Elegí una provincia</option>
