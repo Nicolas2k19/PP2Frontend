@@ -700,7 +700,29 @@ export class AdministrarRestriccionesComponent implements OnInit {
   cambiarVista() {
     this.mostrarGrupoRestricciones = !this.mostrarGrupoRestricciones
     this.mostrarAbmRestricciones = !this.mostrarAbmRestricciones
+    this.restriccionFisica = false
   }
+
+  mostrarGrupos(){
+    this.mostrarGrupoRestricciones = true
+    this.mostrarAbmRestricciones = false
+    this.restriccionFisica = false
+
+  }
+  mostrarRestriccionesFisicas(){
+    this.mostrarGrupoRestricciones = false
+    this.mostrarAbmRestricciones = false
+    this.restriccionFisica = true
+
+  }
+
+  mostrarRestricciones(){
+    this.mostrarGrupoRestricciones = false
+    this.mostrarAbmRestricciones = true
+    this.restriccionFisica = false
+  }
+
+
 
   /**
    * Setea booleano que indica que hay errores a true

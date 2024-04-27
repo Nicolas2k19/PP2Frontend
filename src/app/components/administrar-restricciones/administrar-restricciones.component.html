@@ -263,21 +263,15 @@
     <app-administrar-restricciones-fisicas *ngIf="restriccionFisica" ></app-administrar-restricciones-fisicas>
 
     <div class="botonera-restricciones">
-
-        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones||restriccionFisica" (click)="cambiarVista()">
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones||restriccionFisica" (click)="mostrarGrupos()">
             Grupos
         </button>
-        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones" (click)="restriccionFisica=true">
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones" (click)="mostrarRestriccionesFisicas()">
             Restricciones Fisicas
         </button>
-        <button class="boton-cambio-pantalla btn" *ngIf="mostrarGrupoRestricciones" (click)="cambiarVista()">
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarGrupoRestricciones||restriccionFisica" (click)="mostrarRestricciones()">
             Restricciones
         </button>
-        
-        
-
-
-
     </div>
 
 
