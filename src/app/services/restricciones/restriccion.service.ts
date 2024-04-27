@@ -4,6 +4,7 @@ import { Restriccion } from '../../models/restriccion';
 import { RestriccionDTO } from 'src/app/models/restriccion-dto';
 import { environment } from '../../../environments/environment';
 import RestriccionFisica from 'src/app/models/RestriccionFisica/RestriccionFisica';
+import RestriccionFisicaEditar from 'src/app/models/RestriccionFisica/RestriccionFisicaEditar';
 
 
 @Injectable({
@@ -21,6 +22,7 @@ export class RestriccionService {
   readonly URL_API_RESTRICCION_DTO = environment.apiUrl+'/RestriccionDTO';
   readonly URL_API_GETByid= environment.apiUrl+"RestriccionPerimetral/getByRestriccion/";
   readonly URL_API_GETByidGrupo= environment.apiUrl+"RestriccionPerimetral/ObtenerPorIdGrupo/";
+
 
   /**
    * 
@@ -64,6 +66,15 @@ export class RestriccionService {
     return this.http.get(this.URL_API_FISICA);
   }
 
+  /**
+   * Obtiene las restricciones con la información adicional de la localidad y la provincia en la que se origino la restricción
+   * @author Nicolás 
+   */
+  getRestriccionesConInfo(){
+    return this.http.get(this.URL_API_FISICA+"/RplugarDto")
+    }
+
+
    /**
    * Guarda una nueva restricción
    * @returns RestriccionFisica
@@ -98,12 +109,23 @@ export class RestriccionService {
 
   /**
    * Elimina la restricción física que coincida con el id pasado por parámetro
-   * @param restriccionId 
+   * @author Nicolás
    */
   deleteRestriccionFisica(restriccionId: Number) {
     console.log(this.URL_API_FISICA+"/"+restriccionId)
      return this.http.delete(this.URL_API_FISICA+"/"+restriccionId);
   }
+
+
+  /**
+  * 
+  * Update de la restriccion física 
+  * @author Nicolás 
+  */
+  updateRestricciónFisica(restriccion: RestriccionFisicaEditar){
+    return this.http.put(this.URL_API_FISICA+"/"+restriccion.idRPLugar,restriccion);
+  }
+
 
 
   getRestriccionesDamnificada(id: number){

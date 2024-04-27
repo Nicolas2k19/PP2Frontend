@@ -9,7 +9,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Direccion } from 'src/app/models/direccion';
 import { ToastrService } from 'ngx-toastr';
 import { Restriccion } from 'src/app/models/restriccion';
+import { CommonModule } from '@angular/common';
 import RestriccionFisicaEditar from 'src/app/models/RestriccionFisica/RestriccionFisicaEditar';
+import RestriccionConInfo from 'src/app/models/RestriccionFisica/RestriccionConInfo';
 
 @Component({
   selector: 'app-administrar-restricciones-fisicas',
@@ -20,13 +22,16 @@ import RestriccionFisicaEditar from 'src/app/models/RestriccionFisica/Restriccio
 
 export class AdministrarRestriccionesFisicasComponent implements OnInit{
   
+
+
+  restriccionesConInfo : RestriccionConInfo[]
   restriccionesFisicasAMostrar : RestriccionFisicaEditar[]
   provincias : Provincia[]
   provinciaSeleccionada : number;
   localidadSeleccionada : number;
   restriccionSeleccionada : number
   editar: Boolean;
-  nombre : string;
+  nombreRestriccion : string;
   calle: string;
   piso : string
   departamento : string
@@ -34,6 +39,8 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
   distancia : number
   localidades : Localidad[]
   restriccionesPerimetrales : Restriccion[]
+  restriccionAEditar : number
+  
 
   constructor(public restriccionService : RestriccionService,
       public provinciaLocalidadService : ProvinciaLocalidadService,
@@ -42,6 +49,8 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
       this.provincias = [];
       this.editar = false;
 
+     
+
       
   }
  
@@ -49,12 +58,27 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
 
   
   ngOnInit(): void {
+    this.obtenerRestriccionesFisicasConInfo();
     this.obtenerRestriccionesFisicas();
     this.obtenerRestriccionesPerimetrales()
     this.obtenerProvincias();
     this.obtenerLocalidades();
-    console.log(this.provincias)
   }
+
+
+  /**
+   * Obtiene las restricciones fisicas, con la información de la provincia y localidad
+   * @author Nicolás
+   */
+  obtenerRestriccionesFisicasConInfo(){
+    this.restriccionService.getRestriccionesConInfo().subscribe(res =>{
+       this.restriccionesConInfo = res as RestriccionConInfo[];
+       console.log(this.restriccionesConInfo)
+    })
+
+  }
+
+
   /**
   * Obtiene todas las restricciones perimetrales de la base de datos
   * @author Nicolás
@@ -111,7 +135,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
   */
   agregarRestriccionFisica(NgForm : NgForm){
     let restriccion : RestriccionFisica = new RestriccionFisica();
-    restriccion.nombre = this.nombre;
+    restriccion.nombre = this.nombreRestriccion;
     restriccion.direccion = this.armarDireccion()
     restriccion.distancia = this.distancia;
     restriccion.idRestriccion = this.restriccionSeleccionada;
@@ -119,6 +143,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     this.restriccionService.postRestriccioFisica(restriccion).subscribe(res =>{
       this.toastr.success("Se ha ingresado con éxito la restricción física");
       this.spinner.hide()
+      this.obtenerRestriccionesFisicasConInfo();
     })
     
   }
@@ -154,5 +179,44 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     
 
   }
+
+
+  /**
+   * Edita las restricciones físicas
+   * @author Nicolás 
+   */
+  editarRestriccion(){
+    let restriccion : RestriccionFisicaEditar = new RestriccionFisicaEditar();
+    restriccion.nombre = this.nombreRestriccion;
+    restriccion.direccion = this.armarDireccion()
+    restriccion.distancia = this.distancia;
+    restriccion.idRestriccion = this.restriccionSeleccionada;
+    restriccion.idRPLugar = this.restriccionAEditar;
+    this.spinner.show()
+    this.restriccionService.updateRestricciónFisica(restriccion).subscribe(res =>{
+        this.spinner.hide()
+    });
+  }
+
+  /**
+   * Pasa los datos al formulario y habilita la edición
+   * @author Nicolás
+   */
+  pasarDatosAlFormulario(restriccion:RestriccionConInfo){
+      this.nombreRestriccion = restriccion.rpLugar.nombre;
+      this.calle = restriccion.rpLugar.direccion.calle;
+      this.altura = restriccion.rpLugar.direccion.altura;
+      this.piso = restriccion.rpLugar.direccion.piso;
+      this.departamento = restriccion.rpLugar.direccion.departamento;
+      this.distancia = restriccion.rpLugar.distancia;
+      this.restriccionSeleccionada = restriccion.rpLugar.idRestriccion;
+      this.provinciaSeleccionada =restriccion.provincia.idProvincia;
+      this.localidadSeleccionada =restriccion.localidad.idLocalidad;
+      this.restriccionAEditar = restriccion.rpLugar.idRPLugar;
+      this.editar = true;
+  }
+
+
+
 
 }

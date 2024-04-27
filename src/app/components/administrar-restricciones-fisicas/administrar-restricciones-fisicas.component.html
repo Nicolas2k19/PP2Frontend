@@ -8,33 +8,33 @@
     <form #restriccionLForm="ngForm" class="card form-control"  action="POST" (ngSubmit)="agregarRestriccionFisica(restriccionLForm)" novalidate>
         <legend class="titulo">Agregar restriccion fisica</legend>
 
-        <div class="input-texto-before input-texto-before-nombre">
-            <input class="input-texto"  [(ngModel)]="nombre" type="text">
+        <div class="input-texto-before-nombre">
+            <input class="form-control input-texto nombre" name="nombre" [(ngModel)]="nombreRestriccion" type="text">
         </div>
 
-        <div class="input-texto-before input-texto-before-calle">
-            <input class="input-texto"  [(ngModel)]="calle" type="text">
+        <div class="input-texto-before-calle">
+            <input class="form-control input-texto calle" name="calle" [(ngModel)]="calle" type="text">
         </div>
 
-        <div class="input-texto-before input-texto-before-altura">
-            <input class="input-texto"  [(ngModel)]="altura" type="text">
+        <div class="input-texto-before-altura">
+            <input class="form-control input-texto altura" name="altura" [(ngModel)]="altura" type="text">
         </div>
 
-        <div class="input-texto-before input-texto-before-piso">
-            <input class="input-texto"  [(ngModel)]="piso" type="text">
+        <div class="input-texto-before-piso">
+            <input class="form-control input-texto piso"  name="piso" [(ngModel)]="piso" type="text">
         </div>
 
-        <div class="input-texto-before input-texto-before-departamento">
-            <input class="input-texto" [(ngModel)]="departamento" type="text">
+        <div class="input-texto-before-departamento">
+            <input class="form-control input-texto departamento"  name="departamento" [(ngModel)]="departamento" type="text">
         </div>
 
-        <div class="input-texto-before input-texto-before-distancia">
-            <input class="input-texto" [(ngModel)]="distancia" type="number" min="200" value="200">
+        <div class="input-texto-before-distancia">
+            <input class="form-control input-texto distancia"   name="distancia" [(ngModel)]="distancia" type="number" min="200" value="200">
         </div>
 
         
         <div class="input-select-before input-select-before-perimetral">
-            <select  [(ngModel)]="restriccionSeleccionada" class="select-estilo">
+            <select  [(ngModel)]="restriccionSeleccionada" name="restriccion" class="select-estilo">
                 <option disabled>Restriccion perimetral</option>
                 <option value={{restriccionP.restriccion.idRestriccion}}  *ngFor="let restriccionP of restriccionesPerimetrales">
                     {{"Restriccion Nro°"+restriccionP.restriccion.idRestriccion}}
@@ -42,7 +42,7 @@
             </select>
         </div>
         <div class="input-select-before input-select-before-provincia">
-            <select  [(ngModel)]="provinciaSeleccionada" class="select-estilo">
+            <select  [(ngModel)]="provinciaSeleccionada" name="provincia" class="select-estilo">
                 <option disabled>Elegí una provincia</option>
                 <option value={{provincia.idProvincia}}  *ngFor="let provincia of provincias" (click)="obtenerLocalidades()">
                     {{provincia.nombre}}
@@ -50,7 +50,7 @@
             </select>
         </div>
         <div class="input-select-before  input-select-before-localidad">
-            <select   [(ngModel)]="localidadSeleccionada" class="select-estilo">
+            <select   [(ngModel)]="localidadSeleccionada" name="localidad" class="select-estilo">
                 <option disabled>Elegí una localidad</option>
                 <option value={{localidad.idLocalidad}}  *ngFor="let localidad of localidades">
                     {{localidad.nombre}}
@@ -59,8 +59,7 @@
         </div>
 
 
-
-        <button class="btn" *ngIf="editar">
+        <button class="btn" *ngIf="editar" (click)="editarRestriccion()">
            Editar
         </button>
         <button class="btn" *ngIf="editar" (click)="editar=false">
@@ -76,7 +75,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" >Id Perimetral</th>
+                    <th scope="col" >ID Restricción Física</th>
                     <th scope="col" >Nombre</th>
                     <th scope="col" >Direccion</th>
                     <th scope="col" >Localidad</th>
@@ -85,21 +84,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let restriccion of restriccionesFisicasAMostrar">
-                    <td>{{restriccion.idRestriccion}}</td>
-                    <td>{{restriccion.nombre}}</td>
-                    <td>{{restriccion.direccion.calle+" "+restriccion.direccion.altura}}</td>
-                    <td>Me falta la localidad en la respuesta</td>
-                    <td>Me falta la provincia en la respuesta</td>
+                <tr *ngFor="let restriccion of restriccionesConInfo">
+                    <td>{{restriccion.rpLugar.idRPLugar}}</td>
+                    <td>{{restriccion.rpLugar.nombre}}</td>
+                    <td>{{restriccion.rpLugar.direccion.calle+" "+restriccion.rpLugar.direccion.altura}}</td>
+                    <td>{{restriccion.localidad.nombre}}</td>
+                    <td>{{restriccion.provincia.nombre}}</td>
                     <td>
                         <a>
-                            <i class="material-icons" (click)="editar=true">edit</i>
+                            <i class="material-icons" (click)="pasarDatosAlFormulario(restriccion)">edit</i>
                         </a>
                         <a>
                             <i class="material-icons" (click)="eliminarRpFisica(restriccion.idRPLugar)">delete</i>
-                        </a>
-                        <a >
-                            <i class="material-icons">info</i>
                         </a>
                     </td>
                 </tr>
