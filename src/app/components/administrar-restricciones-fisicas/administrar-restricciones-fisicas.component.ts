@@ -134,6 +134,9 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
    * @author Nicolás
   */
   agregarRestriccionFisica(NgForm : NgForm){
+    if(this.editar) return
+
+    console.log("llamando agregar")
     let restriccion : RestriccionFisica = new RestriccionFisica();
     restriccion.nombre = this.nombreRestriccion;
     restriccion.direccion = this.armarDireccion()
@@ -186,6 +189,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
    * @author Nicolás 
    */
   editarRestriccion(){
+    console.log("llamando edicion")
     let restriccion : RestriccionFisicaEditar = new RestriccionFisicaEditar();
     restriccion.nombre = this.nombreRestriccion;
     restriccion.direccion = this.armarDireccion()
@@ -194,6 +198,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     restriccion.idRPLugar = this.restriccionAEditar;
     this.spinner.show()
     this.restriccionService.updateRestricciónFisica(restriccion).subscribe(res =>{
+        this.obtenerRestriccionesFisicasConInfo();
         this.spinner.hide()
     });
   }
