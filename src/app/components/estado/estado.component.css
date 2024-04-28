@@ -5,11 +5,18 @@ form{
     flex-direction: column;
     align-items: flex-start;
     border: 1px solid black;
-    border-radius: 5%;
     margin: 0 auto;
     box-sizing: content-box;
     padding: 1rem;
+    background-color: #b780ff;
     
+}
+
+
+.container{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
 }
 
 /*Iconos google fonts*/
@@ -17,7 +24,12 @@ form{
 .material-icons{
     color: #480971;
 }
-  
+
+
+th{
+    background-color: #480971;
+    color: white;
+}
 
 
 
@@ -35,6 +47,7 @@ button{
   }
 
 .estado-actual{
+    color: white;
     border:1px solid black;
     margin-top: 1rem;
     width: fit-content;
@@ -43,6 +56,52 @@ button{
     display: inline-block;
     
 }
+
+
+
+.select-estilo {
+    width: 100%;
+    border-radius: 5px;
+    height: 50px;
+    background-color: white;
+    color: black;
+  }
+
+
+.btn{
+    width: fit-content;
+    background-color: #480971;
+    color: white;
+}
+
+
+  /*Animación legend*/
+
+legend {
+    color: black;
+  }
+  
+  legend::after {
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+  }
+  
+  @keyframes animacionafter {
+  
+    0% {
+      width: 0;
+    }
+  
+    100% {
+      width: 100%;
+    }
+  
+  }
+
 
 
 

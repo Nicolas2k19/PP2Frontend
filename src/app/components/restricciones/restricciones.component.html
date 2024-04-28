@@ -4,16 +4,16 @@
         <p style="font-size: 15px; font-weight: bold; color: #26294D">Cargando...</p>
     </ngx-spinner>
     <div class="lista-restricciones">
-        <table class="table table-striped">
-            <thead class="thead-dark">
+        <table class="table">
+            <thead>
                 <tr>
                     <th scope="col">Victimario</th>
                     <th scope="col">Damnificada</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let restriccion of restriccionService.restricciones"
-                    (click)=seleccionarRestriccion(restriccion)>
+                <tr #fila *ngFor="let restriccion of restriccionService.restricciones"
+                    (click)=seleccionarRestriccion(restriccion,fila)>
                     <td>{{restriccion.victimario.apellido}}</td>
                     <td>{{restriccion.damnificada.apellido}}</td>
                 </tr>

@@ -1,7 +1,7 @@
 .general{
-    margin: auto;
-    width: 99%;
-    height: 600px;
+   display: flex;
+   flex-direction: row;
+   gap: 1rem;
 }
 
 .lista-restricciones{
@@ -25,4 +25,14 @@
     position: fixed;
     margin-top: 20%;
     z-index: 9999;
+}
+
+th{
+    background-color: #480971;
+    color: white;
+}
+
+
+td{
+    background-color: inherit;
 }

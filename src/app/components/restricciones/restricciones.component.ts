@@ -42,8 +42,7 @@ export class RestriccionesComponent implements OnInit {
   ngOnInit() {
     this.getRestricciones(localStorage.getItem("emailUsuario"));
     this.getUsuarioByEmail(localStorage.getItem("emailUsuario"));
-    this.mapService.iniciarMapa('map');
-    console.log(this.comunicacion.administrativo.email);
+    
   }
 
   getRestricciones(email: string) {
@@ -56,7 +55,17 @@ export class RestriccionesComponent implements OnInit {
       })
   }
 
-  seleccionarRestriccion(restriccion: RestriccionDTO) {
+  seleccionarRestriccion(restriccion: RestriccionDTO,fila) {
+    this.desmarcarCeldas();
+    if(fila==null){
+      document.querySelectorAll("tr")[1].style.backgroundColor = "#b780ff"
+    }
+    else{
+      fila.style.backgroundColor = "#b780ff"
+      fila.style.color = "white";
+    }
+
+    console.log(fila)
     this.comunicacion.enviarRestriccion(restriccion);
     this.mostrarRestriccion();
     let thisjr = this;
@@ -67,10 +76,29 @@ export class RestriccionesComponent implements OnInit {
     }, 15000);
   }
 
+
+  desmarcarCeldas(){
+    document.querySelectorAll("tr").forEach(fila =>{
+      fila.style.backgroundColor = "inherit"
+      fila.style.color = "white";
+    })
+  }
+
+  /**
+   * Marca en color violeta claro la restricción vigilada
+   * @author nicolás
+   */
+  marcarRestriccion(){
+   // document.querySelector()
+  }
+
   getUsuarioByEmail(mail: string){
     this.usuarioService.getUsuarioByEmail(mail)
     .subscribe(res => {
       this.comunicacion.enviarUsuario(res as Usuario);
+      this.mapService.iniciarMapa('map');
+      console.log(this.comunicacion.administrativo.email);
+      this.seleccionarRestriccion(this.restriccionService.restricciones[0],null);
     })
   }
 

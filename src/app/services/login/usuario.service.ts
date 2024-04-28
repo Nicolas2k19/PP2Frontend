@@ -19,6 +19,12 @@ export class UsuarioService {
     this.usuarioSeleccionado = new Usuario();
   }
 
+
+  getUsuariosPorIdGrupo(id : Number){
+    return this.http.get(this.URL_API+"/obtenerUsuarioPorGrupo/"+id);
+  }
+
+
   getUsuarios(){
     return this.http.get(this.URL_API);
   }
