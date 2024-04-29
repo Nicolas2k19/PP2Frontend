@@ -256,7 +256,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
    * Agrega el victimario, retorna un booleano indicando si la operación de agregar fue exitosa
    * @returns boolean
    */
-  agregarVictimario() {
+  agregarVictimario(ngForm : NgForm) {
     if (this.stringVacio(this.victimario.dni)) {
       this.setErrorCampoVictimario();
       this.toastr.error("Verificar el DNI de victimario ingresado.", "Error!");
@@ -269,8 +269,8 @@ export class AdministrarRestriccionesComponent implements OnInit {
           this.setErrorCampoVictimario();
           return false;
         }
-        this.victimario = res;
-        return true;
+        this.victimario = res as Persona;
+        this.agregarRestriccion(ngForm);
       })
 
   }
@@ -279,7 +279,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
    * Agrega a la damnificada, retorna un booleano indicando si la operación de agregar fue exitosa
    * @returns boolean
    */
-  agregarDamnificada() {
+  agregarDamnificada(ngForm : NgForm) {
     console.log(this.damnificada.dni)
     if (this.stringVacio(this.damnificada.dni)) {
       this.setErrorCampoDamnificada();
@@ -293,8 +293,9 @@ export class AdministrarRestriccionesComponent implements OnInit {
           this.setErrorCampoDamnificada();
           return false;
         }
-        this.damnificada = res;
-        return true;
+        this.damnificada = res as Persona;
+        this.agregarVictimario(ngForm);
+        //return true;
       })
 
 
@@ -322,6 +323,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   guardarRestriccion(restriccionForm: NgForm) {
     if (this.editarBandera == true) {
+      console.log(this.editarBandera)
       this.restriccion.idDamnificada = this.damnificada.idPersona;
       this.restriccion.idVictimario = this.victimario.idPersona;
       this.restriccion.idGrupo = this.grupoSeleccionado;
@@ -332,6 +334,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
       if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
         || this.restriccion.idDamnificada == 0) {
+        console.log("PRIEMRA BANDERA")
         this.toastr.error("Completar todos los campos", "Error!");
         this.setCamposIncompletos();
       }
@@ -356,14 +359,14 @@ export class AdministrarRestriccionesComponent implements OnInit {
       }
     }
     else {
-      this.agregarRestriccion(restriccionForm);
+      this.agregarDamnificada(restriccionForm);
     }
   }
 
   agregarRestriccion(restriccionForm: NgForm) {
-    if (this.agregarDamnificada() == false || this.agregarVictimario() == false) {
+    /*if (this.agregarDamnificada() == false || this.agregarVictimario() == false) {
       return
-    }
+    }*/
 
     if (this.grupoSeleccionado == null) {
       this.setErrorCampoGrupo();
@@ -394,8 +397,10 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.restriccion.fechaSentencia = myDate;
 
 
-    if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
-      || this.restriccion.idDamnificada == 0) {
+    if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0) {
+      console.log(this.restriccion.idDamnificada,this.restriccion.idVictimario)
+
+      console.log("SEGUNDA BANDERA")
       this.toastr.error("Completar todos los campos", "Error!");
       this.setCamposIncompletos();
     }
