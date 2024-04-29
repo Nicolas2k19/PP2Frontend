@@ -237,7 +237,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of usuariosDelGrupo">
-                    <td>{{user.email}}</td>
+                    <td *ngIf="user.rolDeUsuario=='ADMINISTRATIVO'">{{user.email}}</td>
                 </tr>
             </tbody>
 
