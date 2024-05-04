@@ -75,12 +75,12 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" >ID Restricción Física</th>
-                    <th scope="col" >Nombre</th>
-                    <th scope="col" >Direccion</th>
-                    <th scope="col" >Localidad</th>
-                    <th scope="col" >Provincia</th>
-                    <th scope="col" >Operaciones</th>
+                    <th (click)="ordenarPorId()" scope="col" >ID Restricción Física</th>
+                    <th (click)="ordenarPorNombre()" scope="col" >Nombre</th>
+                    <th (click)="ordenarPorDireccion()" scope="col" >Direccion</th>
+                    <th (click)="ordenarPorLocalidad()" scope="col" >Localidad</th>
+                    <th (click)="ordenarPorProvincia()" scope="col" >Provincia</th>
+                    <th  scope="col" >Operaciones</th>
                 </tr>
             </thead>
             <tbody>

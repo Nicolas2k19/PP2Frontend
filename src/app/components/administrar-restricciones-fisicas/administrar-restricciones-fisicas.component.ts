@@ -23,7 +23,7 @@ import RestriccionConInfo from 'src/app/models/RestriccionFisica/RestriccionConI
 export class AdministrarRestriccionesFisicasComponent implements OnInit{
   
 
-
+  ordenId : boolean;
   restriccionesConInfo : RestriccionConInfo[]
   restriccionesFisicasAMostrar : RestriccionFisicaEditar[]
   provincias : Provincia[]
@@ -41,6 +41,11 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
   restriccionesPerimetrales : Restriccion[]
   restriccionAEditar : number
   
+  ordenNombre: boolean;
+  ordenLocalidad: boolean;
+  ordenProvincia: boolean;
+  ordenDireccion: boolean;
+  
 
   constructor(public restriccionService : RestriccionService,
       public provinciaLocalidadService : ProvinciaLocalidadService,
@@ -48,6 +53,10 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
       private spinner: NgxSpinnerService){
       this.provincias = [];
       this.editar = false;
+      this.ordenId  = false;
+      this.ordenNombre = false;
+      this.ordenLocalidad = false;
+      this.ordenProvincia = false;
 
      
 
@@ -220,6 +229,101 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
       this.restriccionAEditar = restriccion.rpLugar.idRPLugar;
       this.editar = true;
   }
+
+  /**
+   * Ordena la tabla por id
+   * @author Nicolas
+   */
+  ordenarPorId(){
+    console.log("asdasdasdasdasdasdasdasdasdasdasdas")
+    let orden : number = this.ordenId ?  1:-1
+
+    let restriccionesFisicas : RestriccionConInfo [] = this.restriccionesConInfo;
+    restriccionesFisicas.sort((a,b)=>{
+      if(a.rpLugar.idRPLugar > b.rpLugar.idRPLugar){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenId = !this.ordenId;
+
+  }
+
+
+  /**
+   * Ordena la tabla por id
+   * @author Nicolas
+   */
+  ordenarPorNombre(){
+    let orden : number = this.ordenNombre ?  1:-1
+
+    let restriccionesFisicas : RestriccionConInfo [] = this.restriccionesConInfo;
+    restriccionesFisicas.sort((a,b)=>{
+      if(a.rpLugar.nombre > b.rpLugar.nombre){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenNombre = !this.ordenNombre;
+
+  }
+
+
+   /**
+   * Ordena la tabla por localidad
+   * @author Nicolas
+   */
+   ordenarPorLocalidad(){
+    let orden : number = this.ordenLocalidad ?  1:-1
+
+    let restriccionesFisicas : RestriccionConInfo [] = this.restriccionesConInfo;
+    restriccionesFisicas.sort((a,b)=>{
+      if(a.localidad.nombre > b.localidad.nombre){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenLocalidad = !this.ordenLocalidad
+  }
+  /**
+   * Ordena la tabla por provincia
+   * @author Nicolas
+   */
+  ordenarPorProvincia(){
+    let orden : number = this.ordenProvincia ?  1:-1
+
+    let restriccionesFisicas : RestriccionConInfo [] = this.restriccionesConInfo;
+    restriccionesFisicas.sort((a,b)=>{
+      if(a.provincia.nombre > b.provincia.nombre){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenProvincia = !this.ordenProvincia
+  }
+
+  /**
+   * Ordena la tabla por la calle
+   * @author Nicolas
+   */
+  ordenarPorDireccion(){
+    let orden : number = this.ordenDireccion ?  1:-1
+
+    let restriccionesFisicas : RestriccionConInfo [] = this.restriccionesConInfo;
+    restriccionesFisicas.sort((a,b)=>{
+      if(a.rpLugar.direccion.calle > b.rpLugar.direccion.calle){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenDireccion = !this.ordenDireccion
+  }
+
 
 
 
