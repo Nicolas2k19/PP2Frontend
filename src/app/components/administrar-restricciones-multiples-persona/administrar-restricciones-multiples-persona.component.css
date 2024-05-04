@@ -1,0 +1,152 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+
+/*Tabla de restricciones*/
+th{
+    background-color: #480971;
+    color: #ffffff;
+}
+
+.material-icons{
+    color: #480971;
+    cursor: pointer;
+}
+
+
+
+
+/*Formulario para nuevas restricciones*/
+.card {
+    background-color: #8d3aff63;
+    color: black;
+    padding: 2.5rem;
+    border: 1px solid black;
+    width: fit-content;
+    height: fit-content;
+  
+  }
+
+  
+.btn {
+    background-color: #480971;
+    color: white;
+    width: fit-content;
+    margin-top: 1rem;
+  }
+
+
+/*Ingreso de datos  */
+
+.input-texto-before{
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+  /*Inputs before*/
+  .input-texto-before-nombre::before {
+    content: "Nombre *";
+    text-align: left;
+  }
+
+  .input-texto-before-calle::before {
+    content: "Calle *";
+    text-align: left;
+  }
+
+  .input-texto-before-altura::before {
+    content: "Altura *";
+    text-align: left;
+  }
+
+  .input-texto-before-piso::before {
+    content: "Piso *";
+    text-align: left;
+  }
+
+  .input-texto-before-departamento::before {
+    content: "Departamento *";
+    text-align: left;
+  }
+
+
+  .input-texto-before-distancia::before {
+    content: "Distancia de la restricción *";
+    text-align: left;
+  }
+
+  /*Select before*/
+
+
+
+
+  .input-select-before{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-select-before-perimetral::before{
+    content: "Elegí la restricción perimetral vinculada *";
+    text-align: left;
+  }
+
+  .input-select-before-provincia::before{
+    content: "Seleccionar Provincia *";
+    text-align: left;
+  }
+
+  .input-select-before-localidad::before{
+    content: "Seleccionar Localidad *";
+    text-align: left;
+  }
+
+
+
+
+.input-texto {
+  background-color: inherit;
+  border: 0px solid #fff;
+  border-radius: 0;
+  border-bottom: 1px solid black;
+  padding: 0;
+}
+
+
+.select-estilo {
+  width: fit-content;
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 50px;
+  background-color: white;
+  color: black;
+}
+
+
+
+/*Animación titulo*/
+  legend::after {
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+  }
+
+
+  @keyframes animacionafter {
+
+    0% {
+      width: 0;
+    }
+  
+    100% {
+      width: 100%;
+    }
+  
+  }
+

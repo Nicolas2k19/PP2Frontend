@@ -28,6 +28,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
   victimario = new Persona;
   administrativo = new Usuario;
   restriccion = new Restriccion;
+  restriccionMultiplePersona : boolean
 
 
   restriccionFisica : boolean
@@ -115,6 +116,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.errorTextoEquipo = false
     this.errorTurno = false;
     this.restriccionFisica = false;
+    this.restriccionMultiplePersona = false;
   }
 
 
@@ -712,12 +714,14 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.mostrarGrupoRestricciones = true
     this.mostrarAbmRestricciones = false
     this.restriccionFisica = false
+    this.restriccionMultiplePersona = false
 
   }
   mostrarRestriccionesFisicas(){
     this.mostrarGrupoRestricciones = false
     this.mostrarAbmRestricciones = false
     this.restriccionFisica = true
+    this.restriccionMultiplePersona = false
 
   }
 
@@ -725,6 +729,14 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.mostrarGrupoRestricciones = false
     this.mostrarAbmRestricciones = true
     this.restriccionFisica = false
+    this.restriccionMultiplePersona = false
+  }
+  
+  mostrarMultiplesPersonas(){
+    this.mostrarGrupoRestricciones = false
+    this.mostrarAbmRestricciones = false
+    this.restriccionFisica = false
+    this.restriccionMultiplePersona = true
   }
 
 

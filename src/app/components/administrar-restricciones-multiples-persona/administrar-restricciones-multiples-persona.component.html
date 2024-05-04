@@ -1,0 +1,106 @@
+
+ <!--Spinner ---------------------------------------------->
+
+<ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
+    <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
+</ngx-spinner>
+<div class="container">
+    <!--Agregar restricciones fisicas ---------------------------------------------->
+    <form #restriccionLForm="ngForm" class="card form-control"  action="POST" novalidate>
+        <legend class="titulo">Agregar restriccion multiple</legend>
+
+        <div class="input-texto-before-nombre">
+            <input class="form-control input-texto nombre" name="nombre" type="text">
+        </div>
+
+        <div class="input-texto-before-calle">
+            <input class="form-control input-texto calle" name="calle"  type="text">
+        </div>
+
+        <div class="input-texto-before-altura">
+            <input class="form-control input-texto altura" name="altura"  type="text">
+        </div>
+
+        <div class="input-texto-before-piso">
+            <input class="form-control input-texto piso"  name="piso" type="text">
+        </div>
+
+        <div class="input-texto-before-departamento">
+            <input class="form-control input-texto departamento"  name="departamento" type="text">
+        </div>
+
+        <div class="input-texto-before-distancia">
+            <input class="form-control input-texto distancia"   name="distancia" type="number" min="200" value="200">
+        </div>
+
+        
+        <div class="input-select-before input-select-before-perimetral">
+            <select  name="restriccion" class="select-estilo">
+                <option disabled>Restriccion perimetral</option>
+                <option>
+                    RESTRICCION 1
+                </option>
+            </select>
+        </div>
+        <div class="input-select-before input-select-before-provincia">
+            <select  name="provincia" class="select-estilo">
+                <option disabled></option>
+                <option>
+                   Opción 1
+                </option>
+            </select>
+        </div>
+        <div class="input-select-before  input-select-before-localidad">
+            <select name="localidad" class="select-estilo">
+                <option disabled>Elegí una localidad</option>
+                <option>
+                    Localidad
+                </option>
+            </select>
+        </div>
+
+
+        <button class="btn">
+           Editar
+        </button>
+        <button class="btn">
+           Volver
+        </button>
+        <button class="btn">
+           Agregar
+        </button>
+
+    </form>
+    <!-- TABLA DE RESTRICCIONES FISICAS --------------------->
+    <div class="col">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID Restricción Física</th>
+                    <th scope="col" >Nombre</th>
+                    <th scope="col" >Direccion</th>
+                    <th scope="col" >Localidad</th>
+                    <th scope="col" >Provincia</th>
+                    <th scope="col" >Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Prueba</td>
+                    <td>Prueba</td>
+                    <td>Prueba</td>
+                    <td>Prueba</td>
+                    <td>Prueba</td>
+                    <td>
+                        <a>
+                            <i class="material-icons">edit</i>
+                        </a>
+                        <a>
+                            <i class="material-icons">delete</i>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+</div>

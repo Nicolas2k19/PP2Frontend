@@ -262,15 +262,22 @@
     <!--Componente de restricciones fisicas-->
     <app-administrar-restricciones-fisicas *ngIf="restriccionFisica" ></app-administrar-restricciones-fisicas>
 
+    <!--Componente de restricciones multiples personas-->
+    <app-administrar-restricciones-multiples-persona *ngIf="restriccionMultiplePersona" ></app-administrar-restricciones-multiples-persona>
+
+
     <div class="botonera-restricciones">
-        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones||restriccionFisica" (click)="mostrarGrupos()">
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones||restriccionFisica||restriccionMultiplePersona" (click)="mostrarGrupos()">
             Grupos
         </button>
-        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones" (click)="mostrarRestriccionesFisicas()">
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarAbmRestricciones||restriccionMultiplePersona||mostrarGrupoRestricciones" (click)="mostrarRestriccionesFisicas()">
             Restricciones Fisicas
         </button>
-        <button class="boton-cambio-pantalla btn" *ngIf="mostrarGrupoRestricciones||restriccionFisica" (click)="mostrarRestricciones()">
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarGrupoRestricciones||restriccionFisica||restriccionMultiplePersona" (click)="mostrarRestricciones()">
             Restricciones
+        </button>
+        <button class="boton-cambio-pantalla btn" *ngIf="mostrarGrupoRestricciones||restriccionFisica||mostrarAbmRestricciones" (click)="mostrarMultiplesPersonas()">
+            Restricciones multiples
         </button>
     </div>
 
