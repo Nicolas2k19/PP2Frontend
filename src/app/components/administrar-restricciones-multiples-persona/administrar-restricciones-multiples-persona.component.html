@@ -6,67 +6,65 @@
 </ngx-spinner>
 <div class="container">
     <!--Agregar restricciones fisicas ---------------------------------------------->
-    <form #restriccionLForm="ngForm" class="card form-control"  action="POST" novalidate>
+    <form #restriccionLForm="ngForm" class="card form-control" (ngSubmit)="buscarPersona()" action="POST" novalidate>
         <legend class="titulo">Agregar restriccion multiple</legend>
 
-        <div class="input-texto-before-nombre">
-            <input class="form-control input-texto nombre" name="nombre" type="text">
+        <div class="input-texto-before-dni">
+            <input class="form-control input-texto" [(ngModel)]="dni" name="dni" type="text">
         </div>
 
         <div class="input-texto-before-calle">
-            <input class="form-control input-texto calle" name="calle"  type="text">
+            <input class="form-control input-texto calle" [(ngModel)]="calle" name="calle"  type="text">
         </div>
 
         <div class="input-texto-before-altura">
-            <input class="form-control input-texto altura" name="altura"  type="text">
+            <input class="form-control input-texto altura" [(ngModel)]="altura" name="altura"  type="text">
         </div>
 
         <div class="input-texto-before-piso">
-            <input class="form-control input-texto piso"  name="piso" type="text">
+            <input class="form-control input-texto piso"  [(ngModel)]="piso" name="piso" type="text">
         </div>
 
         <div class="input-texto-before-departamento">
-            <input class="form-control input-texto departamento"  name="departamento" type="text">
+            <input class="form-control input-texto departamento" [(ngModel)]="departamento"  name="departamento" type="text">
         </div>
 
         <div class="input-texto-before-distancia">
-            <input class="form-control input-texto distancia"   name="distancia" type="number" min="200" value="200">
+            <input class="form-control input-texto distancia"  [(ngModel)]="distancia" name="distancia" type="number" min="200" value="200">
         </div>
 
         
         <div class="input-select-before input-select-before-perimetral">
-            <select  name="restriccion" class="select-estilo">
+            <select  name="restriccion" [(ngModel)]="idPerimetral" class="select-estilo">
                 <option disabled>Restriccion perimetral</option>
-                <option>
-                    RESTRICCION 1
+                <option value={{res.restriccion.idRestriccion}} *ngFor="let res of restriccionesPerimetrales">
+                    {{"Perimetral Nro° "+res.restriccion.idRestriccion}}
                 </option>
             </select>
         </div>
         <div class="input-select-before input-select-before-provincia">
-            <select  name="provincia" class="select-estilo">
+            <select  name="provincia" [(ngModel)]="idProvincia" class="select-estilo">
                 <option disabled></option>
-                <option>
-                   Opción 1
+                <option value={{provincia.idProvincia}} *ngFor="let provincia of provincias" (click)="traerLocalidades()">
+                    {{provincia.nombre}}
                 </option>
             </select>
         </div>
         <div class="input-select-before  input-select-before-localidad">
-            <select name="localidad" class="select-estilo">
+            <select name="localidad" [(ngModel)]="idLocalidad" class="select-estilo">
                 <option disabled>Elegí una localidad</option>
-                <option>
-                    Localidad
+                <option value={{localidad.idLocalidad}} *ngFor="let localidad of localidades">
+                    {{localidad.nombre}}
                 </option>
             </select>
         </div>
-
-
-        <button class="btn">
+        <button class="btn" *ngIf="editar">
            Editar
         </button>
-        <button class="btn">
+        <button (click)="desactivarEdicion()" class="btn" *ngIf="editar">
            Volver
         </button>
-        <button class="btn">
+        <button class="btn" *ngIf="!editar">
            Agregar
         </button>
 
@@ -76,8 +74,8 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID Restricción Física</th>
-                    <th scope="col" >Nombre</th>
+                    <th>ID Restricción Multiple</th>
+                    <th scope="col" >Id</th>
                     <th scope="col" >Direccion</th>
                     <th scope="col" >Localidad</th>
                     <th scope="col" >Provincia</th>
@@ -85,18 +83,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Prueba</td>
-                    <td>Prueba</td>
-                    <td>Prueba</td>
-                    <td>Prueba</td>
-                    <td>Prueba</td>
+                <tr *ngFor="let res of restriccionesMultiples">
+                    <td>{{res.idRestriccion}}</td>
+                    <td>{{res.direccion.calle + " " +res.direccion.altura}}</td>
+                    <td>{{res.direccion.departamento}}</td>
+                    <td>Provincia</td>
                     <td>
                         <a>
                             <i class="material-icons">edit</i>
                         </a>
                         <a>
-                            <i class="material-icons">delete</i>
+                            <i (click)="activarEdicion()" class="material-icons">delete</i>
                         </a>
                     </td>
                 </tr>

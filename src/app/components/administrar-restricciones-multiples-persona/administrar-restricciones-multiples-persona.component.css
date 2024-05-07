@@ -48,8 +48,8 @@ th{
 }
 
   /*Inputs before*/
-  .input-texto-before-nombre::before {
-    content: "Nombre *";
+  .input-texto-before-dni::before {
+    content: "Dni de la persona *";
     text-align: left;
   }
 

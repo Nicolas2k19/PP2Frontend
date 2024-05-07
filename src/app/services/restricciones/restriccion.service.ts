@@ -5,6 +5,7 @@ import { RestriccionDTO } from 'src/app/models/restriccion-dto';
 import { environment } from '../../../environments/environment';
 import RestriccionFisica from 'src/app/models/RestriccionFisica/RestriccionFisica';
 import RestriccionFisicaEditar from 'src/app/models/RestriccionFisica/RestriccionFisicaEditar';
+import RestriccionMultiple from 'src/app/models/RestriccionMultiple/RestriccionMultiple';
 
 
 @Injectable({
@@ -30,6 +31,11 @@ export class RestriccionService {
    */
   readonly URL_API_FISICA = environment.apiUrl+"LugaresRestringidos";
 
+  /**
+   * Restricción multiple
+   * 
+   */
+  readonly URL_API_RES_MULTIPLE= environment.apiUrl+"RestriccionMultiple" 
 
 
   constructor(private http:HttpClient) { 
@@ -55,6 +61,14 @@ export class RestriccionService {
     return this.http.get(this.URL_API_GETByidGrupo+id);
   }
 
+
+  /**
+   * Obtiene todas las restricciones multiples  
+   * @author Nicolás
+   */
+  getRestriccionesMultiples(){
+    return this.http.get(this.URL_API_RES_MULTIPLE)
+  }
 
 
   /**
@@ -83,6 +97,14 @@ export class RestriccionService {
    postRestriccioFisica(restriccionFisica : RestriccionFisica){
     console.log("Hola estoy agregando")
     return this.http.post(this.URL_API_FISICA,restriccionFisica);
+  }
+
+  /**
+   * Guarda una nueva restricción multiple
+   * @returns 
+   */
+   postRestriccionMultiple(restriccionMultiple : RestriccionMultiple){
+    return this.http.post(this.URL_API_RES_MULTIPLE+"/nuevaRestriccion",restriccionMultiple)
   }
 
 
