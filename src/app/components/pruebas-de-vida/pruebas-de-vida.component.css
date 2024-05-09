@@ -6,6 +6,15 @@
   color: #480971; 
 }
 
+.table thead th {
+  align-content: center;
+}
+
+.header-tabla{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 .card {

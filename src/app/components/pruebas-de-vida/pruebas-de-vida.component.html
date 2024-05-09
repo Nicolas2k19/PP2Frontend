@@ -88,35 +88,44 @@
                 <thead>
                     <tr>
                         <th scope="col">
-                            Fecha
-                            <button class="btn btn-link" (click)="sortColumn('fecha')">
-                              <i class="material-icons">
-                                {{ orderedColumn === 'fecha' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
-                              </i>
-                            </button>
+                            <div class="header-tabla">
+                                Fecha
+                                <button class="btn btn-link" (click)="sortColumn('fecha')">
+                                  <i class="material-icons">
+                                    {{ orderedColumn === 'fecha' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
+                                  </i>
+                                </button>
+                            </div>
                           </th>
                           <th scope="col">
-                            Descripción
-                            <button class="btn btn-link" (click)="sortColumn('descripcion')">
-                              <i class="material-icons">
-                                {{ orderedColumn === 'descripcion' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
-                              </i>
-                            </button>
+                            <div class="header-tabla">
+                                Descripción
+                                <button class="btn btn-link" (click)="sortColumn('descripcion')">
+                                  <i class="material-icons">
+                                    {{ orderedColumn === 'descripcion' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
+                                  </i>
+                                </button>
+                            </div>
+                            
                           </th>
                           <th scope="col">
-                            Estado
-                            <button class="btn btn-link" (click)="sortColumn('estado')">
-                              <i class="material-icons">
-                                {{ orderedColumn === 'estado' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
-                              </i>
-                            </button>
+                            <div class="header-tabla">
+                                Estado
+                                <button class="btn btn-link" (click)="sortColumn('estado')">
+                                  <i class="material-icons">
+                                    {{ orderedColumn === 'estado' ? (ascendingOrder ? 'arrow_drop_up' : 'arrow_drop_down') : 'unfold_more' }}
+                                  </i>
+                                </button>
+                            </div>
                           </th>
-                          <th scope="col">Ver
-                            <button class="btn btn-link" >
-                                <i class="material-icons">
-                                
-                                </i>
-                              </button>
+                          <th scope="col">
+                            <div class="header-tabla">
+                                Ver
+                                <button class="btn btn-link" >
+                                    <i class="material-icons">
+                                    </i>
+                                  </button>
+                            </div>
                           </th>
                           
                     </tr>

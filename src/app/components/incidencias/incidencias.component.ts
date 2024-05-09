@@ -30,9 +30,22 @@ export class IncidenciasComponent implements OnInit {
   filtroSeleccionado: string;
 
 
+  //ordenamiento
+
+  ordenTipo :boolean;
+  ordenFecha:boolean;
+  ordenPeligrosidad :boolean;
+
+
   constructor(private comunicacionServicio: ComunicacionService,
     private incideciaServicio: IncidenciaService,
-    private spinnerService: NgxSpinnerService) { }
+    private spinnerService: NgxSpinnerService) { 
+
+
+      this.ordenTipo=true;
+    this.ordenFecha=true;
+    this.ordenPeligrosidad=true;
+    }
 
   ngOnInit() {
     this.getRestriccion();
@@ -173,6 +186,52 @@ toggleSelect(){
 }
 
 
+
+  /**
+   * Ordena la tabla por provincia
+   * @author Vane
+   */
+
+ordenarPorPeligrosidad(){
+
+  let orden : number = this.ordenPeligrosidad ?  1:-1
+
+  this.incidencias.sort((a,b)=>{
+   if(a.peligrosidad > b.peligrosidad){
+     return 1 * orden
+   }
+   return -1 * orden
+  })
+  this.ordenPeligrosidad = !this.ordenPeligrosidad;
+
+}
+
+ordenarPorFechayHora(){
+  let orden : number = this.ordenFecha ?  1:-1
+
+ this.incidencias.sort((a,b)=>{
+  if(a.fecha > b.fecha){
+    return 1 * orden
+  }
+  return -1 * orden
+ })
+ this.ordenFecha = !this.ordenFecha;
+
+}
+
+ordenarPorTipo(){
+
+  let orden : number = this.ordenTipo ?  1:-1
+
+  this.incidencias.sort((a,b)=>{
+   if(a.topico > b.topico){
+     return 1 * orden
+   }
+   return -1 * orden
+  })
+  this.ordenTipo = !this.ordenTipo;
+
+}
 
 
 }

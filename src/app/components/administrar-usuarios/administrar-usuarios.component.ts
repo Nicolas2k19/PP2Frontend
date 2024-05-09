@@ -322,6 +322,11 @@ export class AdministrarUsuariosComponent implements OnInit {
   }
 
 
+    /**
+   * Ordena la tabla por provincia
+   * @author Vane
+   */
+
   ordenarPorIDUser(){
 
     let orden : number = this.ordenID ?  1:-1

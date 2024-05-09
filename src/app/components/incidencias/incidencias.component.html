@@ -45,10 +45,34 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">Tipo de incidencia</th>
-                        <th scope="col">Fecha y Hora</th>
-                        <th scope="col">Datos generales</th>
-                        <th scope="col">Nivel de peligrosidad</th>
+                        <th scope="col">
+                            <div class = "header-tabla">
+                                Tipo de incidencia
+                                <a (click)="ordenarPorTipo()">
+                                    <i class="material-icons ordenamiento">unfold_more</i>
+                                </a>
+                            </div>
+                            </th>
+                        <th scope="col">
+                            <div class = "header-tabla">
+                                Fecha y Hora
+                                <a (click)="ordenarPorFechayHora()">
+                                    <i class="material-icons ordenamiento">unfold_more</i>
+                                </a>
+                            </div></th>
+                        <th scope="col">
+                            <div class = "header-tabla">
+                                Datos generales
+                            </div>
+                            </th>
+                        <th scope="col">
+                            <div class = "header-tabla">
+                                Nivel de peligrosidad
+                                <a (click)="ordenarPorPeligrosidad()">
+                                    <i class="material-icons ordenamiento">unfold_more</i>
+                                </a>
+                            </div>
+                            </th>
                     </tr>
                 </thead>
                 <tbody>

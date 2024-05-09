@@ -31,6 +31,19 @@ th {
 }
 
 
+.table thead th {
+    align-content: center;
+  }
+
+  .ordenamiento{
+    color: white;
+  }
+  
+  .header-tabla{
+    display: flex;
+    justify-content: center;
+  }
+
 
 .select-estilo {
     border: 1px solid white;
