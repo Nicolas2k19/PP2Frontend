@@ -20,6 +20,15 @@ th{
   color: white;
 }
 
+.table thead th {
+  align-content: center;
+}
+
+.header-tabla{
+  display: flex;
+  justify-content: center;
+}
+
 
 
 

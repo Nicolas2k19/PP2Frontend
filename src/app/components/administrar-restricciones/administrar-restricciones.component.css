@@ -230,7 +230,12 @@ td {
 }
 
 .table {
-  color: #053667;
+  width: max-content;
+}
+
+.header-tabla{
+  display: flex;
+  justify-content: center;
 }
 
 .table tr:hover {

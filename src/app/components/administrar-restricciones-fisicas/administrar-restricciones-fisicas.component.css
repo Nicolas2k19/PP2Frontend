@@ -1,5 +1,5 @@
 
-.container{
+.container2{
     display: flex;
     flex-direction: row;
     gap: 1rem;
@@ -19,6 +19,15 @@ th{
 
 .ordenamiento{
   color:white;
+}
+
+.table thead th {
+  align-content: center;
+}
+
+.header-tabla{
+  display: flex;
+  justify-content: center;
 }
 
 

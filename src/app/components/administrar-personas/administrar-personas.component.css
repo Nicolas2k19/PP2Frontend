@@ -22,6 +22,7 @@
 th{
     background-color: #480971;
     color: #fff;
+    align-content: center;
 }
 
 td{
@@ -29,8 +30,13 @@ td{
 }
 
 
-.table{
-    color: #053667;
+.table {
+  width: max-content;
+}
+
+.header-tabla{
+  display: flex;
+  justify-content: center;
 }
 
 .table tr:hover {

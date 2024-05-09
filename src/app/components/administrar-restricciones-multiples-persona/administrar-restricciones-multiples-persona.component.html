@@ -1,5 +1,4 @@
-
- <!--Spinner ---------------------------------------------->
+<!--Spinner ---------------------------------------------->
 
 <ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
     <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
@@ -14,28 +13,30 @@
         </div>
 
         <div class="input-texto-before-calle">
-            <input class="form-control input-texto calle" [(ngModel)]="calle" name="calle"  type="text">
+            <input class="form-control input-texto calle" [(ngModel)]="calle" name="calle" type="text">
         </div>
 
         <div class="input-texto-before-altura">
-            <input class="form-control input-texto altura" [(ngModel)]="altura" name="altura"  type="text">
+            <input class="form-control input-texto altura" [(ngModel)]="altura" name="altura" type="text">
         </div>
 
         <div class="input-texto-before-piso">
-            <input class="form-control input-texto piso"  [(ngModel)]="piso" name="piso" type="text">
+            <input class="form-control input-texto piso" [(ngModel)]="piso" name="piso" type="text">
         </div>
 
         <div class="input-texto-before-departamento">
-            <input class="form-control input-texto departamento" [(ngModel)]="departamento"  name="departamento" type="text">
+            <input class="form-control input-texto departamento" [(ngModel)]="departamento" name="departamento"
+                type="text">
         </div>
 
         <div class="input-texto-before-distancia">
-            <input class="form-control input-texto distancia"  [(ngModel)]="distancia" name="distancia" type="number" min="200" value="200">
+            <input class="form-control input-texto distancia" [(ngModel)]="distancia" name="distancia" type="number"
+                min="200" value="200">
         </div>
 
-        
+
         <div class="input-select-before input-select-before-perimetral">
-            <select  name="restriccion" [(ngModel)]="idPerimetral" class="select-estilo">
+            <select name="restriccion" [(ngModel)]="idPerimetral" class="select-estilo">
                 <option disabled>Restriccion perimetral</option>
                 <option value={{res.restriccion.idRestriccion}} *ngFor="let res of restriccionesPerimetrales">
                     {{"Perimetral Nro° "+res.restriccion.idRestriccion}}
@@ -43,9 +44,10 @@
             </select>
         </div>
         <div class="input-select-before input-select-before-provincia">
-            <select  name="provincia" [(ngModel)]="idProvincia" class="select-estilo">
+            <select name="provincia" [(ngModel)]="idProvincia" class="select-estilo">
                 <option disabled></option>
-                <option value={{provincia.idProvincia}} *ngFor="let provincia of provincias" (click)="traerLocalidades()">
+                <option value={{provincia.idProvincia}} *ngFor="let provincia of provincias"
+                    (click)="traerLocalidades()">
                     {{provincia.nombre}}
                 </option>
             </select>
@@ -59,13 +61,13 @@
             </select>
         </div>
         <button class="btn" *ngIf="editar">
-           Editar
+            Editar
         </button>
         <button (click)="desactivarEdicion()" class="btn" *ngIf="editar">
-           Volver
+            Volver
         </button>
         <button class="btn" *ngIf="!editar">
-           Agregar
+            Agregar
         </button>
 
     </form>
@@ -74,32 +76,52 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID Restricción Multiple
-                        <a (click)="ordenarPorRM()">
-                            <i class="material-icons ordenamiento">unfold_more</i>
-                        </a>
+                    <th>
+                        <div class="header-tabla">
+                            ID RM
+                            <a (click)="ordenarPorRM()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </div>
                     </th>
-                    <th scope="col" >Id
-                        <a (click)="ordenarPorID()">
-                            <i class="material-icons ordenamiento">unfold_more</i>
-                        </a>
+                    <th scope="col">
+                        <div class="header-tabla">
+                            ID
+                            <a (click)="ordenarPorID()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </div>
                     </th>
-                    <th scope="col" >Direccion
-                        <a (click)="ordenarPorDireccion()">
-                            <i class="material-icons ordenamiento">unfold_more</i>
-                        </a>
+                    <th scope="col">
+                        <div class="header-tabla">
+                            Direccion
+                            <a (click)="ordenarPorDireccion()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </div>
                     </th>
-                    <th scope="col" >Localidad
-                        <a (click)="ordenarPorLocalidad()">
-                            <i class="material-icons ordenamiento">unfold_more</i>
-                        </a>
+                    <th scope="col">
+                        <div class="header-tabla">
+                            Localidad
+                            <a (click)="ordenarPorLocalidad()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+
+                        </div>
                     </th>
-                    <th scope="col" >Provincia
-                        <a (click)="ordenarPorProvincia()">
-                            <i class="material-icons ordenamiento">unfold_more</i>
-                        </a>
+                    <th scope="col">
+                        <div class="header-tabla">
+                            Provincia
+                            <a (click)="ordenarPorProvincia()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </div>
                     </th>
-                    <th scope="col" >Operaciones</th>
+                    <th scope="col">
+                        <div class="header-tabla">
+                            Operaciones
+                        </div>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -120,4 +142,4 @@
             </tbody>
         </table>
 
-</div>
+    </div>

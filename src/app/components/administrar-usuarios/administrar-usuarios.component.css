@@ -13,6 +13,16 @@ td {
   cursor: pointer;
 }
 
+
+.table thead th {
+  align-content: center;
+}
+
+.header-tabla{
+  display: flex;
+  justify-content: center;
+}
+
 .datos-solicitados {
   display: flex;
   width: fit-content;
