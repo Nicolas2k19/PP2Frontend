@@ -17,7 +17,9 @@ th{
     cursor: pointer;
 }
 
-
+.ordenamiento{
+  color:white;
+}
 
 
 /*Formulario para nuevas restricciones*/

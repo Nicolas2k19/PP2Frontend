@@ -65,6 +65,11 @@ export class AdministrarRestriccionesComponent implements OnInit {
   contadorV = 0;
   contadorD = 0;
   contadorGR = 0;
+  ordenID :boolean;
+  ordenAdmin:boolean;
+  ordenDamnificada :boolean;
+  ordenVictimario: boolean;
+  ordenGrupo: boolean;
 
   //ventana modal
 
@@ -117,6 +122,14 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.errorTurno = false;
     this.restriccionFisica = false;
     this.restriccionMultiplePersona = false;
+
+    this.ordenID=true;
+    this.ordenAdmin=true;
+    this.ordenDamnificada=true;
+    this.ordenGrupo=true;
+    this.ordenVictimario=true;
+  
+
   }
 
 
@@ -541,158 +554,83 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   //ordenamiento tabla restricciones
 
+
+  ordenarPorID(){
+    
+      let orden : number = this.ordenID ?  1:-1
+
+      let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
+      restriccion.sort((a,b)=>{
+        if(a.restriccion.idRestriccion > b.restriccion.idRestriccion){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenID = !this.ordenID;
+
+  
+  }
+
   ordenarPorAdministrativo() {
-    if (this.contadorA == 0) {
-      this.spinner.show();
-      this.restriccionService.getRestricciones().subscribe(res => {
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.restriccionService.restricciones.sort((a, b) => {
-          if (a.administrativo.email < b.administrativo.email) {
-            return -1;
-          }
-          if (a.administrativo.email > b.administrativo.email) {
-            return 1;
-          }
-          return 0;
-        });
 
-      });
-      this.contadorA += 1;
-      this.spinner.hide();
-    } else {
-      this.spinner.show();
+    let orden : number = this.ordenAdmin ?  1:-1
 
-      this.restriccionService.getRestricciones().subscribe(res => {
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.restriccionService.restricciones.sort((a, b) => {
-          if (a.administrativo.email > b.administrativo.email) {
-            return -1;
-          }
-          if (a.administrativo.email < b.administrativo.email) {
-            return 1;
-          }
-          return 0;
-        });
-      });
-      this.contadorA -= 1;
-      this.spinner.hide();
-    }
+    let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a,b)=>{
+      if(a.administrativo.email > b.administrativo.email){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenAdmin = !this.ordenAdmin;
   }
 
 
 
   ordenarPorVictimario() {
-    if (this.contadorV == 0) {
-      this.spinner.show();
-      this.restriccionService.getRestricciones().subscribe(res => {
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.restriccionService.restricciones.sort((a, b) => {
-          if (a.victimario.dni < b.victimario.dni) {
-            return -1;
-          }
-          if (a.victimario.dni > b.victimario.dni) {
-            return 1;
-          }
-          return 0;
-        });
+    let orden : number = this.ordenVictimario ?  1:-1
 
-      });
-      this.contadorV += 1;
-      this.spinner.hide();
-    } else {
-      this.spinner.show();
-      this.restriccionService.getRestricciones().subscribe(res => {
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.restriccionService.restricciones.sort((a, b) => {
-          if (a.victimario.dni > b.victimario.dni) {
-            return -1;
-          }
-          if (a.victimario.dni < b.victimario.dni) {
-            return 1;
-          }
-          return 0;
-        });
-      });
-      this.contadorV -= 1;
-      this.spinner.hide();
-    }
+    let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a,b)=>{
+      if(a.victimario.dni > b.victimario.dni){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenVictimario = !this.ordenVictimario;
   }
 
   ordenarPorGrupoR() {
 
-    if (this.contadorGR == 0) {
-      this.spinner.show();
-      this.restriccionService.getRestricciones().subscribe(res => {
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.restriccionService.restricciones.sort((a, b) => {
-          if (a.restriccion.idGrupo < b.restriccion.idGrupo) {
-            return -1;
-          }
-          if (a.restriccion.idGrupo > b.restriccion.idGrupo) {
-            return 1;
-          }
-          return 0;
-        });
+    let orden : number = this.ordenGrupo ?  1:-1
 
-      });
-      this.contadorGR += 1;
-      this.spinner.hide();
-    } else {
-      this.spinner.show();
-      this.restriccionService.getRestricciones().subscribe(res => {
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.restriccionService.restricciones.sort((a, b) => {
-          if (a.restriccion.idGrupo > b.restriccion.idGrupo) {
-            return -1;
-          }
-          if (a.restriccion.idGrupo < b.restriccion.idGrupo) {
-            return 1;
-          }
-          return 0;
-        });
-      });
-      this.contadorGR -= 1;
-      this.spinner.hide();
-    }
+    let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a,b)=>{
+      if(a.restriccion.idGrupo > b.restriccion.idGrupo){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenGrupo = !this.ordenGrupo;
   }
 
   ordenarPorDamnificada() {
 
-    if (this.contadorD == 0) {
-      this.spinner.show();
-      this.restriccionService.getRestricciones().subscribe(res => {
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.restriccionService.restricciones.sort((a, b) => {
-          if (a.damnificada.dni < b.damnificada.dni) {
-            return -1;
-          }
-          if (a.damnificada.dni > b.damnificada.dni) {
-            return 1;
-          }
-          return 0;
-        });
+    let orden : number = this.ordenDamnificada ?  1:-1
 
-      });
-      this.contadorD += 1;
-      this.spinner.hide();
-    } else {
-      this.spinner.show();
-      this.restriccionService.getRestricciones().subscribe(res => {
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.restriccionService.restricciones.sort((a, b) => {
-          if (a.damnificada.dni > b.damnificada.dni) {
-            return -1;
-          }
-          if (a.damnificada.dni < b.damnificada.dni) {
-            return 1;
-          }
-          return 0;
-        });
-      });
-      this.contadorD -= 1;
-      this.spinner.hide();
-    }
+    let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a,b)=>{
+      if(a.damnificada.dni > b.damnificada.dni){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
+    this.ordenDamnificada = !this.ordenDamnificada;
   }
 
 

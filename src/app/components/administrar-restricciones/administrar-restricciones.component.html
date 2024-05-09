@@ -67,11 +67,31 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col" >N°</th>
-                        <th scope="col" (click)="ordenarPorVictimario()">Victimario</th>
-                        <th scope="col" (click)="ordenarPorDamnificada()">Damnificada</th>
-                        <th scope="col" (click)="ordenarPorAdministrativo()">Administrativo</th>
-                        <th scope="col" (click)="ordenarPorGrupoR()">Grupo</th>
+                        <th scope="col" >N°
+                            <a (click)="ordenarPorID()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th scope="col" > Victimario 
+                            <a (click)="ordenarPorVictimario()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th scope="col" >Damnificada
+                            <a (click)="ordenarPorDamnificada()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th scope="col" >Administrativo
+                            <a (click)="ordenarPorAdministrativo()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a> 
+                        </th>
+                        <th scope="col" >Grupo
+                            <a (click)="ordenarPorGrupoR()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
                         <th scope="col">Operaciones</th>
                     </tr>
                 </thead>

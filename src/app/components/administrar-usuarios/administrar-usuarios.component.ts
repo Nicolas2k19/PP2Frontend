@@ -39,6 +39,11 @@ export class AdministrarUsuariosComponent implements OnInit {
   contadorE = 0;
   contadorR = 0;
   contadorG = 0;
+  ordenID: boolean;
+  ordenUsuario: boolean;
+  ordenTipo:boolean;
+  ordenGrupo:boolean;
+  ordenEstado :boolean;
 
 
   constructor(
@@ -48,6 +53,11 @@ export class AdministrarUsuariosComponent implements OnInit {
     private spinner: NgxSpinnerService) {
     this.roles = ['SUPERVISOR', 'ADMINISTRATIVO'];
     this.grupos = []
+    this.ordenGrupo=false;
+    this.ordenID=false;
+    this.ordenTipo=false;
+    this.ordenUsuario=false;
+    this.ordenEstado =false;
   }
 
   ngOnInit() {
@@ -312,151 +322,79 @@ export class AdministrarUsuariosComponent implements OnInit {
   }
 
 
+  ordenarPorIDUser(){
+
+    let orden : number = this.ordenID ?  1:-1
+
+    this.usuarioService.usuarios.sort((a,b)=>{
+      if(a.idUsuario > b.idUsuario){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenID = !this.ordenID;
+  }
 
   ordenarPorUsuario() {
 
-    if (this.contadorU == 0) {
-      this.spinner.show();
+    let orden : number = this.ordenUsuario ?  1:-1
 
-      this.usuarioService.usuarios.sort((a, b) => {
-        // Comparar los valores de 'damnificada' de los usuarios
-        if (a.email < b.email) {
-          return -1; // a debe aparecer antes que b
-        } else if (a.email > b.email) {
-          return 1; // b debe aparecer antes que a
-        } else {
-          return 0; // no se necesita cambiar el orden
-        }
-      });
-      this.contadorU += 1;
-      this.spinner.hide();
-    } else {
-      this.spinner.show();
+    this.usuarioService.usuarios.sort((a,b)=>{
+      if(a.email > b.email){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-      this.usuarioService.usuarios.sort((a, b) => {
-        // Comparar los valores de 'damnificada' de los usuarios
-        if (a.email > b.email) {
-          return -1; // a debe aparecer antes que b
-        } else if (a.email < b.email) {
-          return 1; // b debe aparecer antes que a
-        } else {
-          return 0; // no se necesita cambiar el orden
-        }
-      });
-
-      this.spinner.hide();
-      this.contadorU -= 1;
-
-    }
+    this.ordenUsuario = !this.ordenUsuario;
 
   }
 
 
   ordenarPorEstado() {
-    if (this.contadorE == 0) {
-      this.spinner.show();
+    let orden : number = this.ordenEstado ?  1:-1
 
-      this.usuarioService.usuarios.sort((a, b) => {
-        // Comparar los valores de 'damnificada' de los usuarios
-        if (a.estadoUsuario < b.estadoUsuario) {
-          return -1; // a debe aparecer antes que b
-        } else if (a.estadoUsuario > b.estadoUsuario) {
-          return 1; // b debe aparecer antes que a
-        } else {
-          return 0; // no se necesita cambiar el orden
-        }
-      });
-      this.contadorE += 1;
-      this.spinner.hide();
-    } else {
-      this.spinner.show();
+    this.usuarioService.usuarios.sort((a,b)=>{
+      if(a.estadoUsuario > b.estadoUsuario){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-      this.usuarioService.usuarios.sort((a, b) => {
-        // Comparar los valores de 'damnificada' de los usuarios
-        if (a.estadoUsuario > b.estadoUsuario) {
-          return -1; // a debe aparecer antes que b
-        } else if (a.estadoUsuario < b.estadoUsuario) {
-          return 1; // b debe aparecer antes que a
-        } else {
-          return 0; // no se necesita cambiar el orden
-        }
-      });
-
-      this.spinner.hide();
-      this.contadorE -= 1;
-    }
+    this.ordenEstado = !this.ordenEstado;
+    
   }
 
 
   ordenarPorRol() {
-    if (this.contadorR == 0) {
-      this.spinner.show();
+    let orden : number = this.ordenTipo ?  1:-1
 
-      this.usuarioService.usuarios.sort((a, b) => {
-        // Comparar los valores de 'damnificada' de los usuarios
-        if (a.rolDeUsuario < b.rolDeUsuario) {
-          return -1; // a debe aparecer antes que b
-        } else if (a.rolDeUsuario > b.rolDeUsuario) {
-          return 1; // b debe aparecer antes que a
-        } else {
-          return 0; // no se necesita cambiar el orden
-        }
-      });
-      this.contadorR += 1;
-      this.spinner.hide();
-    } else {
-      this.spinner.show();
+    this.usuarioService.usuarios.sort((a,b)=>{
+      if(a.rolDeUsuario > b.rolDeUsuario){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-      this.usuarioService.usuarios.sort((a, b) => {
-        // Comparar los valores de 'damnificada' de los usuarios
-        if (a.rolDeUsuario > b.rolDeUsuario) {
-          return -1; // a debe aparecer antes que b
-        } else if (a.rolDeUsuario < b.rolDeUsuario) {
-          return 1; // b debe aparecer antes que a
-        } else {
-          return 0; // no se necesita cambiar el orden
-        }
-      });
+    this.ordenTipo = !this.ordenTipo;
 
-      this.spinner.hide();
-      this.contadorR -= 1;
-    }
   }
 
 
   ordenarPorGrupo() {
-    if (this.contadorG == 0) {
-      this.spinner.show();
+    let orden : number = this.ordenGrupo ?  1:-1
 
-      this.usuarioService.usuarios.sort((a, b) => {
-        // Comparar los valores de 'damnificada' de los usuarios
-        if (a.idGrupo < b.idGrupo) {
-          return -1; // a debe aparecer antes que b
-        } else if (a.idGrupo > b.idGrupo) {
-          return 1; // b debe aparecer antes que a
-        } else {
-          return 0; // no se necesita cambiar el orden
-        }
-      });
-      this.contadorG += 1;
-      this.spinner.hide();
-    } else {
-      this.spinner.show();
+    this.usuarioService.usuarios.sort((a,b)=>{
+      if(a.idGrupo > b.idGrupo){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-      this.usuarioService.usuarios.sort((a, b) => {
-        // Comparar los valores de 'damnificada' de los usuarios
-        if (a.idGrupo > b.idGrupo) {
-          return -1; // a debe aparecer antes que b
-        } else if (a.idGrupo < b.idGrupo) {
-          return 1; // b debe aparecer antes que a
-        } else {
-          return 0; // no se necesita cambiar el orden
-        }
-      });
+    this.ordenGrupo = !this.ordenGrupo;
 
-      this.spinner.hide();
-      this.contadorG -= 1;
-    }
+    
   }
 
   getNombreGrupo(idGrupo: number): string {

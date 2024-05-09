@@ -57,16 +57,38 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col" (click)="ordenarPorUsuario()">Usuario</th>
-                        <th scope="col" (click)="ordenarPorEstado()">Estado</th>
-                        <th scope="col" (click)="ordenarPorRol()">Rol</th>
-                        <th scope="col" (click)="ordenarPorGrupo()">Grupo</th>
+                        <th scope="col" >ID
+                            <a (click)="ordenarPorIDUser()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th scope="col" >Usuario
+                            <a (click)="ordenarPorUsuario()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th scope="col" >Estado
+                            <a (click)="ordenarPorEstado()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th scope="col" >Rol
+                            <a (click)="ordenarPorRol()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th scope="col" >Grupo
+                            <a (click)="ordenarPorGrupo()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
                         <th scope="col">Operaciones</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let usuario of usuarioService.usuarios">
+                        <td>{{usuario.idUsuario}}</td>
                         <td>{{usuario.email}}</td>
                         <td>{{usuario.estadoUsuario}}</td>
                         <td>{{usuario.rolDeUsuario}}</td>

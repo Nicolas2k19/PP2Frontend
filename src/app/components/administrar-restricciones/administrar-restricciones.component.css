@@ -120,6 +120,7 @@ td {
   content: "DNI victimario:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 
 }
@@ -128,6 +129,7 @@ td {
   content: "Nombre y apellido victimario:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 
 }
@@ -136,6 +138,7 @@ td {
   content: "DNI damnificada:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 
 }
@@ -144,6 +147,7 @@ td {
   content: "Nombre y apellido damnificada:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 
 }
@@ -151,6 +155,7 @@ td {
   content: "Administrador responsable:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 
 }
@@ -159,6 +164,7 @@ td {
   content: "Distancia:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 
 }
@@ -166,6 +172,7 @@ td {
   content: "Comisaria responsable:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 
 }
@@ -173,6 +180,7 @@ td {
   content: "Juzgado responsable:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 
 }
@@ -180,12 +188,14 @@ td {
   content: "Fecha de sentencia:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
   
 }
 .input-texto-before-peligrosidad::before {
   content: "Nivel de peligrosidad:";
   font-size: 0.7rem;
   text-align: left;
+  color: #9e58ffb5;
 
 }
 
@@ -209,7 +219,6 @@ td {
   background-color: #8d3aff63;
   color: black;
   padding: 2.5rem;
-  border: 1px solid black;
 
 }
 
@@ -217,7 +226,6 @@ td {
   background-color: #8d3aff63;
   color: black;
   padding: 1.5rem;
-  border: 1px solid black;
   max-width: fit-content;
 }
 
@@ -228,6 +236,12 @@ td {
 .table tr:hover {
   background-color: azure;
   cursor: pointer;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  align-content: center;
 }
 
 .table i:hover {
@@ -357,6 +371,9 @@ td {
   color: #480971;
 }
 
+.ordenamiento{
+  color:#fff
+}
 
 /*Boton formulario */
 
@@ -455,12 +472,12 @@ legend::after {
   left: 50%;
   top: 10%;
   border: 1px solid;
-  border-color: #000;
+  border-color: #480971;;
 }
 
 
 .blurred {
-  filter: blur(3px) saturate(0.7);
+  filter: blur(1.5px) saturate(0.7);
 
 }
 
@@ -481,4 +498,9 @@ legend::after {
 
 .modal-infoRes1, .modal-infoRes2, .modal-infoP{
   padding-right: 50px;
+}
+
+.modal-header{
+
+  color: #480971;
 }

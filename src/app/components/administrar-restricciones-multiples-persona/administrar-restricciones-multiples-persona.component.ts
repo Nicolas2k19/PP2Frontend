@@ -294,6 +294,34 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       this.toastr.error(msj)
       this.spinner.hide()
     }
+
+/**
+ * Ordenamiento tablas
+ */
+
+ordenarPorRM(){
+
+}
+
+ordenarPorID(){
+
+}
+
+ordenarPorDireccion(){
+
+}
+
+ordenarPorLocalidad(){
+
+}
+
+ordenarPorProvincia(){
+  
+}
+
+
+
+
 }
 
 

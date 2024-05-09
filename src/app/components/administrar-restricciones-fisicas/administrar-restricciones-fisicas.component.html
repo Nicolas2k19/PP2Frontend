@@ -75,11 +75,31 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th (click)="ordenarPorId()" scope="col" >ID Restricción Física</th>
-                    <th (click)="ordenarPorNombre()" scope="col" >Nombre</th>
-                    <th (click)="ordenarPorDireccion()" scope="col" >Direccion</th>
-                    <th (click)="ordenarPorLocalidad()" scope="col" >Localidad</th>
-                    <th (click)="ordenarPorProvincia()" scope="col" >Provincia</th>
+                    <th  scope="col" >ID Restricción Física
+                        <a (click)="ordenarPorId()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
+                    <th  scope="col" >Nombre
+                        <a (click)="ordenarPorNombre()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
+                    <th  scope="col" >Direccion
+                        <a (click)="ordenarPorDireccion()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
+                    <th  scope="col" >Localidad
+                        <a (click)="ordenarPorLocalidad()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
+                    <th  scope="col" >Provincia
+                        <a (click)="ordenarPorProvincia()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
                     <th  scope="col" >Operaciones</th>
                 </tr>
             </thead>

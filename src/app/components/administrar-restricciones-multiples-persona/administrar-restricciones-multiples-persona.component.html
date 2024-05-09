@@ -74,11 +74,31 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID Restricción Multiple</th>
-                    <th scope="col" >Id</th>
-                    <th scope="col" >Direccion</th>
-                    <th scope="col" >Localidad</th>
-                    <th scope="col" >Provincia</th>
+                    <th>ID Restricción Multiple
+                        <a (click)="ordenarPorRM()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
+                    <th scope="col" >Id
+                        <a (click)="ordenarPorID()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
+                    <th scope="col" >Direccion
+                        <a (click)="ordenarPorDireccion()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
+                    <th scope="col" >Localidad
+                        <a (click)="ordenarPorLocalidad()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
+                    <th scope="col" >Provincia
+                        <a (click)="ordenarPorProvincia()">
+                            <i class="material-icons ordenamiento">unfold_more</i>
+                        </a>
+                    </th>
                     <th scope="col" >Operaciones</th>
                 </tr>
             </thead>

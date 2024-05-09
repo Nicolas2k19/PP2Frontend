@@ -170,10 +170,26 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th (click)="ordenarPorApellidoAscendente()" scope="col">Apellido</th>
-                        <th (click)="ordenarPorNombreAscendente()" scope="col">Nombre</th>
-                        <th (click)="ordenarPorDNIAscendente()" scope="col">DNI</th>
-                        <th (click)="ordenarPorEdad()" scope="col">Fecha nacimiento</th>
+                        <th  scope="col">Apellido
+                            <a (click)="ordenarPorApellidoAscendente()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th  scope="col">Nombre
+                            <a (click)="ordenarPorNombreAscendente()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th  scope="col">DNI
+                            <a (click)="ordenarPorDNIAscendente()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
+                        <th  scope="col">Fecha nacimiento
+                            <a (click)="ordenarPorEdad()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </th>
                         <th scope="col">Operaciones</th>
                     </tr>
                 </thead>
