@@ -2,6 +2,8 @@ import { Component,OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import RestriccionMultiple from 'src/app/models/RestriccionMultiple/RestriccionMultiple';
+import RestriccionMultipleCompleta from 'src/app/models/RestriccionMultiple/RestriccionMultipleCompleta';
+import RestriccionMultipleDTO from 'src/app/models/RestriccionMultiple/RestriccionMultipleDTO';
 import { Direccion } from 'src/app/models/direccion';
 import { Localidad } from 'src/app/models/localidad';
 import { Persona } from 'src/app/models/persona';
@@ -29,11 +31,13 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   departamento : string
   altura : string
   distancia : number
-  restriccionesMultiples : RestriccionMultiple[]
+  restriccionesMultiples : RestriccionMultipleDTO[]
   restriccionesPerimetrales : Restriccion[]
   provincias : Provincia[]
   localidades : Localidad[]
   persona : Persona;
+
+  idRestriccionMultipleAEditar : number;
  
  
   constructor(public personaService :PersonaService,
@@ -57,8 +61,9 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    * Trae las restricciones multiple disponibles
    */
   traerRestriccionesMultiples(){
-    this.restriccionService.getRestriccionesMultiples().subscribe(res =>{
-      this.restriccionesMultiples = res as RestriccionMultiple[]
+    this.restriccionService.getRestriccionesMultiplesDTO().subscribe(res =>{
+      this.restriccionesMultiples = res as RestriccionMultipleDTO[]
+      console.log(this.restriccionesMultiples)
     })
   }
 
@@ -124,9 +129,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
 
       else this.toastr.success("Se ha agregado la persona correctamente")
 
-      console.log("FUNCIONEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-
-      console.log(res)
+      this.traerRestriccionesMultiples();
     })
 
   }
@@ -137,6 +140,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   * @author Nicolás
   */
   buscarPersona(){
+    if(this.editar) return
 
     if(!this.verificarCampos()) return;
 
@@ -144,18 +148,11 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
 
       this.personaService.getDamnificadaByDNI(this.dni).subscribe(res =>{
         if(res==null) {
-          this.manejarErrorLlamada("El dni ingresado no existe.")
+          this.manejarErrorLlamada("El dni ingresado no corresponde a una persona dentro de la aplicación, por favor, agregue a la nueva persona al sistema o ingrese correctamente el dni.")
           return;
         }
-
         this.persona = res as Persona;
-
-        if(!this.editar) this.agregarRestriccionMultiple();
-        
-        else console.log("Tengo que editar")
-
-
-        console.log("Que paso? LLegaste bro")
+        this.agregarRestriccionMultiple();
         this.spinner.hide()
     })
 
@@ -192,6 +189,24 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
 
   }
 
+  /**
+ * Crea una restricción multiple completa usando los datos del formulario.
+ * @author Nicolás
+ */
+  crearRestriccionMultipleCompleta() : RestriccionMultipleCompleta{
+    let restriccionCompleta : RestriccionMultipleCompleta = new RestriccionMultipleCompleta();
+    restriccionCompleta.idRestriccionMultiple = this.idRestriccionMultipleAEditar
+    restriccionCompleta.direccion = this.crearDireccion()
+    restriccionCompleta.distancia = this.distancia;
+    restriccionCompleta.idPersona = this.persona.idPersona;
+    restriccionCompleta.idRestriccion = this.idPerimetral;
+    restriccionCompleta.idProvincia = this.idProvincia;
+    return restriccionCompleta;
+  }
+
+
+
+
   crearDireccion(){
     let nuevaDireccion : Direccion = new Direccion()
 
@@ -219,9 +234,51 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    * Activa la edición en la pantalla de restricciones multiples
    * @author Nicolás
    */
-  activarEdicion(){
+  activarEdicion(restriccionMultiple : RestriccionMultipleDTO){
   this.editar = true;
+  this.dni = restriccionMultiple.persona.dni;
+  this.calle = restriccionMultiple.restriccionMultiple.direccion.calle
+  this.altura = restriccionMultiple.restriccionMultiple.direccion.altura
+  this.piso = restriccionMultiple.restriccionMultiple.direccion.piso
+  this.departamento = restriccionMultiple.restriccionMultiple.direccion.departamento
+  this.distancia = restriccionMultiple.restriccionMultiple.distancia;
+  this.idPerimetral = restriccionMultiple.restriccionMultiple.idRestriccion;
+  this.idProvincia = restriccionMultiple.provincia.idProvincia;
+  this.idLocalidad = restriccionMultiple.localidad.idLocalidad;
+  this.idRestriccionMultipleAEditar = restriccionMultiple.restriccionMultiple.idRestriccionMultiple
+  this.persona = restriccionMultiple.persona;
+  console.log(this.dni)
   }
+
+  /**
+   * Edita una restriccion multiple dados los parametros pasados por el formulario
+   * @author Nicolás
+   */
+  editarRestriccionMultiple(){
+    this.spinner.show()
+    this.personaService.getDamnificadaByDNI(this.dni).subscribe(res =>{
+      if(res == null){
+        this.manejarErrorLlamada("El dni ingresado no corresponde a una persona dentro de la aplicación, por favor, agregue a la nueva persona al sistema o ingrese correctamente el dni")
+        return;
+      }
+      this.verificarCampos();
+      this.restriccionService.postRestriccionMultiple(this.crearRestriccionMultipleCompleta()).
+      subscribe(res => {
+        if(res = null){
+          this.manejarErrorLlamada("Ha ocurrido un error al editar")
+          return
+        }
+        this.toastr.success("Se ha editado correctamente")
+        this.traerRestriccionesMultiples()
+      })
+      
+      this.spinner.hide()
+      
+    })
+
+  }
+
+
 
   /**
    * Desactiva la edición en la pantalla de restricciones multiples
@@ -289,11 +346,29 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
 
     /**
      * Maneja el error al hacer una llamada que falle
+     * @author Nicolás
      */
     manejarErrorLlamada(msj: string){
       this.toastr.error(msj)
       this.spinner.hide()
     }
+
+    /**
+     * Elimina una restriccion multiple
+     * @author Nicolás
+     */
+
+    eliminarRestriccionMultiple(idRestriccionMultiple : number){   
+      this.spinner.show()
+      this.restriccionService.deleteRestriccionMultiple(idRestriccionMultiple).subscribe(res =>{
+          this.spinner.hide();
+          this.traerRestriccionesMultiples();
+      });
+    }
+
+
+
+
 
 /**
  * Ordenamiento tablas

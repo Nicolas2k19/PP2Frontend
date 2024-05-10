@@ -60,7 +60,7 @@
                 </option>
             </select>
         </div>
-        <button class="btn" *ngIf="editar">
+        <button (click) = "editarRestriccionMultiple()" class="btn" *ngIf="editar">
             Editar
         </button>
         <button (click)="desactivarEdicion()" class="btn" *ngIf="editar">
@@ -78,7 +78,7 @@
                 <tr>
                     <th>
                         <div class="header-tabla">
-                            ID RM
+                            ID Perimetral
                             <a (click)="ordenarPorRM()">
                                 <i class="material-icons ordenamiento">unfold_more</i>
                             </a>
@@ -86,7 +86,7 @@
                     </th>
                     <th scope="col">
                         <div class="header-tabla">
-                            ID
+                            ID RM 
                             <a (click)="ordenarPorID()">
                                 <i class="material-icons ordenamiento">unfold_more</i>
                             </a>
@@ -126,16 +126,17 @@
             </thead>
             <tbody>
                 <tr *ngFor="let res of restriccionesMultiples">
-                    <td>{{res.idRestriccion}}</td>
-                    <td>{{res.direccion.calle + " " +res.direccion.altura}}</td>
-                    <td>{{res.direccion.departamento}}</td>
-                    <td>Provincia</td>
+                    <td>{{res.restriccionMultiple.idRestriccion}}</td>
+                    <td>{{res.restriccionMultiple.idRestriccionMultiple}}</td>
+                    <td>{{res.restriccionMultiple.direccion.calle + " " +res.restriccionMultiple.direccion.altura}}</td>
+                    <td>{{res.localidad.nombre}}</td>
+                    <td>{{res.provincia.nombre}}</td>
                     <td>
                         <a>
-                            <i class="material-icons">edit</i>
+                            <i (click)="activarEdicion(res)"  class="material-icons">edit</i>
                         </a>
                         <a>
-                            <i (click)="activarEdicion()" class="material-icons">delete</i>
+                            <i (click)="eliminarRestriccionMultiple(res.restriccionMultiple.idRestriccionMultiple)" class="material-icons">delete</i>
                         </a>
                     </td>
                 </tr>
