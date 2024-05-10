@@ -38,6 +38,11 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   persona : Persona;
 
   idRestriccionMultipleAEditar : number;
+  ordenIDRM: any;
+  ordenProvincia: any;
+  ordenLocalidad: any;
+  ordenDireccion: any;
+  ordenID: any;
  
  
   constructor(public personaService :PersonaService,
@@ -376,21 +381,78 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
 
 ordenarPorRM(){
 
+  let orden : number = this.ordenIDRM ?  1:-1
+
+      let restriccion : RestriccionMultipleDTO[] = this.restriccionesMultiples;
+      restriccion.sort((a,b)=>{
+        if(a.restriccionMultiple.idRestriccionMultiple > b.restriccionMultiple.idRestriccionMultiple){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenIDRM = !this.ordenIDRM;
+
 }
 
 ordenarPorID(){
 
+  let orden : number = this.ordenID ?  1:-1
+
+      let restriccion : RestriccionMultipleDTO[] = this.restriccionesMultiples;
+      restriccion.sort((a,b)=>{
+        if(a.restriccionMultiple.idRestriccion > b.restriccionMultiple.idRestriccion){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenID = !this.ordenID;
+
 }
 
 ordenarPorDireccion(){
+  let orden : number = this.ordenDireccion ?  1:-1
+
+      let restriccion : RestriccionMultipleDTO[] = this.restriccionesMultiples;
+      restriccion.sort((a,b)=>{
+        if(a.restriccionMultiple.direccion.calle > b.restriccionMultiple.direccion.calle){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenDireccion = !this.ordenDireccion;
 
 }
 
 ordenarPorLocalidad(){
+  let orden : number = this.ordenLocalidad ?  1:-1
+
+      let restriccion : RestriccionMultipleDTO[] = this.restriccionesMultiples;
+      restriccion.sort((a,b)=>{
+        if(a.localidad.nombre > b.localidad.nombre){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenLocalidad = !this.ordenLocalidad;
 
 }
 
 ordenarPorProvincia(){
+  let orden : number = this.ordenProvincia ?  1:-1
+
+      let restriccion : RestriccionMultipleDTO[] = this.restriccionesMultiples;
+      restriccion.sort((a,b)=>{
+        if(a.provincia.nombre > b.provincia.nombre){
+          return 1 * orden
+        }
+        return -1 * orden
+      })
+
+      this.ordenProvincia = !this.ordenProvincia;
   
 }
 
