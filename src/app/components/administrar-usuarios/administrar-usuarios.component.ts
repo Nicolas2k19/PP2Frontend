@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
 import { Usuario } from 'src/app/models/usuario';
 import { NgForm } from '@angular/forms';
@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import GrupoService from 'src/app/services/grupo/grupoService';
 import Grupo from 'src/app/models/grupo/Grupo';
+
+
 
 @Component({
   selector: 'app-administrar-usuarios',
@@ -27,6 +29,8 @@ export class AdministrarUsuariosComponent implements OnInit {
   nombreGrupo: string;
   grupoSelec: any;
 
+  originalUsers: Usuario[] = [];
+
 
   //Filtros
   grupoFilter: number;
@@ -35,15 +39,11 @@ export class AdministrarUsuariosComponent implements OnInit {
 
 
   //ordenamiento
-  contadorU = 0;
-  contadorE = 0;
-  contadorR = 0;
-  contadorG = 0;
   ordenID: boolean;
   ordenUsuario: boolean;
-  ordenTipo:boolean;
-  ordenGrupo:boolean;
-  ordenEstado :boolean;
+  ordenTipo: boolean;
+  ordenGrupo: boolean;
+  ordenEstado: boolean;
 
 
   constructor(
@@ -53,11 +53,11 @@ export class AdministrarUsuariosComponent implements OnInit {
     private spinner: NgxSpinnerService) {
     this.roles = ['SUPERVISOR', 'ADMINISTRATIVO'];
     this.grupos = []
-    this.ordenGrupo=false;
-    this.ordenID=false;
-    this.ordenTipo=false;
-    this.ordenUsuario=false;
-    this.ordenEstado =false;
+    this.ordenGrupo = false;
+    this.ordenID = false;
+    this.ordenTipo = false;
+    this.ordenUsuario = false;
+    this.ordenEstado = false;
   }
 
   ngOnInit() {
@@ -82,9 +82,11 @@ export class AdministrarUsuariosComponent implements OnInit {
       .subscribe(res => {
         this.spinner.hide();
         this.usuarioService.usuarios = res as Usuario[];
+        this.originalUsers = res as Usuario[]; 
         console.log(res);
       })
   }
+  
 
   agregarUsuario(usuarioForm: NgForm) {
     this.spinner.show();
@@ -152,70 +154,89 @@ export class AdministrarUsuariosComponent implements OnInit {
 
   //Filtros
 
-  filtrar() {
 
-    if (this.selectedOptionRol == null && this.selectedOptionEstado == null) {
+  filtroMultiple() {
+    const filtro = `${this.grupoFilter != null}-${this.selectedOptionRol != null && this.selectedOptionRol !== 'todos'}-${this.selectedOptionEstado != null && this.selectedOptionEstado !== 'todos'}`; 
+    switch (filtro) {
+      case 'true-true-true':
+        this.filtrarxTodo();
+        console.log("FILTRANDO POR ROL, ESTADO Y GRUPO");
+        break;
+      case 'true-true-false':
+        this.filtrarxRolGrupo();
+        console.log("FILTRANDO POR ROL Y GRUPO");
+        break;
+      case 'true-false-true':
+        this.filtrarxEstadoGrupo();
+        console.log("FILTRANDO POR ESTADO Y GRUPO");
+        break;
+      case 'false-true-true':
+        this.filtrarxRolEstado();
+        console.log("FILTRANDO POR ROL Y ESTADO");
+        break;
+      case 'true-false-false':
+        this.filtraridGrupo();
+        break;
+      case 'false-true-false':
+        this.filtrarRoles();
+        break;
+      case 'false-false-true':
+        this.filtrarEstados();
+        break;
+      default:
+        this.getUsuarios();
+        console.log("MOSTRANDO TODOS LOS USUARIOS");
+    }
+    this.grupoFilter = null;
+    this.selectedOptionEstado = null;
+    this.selectedOptionRol = null;
+  }
 
-      console.log('filtrando x grupo');
 
-      this.filtraridGrupo();
-
-    } if (this.grupoFilter == null && this.selectedOptionEstado == null) {
-
-      console.log('filtrando x rol');
-
-      switch (this.selectedOptionRol) {
-
-        case 'supervisor':
-          this.filtrarRolSupervisor();
-          break;
-        case 'administrativo':
-          this.filtrarRolAdministrativo();
-          break;
-        case 'todos':
-          this.getUsuarios();
-          this.toggleSelect();
-          this.selectedOptionRol = null;
-          break;
-        default:
-          console.log('Opción no válida');
-      }
+  private filtrarEstados() {
+    switch (this.selectedOptionEstado) {
+      case 'conectado':
+        this.filtrarEstadoConectado();
+        break;
+      case 'ausente':
+        this.filtrarEstadoAusente();
+        break;
+      case 'fuera de oficina':
+        this.filtrarEstadoFuera();
+        break;
+      case 'vacaciones':
+        this.filtrarEstadoVacaciones();
+        break;
+      case 'licencia':
+        this.filtrarEstadoLicencia();
+        break;
+      case 'todos':
+        this.getUsuarios();
+        this.selectedOptionEstado = null;
+        this.toggleSelect();
+        break;
+      default:
+        console.log('Opción no válida');
 
     }
+  }
 
-    else {
-
-      console.log('filtrando x estado');
-
-      switch (this.selectedOptionEstado) {
-
-        case 'conectado':
-          this.filtrarEstadoConectado();
-          break;
-        case 'ausente':
-          this.filtrarEstadoAusente();
-          break;
-        case 'fuera de oficina':
-          this.filtrarEstadoFuera();
-          break;
-        case 'vacaciones':
-          this.filtrarEstadoVacaciones();
-          break;
-        case 'licencia':
-          this.filtrarEstadoLicencia();
-          break;
-        case 'todos':
-          this.getUsuarios();
-          this.selectedOptionEstado = null;
-          this.toggleSelect();
-          break;
-        default:
-          console.log('Opción no válida');
-
-      }
-
+  private filtrarRoles() {
+    switch (this.selectedOptionRol) {
+      case 'supervisor':
+        this.filtrarRolSupervisor();
+        break;
+      case 'administrativo':
+        this.filtrarRolAdministrativo();
+        break;
+      case 'todos':
+        this.getUsuarios();
+        this.toggleSelect();
+        this.selectedOptionRol = null;
+        break;
+      default:
+        console.log('Opción no válida');
     }
-
   }
 
   //FILTROS DE ESTADOS
@@ -242,6 +263,7 @@ export class AdministrarUsuariosComponent implements OnInit {
     this.selectedOptionEstado = null;
   }
   filtrarEstadoFuera() {
+
 
     this.usuarioService.filtrarEstado("FUERA_OFICINA").subscribe(res => {
       this.spinner.hide();
@@ -298,13 +320,42 @@ export class AdministrarUsuariosComponent implements OnInit {
   }
 
 
+  filtrarxRolGrupo() {
+
+    this.usuarioService.usuarios = this.originalUsers.filter(usuario => {
+      return this.selectedOptionRol.toUpperCase() == usuario.rolDeUsuario.toUpperCase() &&
+        this.grupoFilter == usuario.idGrupo;
+    })
+  }
+
+  filtrarxRolEstado() {
+    this.usuarioService.usuarios = this.originalUsers.filter(usuario => {
+      return this.selectedOptionRol.toUpperCase() == usuario.rolDeUsuario.toUpperCase() &&
+        this.selectedOptionEstado.toUpperCase().replace(/ /g, '_') == usuario.estadoUsuario;
+    })
+  }
+
+  filtrarxEstadoGrupo() {
+    this.usuarioService.usuarios = this.originalUsers.filter(usuario => {
+      return this.grupoFilter == usuario.idGrupo &&
+        this.selectedOptionEstado.toUpperCase().replace(/ /g, '_') == usuario.estadoUsuario;
+    })
+  }
+
+  filtrarxTodo() {
+    this.usuarioService.usuarios = this.originalUsers.filter(usuario => {
+      return this.grupoFilter == usuario.idGrupo &&
+        this.selectedOptionEstado.toUpperCase().replace(/ /g, '_') == usuario.estadoUsuario &&
+        this.selectedOptionRol.toUpperCase() == usuario.rolDeUsuario.toUpperCase();
+    })
+
+  }
+
+
   //FILTRO DE GRUPO
 
   filtraridGrupo() {
-
     console.log("filtrar x id grupo")
-
-
     this.usuarioService.getUsuarioByGrupo(this.grupoFilter).subscribe(res => {
       this.spinner.hide();
       this.usuarioService.usuarios = res as Usuario[];
@@ -315,24 +366,24 @@ export class AdministrarUsuariosComponent implements OnInit {
     this.grupoFilter = null;
   }
 
-
+ /* fin de los filtros */
 
   toggleSelect() {
     this.showSelect = !this.showSelect;
   }
 
 
-    /**
-   * Ordena la tabla por provincia
-   * @author Vane
-   */
+  /**
+  * Ordenamiento de tablas
+  * @author Vane
+  */
 
-  ordenarPorIDUser(){
+  ordenarPorIDUser() {
 
-    let orden : number = this.ordenID ?  1:-1
+    let orden: number = this.ordenID ? 1 : -1
 
-    this.usuarioService.usuarios.sort((a,b)=>{
-      if(a.idUsuario > b.idUsuario){
+    this.usuarioService.usuarios.sort((a, b) => {
+      if (a.idUsuario > b.idUsuario) {
         return 1 * orden
       }
       return -1 * orden
@@ -343,10 +394,10 @@ export class AdministrarUsuariosComponent implements OnInit {
 
   ordenarPorUsuario() {
 
-    let orden : number = this.ordenUsuario ?  1:-1
+    let orden: number = this.ordenUsuario ? 1 : -1
 
-    this.usuarioService.usuarios.sort((a,b)=>{
-      if(a.email > b.email){
+    this.usuarioService.usuarios.sort((a, b) => {
+      if (a.email > b.email) {
         return 1 * orden
       }
       return -1 * orden
@@ -358,25 +409,25 @@ export class AdministrarUsuariosComponent implements OnInit {
 
 
   ordenarPorEstado() {
-    let orden : number = this.ordenEstado ?  1:-1
+    let orden: number = this.ordenEstado ? 1 : -1
 
-    this.usuarioService.usuarios.sort((a,b)=>{
-      if(a.estadoUsuario > b.estadoUsuario){
+    this.usuarioService.usuarios.sort((a, b) => {
+      if (a.estadoUsuario > b.estadoUsuario) {
         return 1 * orden
       }
       return -1 * orden
     })
 
     this.ordenEstado = !this.ordenEstado;
-    
+
   }
 
 
   ordenarPorRol() {
-    let orden : number = this.ordenTipo ?  1:-1
+    let orden: number = this.ordenTipo ? 1 : -1
 
-    this.usuarioService.usuarios.sort((a,b)=>{
-      if(a.rolDeUsuario > b.rolDeUsuario){
+    this.usuarioService.usuarios.sort((a, b) => {
+      if (a.rolDeUsuario > b.rolDeUsuario) {
         return 1 * orden
       }
       return -1 * orden
@@ -388,10 +439,10 @@ export class AdministrarUsuariosComponent implements OnInit {
 
 
   ordenarPorGrupo() {
-    let orden : number = this.ordenGrupo ?  1:-1
+    let orden: number = this.ordenGrupo ? 1 : -1
 
-    this.usuarioService.usuarios.sort((a,b)=>{
-      if(a.idGrupo > b.idGrupo){
+    this.usuarioService.usuarios.sort((a, b) => {
+      if (a.idGrupo > b.idGrupo) {
         return 1 * orden
       }
       return -1 * orden
@@ -399,7 +450,7 @@ export class AdministrarUsuariosComponent implements OnInit {
 
     this.ordenGrupo = !this.ordenGrupo;
 
-    
+
   }
 
   getNombreGrupo(idGrupo: number): string {
