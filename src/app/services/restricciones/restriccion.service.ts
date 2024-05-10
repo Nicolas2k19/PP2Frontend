@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import RestriccionFisica from 'src/app/models/RestriccionFisica/RestriccionFisica';
 import RestriccionFisicaEditar from 'src/app/models/RestriccionFisica/RestriccionFisicaEditar';
 import RestriccionMultiple from 'src/app/models/RestriccionMultiple/RestriccionMultiple';
+import RestriccionMultipleCompleta from 'src/app/models/RestriccionMultiple/RestriccionMultipleCompleta';
 
 
 @Injectable({
@@ -107,6 +108,14 @@ export class RestriccionService {
     return this.http.post(this.URL_API_RES_MULTIPLE+"/nuevaRestriccion",restriccionMultiple)
   }
 
+  /**
+   * Obtiene las restricciones multiples DTO
+   * @author Nicolás
+   */
+  getRestriccionesMultiplesDTO(){
+    return this.http.get(this.URL_API_RES_MULTIPLE+"/RestriccionMultipleDTO")
+  }
+
 
 
   getRestricciones(){
@@ -137,8 +146,13 @@ export class RestriccionService {
     console.log(this.URL_API_FISICA+"/"+restriccionId)
      return this.http.delete(this.URL_API_FISICA+"/"+restriccionId);
   }
-
-
+  /**
+   * Elimina la la restriccion multiple dado el id pasado por parametro
+   * @author Nicolás
+   */
+  deleteRestriccionMultiple(idresMultiple : number) {
+     return this.http.delete(this.URL_API_RES_MULTIPLE+"/eliminarRestriccion/"+idresMultiple);
+  }
   /**
   * 
   * Update de la restriccion física 
