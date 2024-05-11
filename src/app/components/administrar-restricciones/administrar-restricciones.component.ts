@@ -97,6 +97,8 @@ export class AdministrarRestriccionesComponent implements OnInit {
   errorCampoFecha: boolean
   errorCampoDistancia: boolean
 
+  originalRes: RestriccionDTO[] = [];
+
   constructor(
     public restriccionService: RestriccionService,
     public grupoService: GrupoService,
@@ -263,6 +265,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
       .subscribe(res => {
         this.spinner.hide();
         this.restriccionService.restricciones = res as RestriccionDTO[];
+        this.originalRes= res as RestriccionDTO[];
         console.log(res);
       })
   }
@@ -503,54 +506,47 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   //filtros
 
-  filtrarDamnificada() {
+  traerTodos(){
+    this.getRestricciones();
 
-    this.personaService.getDamnificadaByDNI(this.dniFilterDamnificada).subscribe(res => {
-      this.damnificada = res;
-      this.idFilterDamnificada = this.damnificada.idPersona;
-      this.restriccionService.getRestriccionesDamnificada(this.idFilterDamnificada).subscribe(res => {
-        this.spinner.hide();
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-      });
-    })
-
+    this.dniFilterDamnificada = null;
+    this.dniFilterVictimario = null;
+    this.emailFilter= null;
+    this.grupoFilter = null;
   }
 
 
-  filtrarVictimario() {
 
-    this.personaService.getVictimarioByDNI(this.dniFilterVictimario).subscribe(res => {
-      this.victimario = res;
-      this.idFilterVictimario = this.victimario.idPersona;
-      this.restriccionService.getRestriccionesVictimario(this.idFilterVictimario).subscribe(res => {
-        this.spinner.hide();
-        this.restriccionService.restricciones = res as RestriccionDTO[];
-      });
-    })
+  filtrarTodo(){
+    let resultadosFiltrados = this.originalRes;
+
+    // Filtrar por administrativo si el filtro de email está presente
+    if (this.emailFilter) {
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+        restriccion.administrativo.email === this.emailFilter);
+    }
+  
+    // Filtrar por damnificada si el filtro de DNI de damnificada está presente
+    if (this.dniFilterDamnificada) {
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+        restriccion.damnificada.dni === this.dniFilterDamnificada);
+    }
+  
+    // Filtrar por victimario si el filtro de DNI de victimario está presente
+    if (this.dniFilterVictimario) {
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+        restriccion.victimario.dni === this.dniFilterVictimario);
+    }
+  
+    // Filtrar por grupo si el filtro de grupo está presente
+    if (this.grupoFilter) {
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion => {
+        return restriccion.restriccion.idGrupo.toString() === this.grupoFilter+""});
+      }
+    // Asignar los resultados finales al arreglo de restricciones
+    this.restriccionService.restricciones = resultadosFiltrados;
 
   }
-
-
-  filtrarAdministrativo() {
-    this.restriccionService.getRestriccionesAdministrativo(this.emailFilter).subscribe(res => {
-      this.spinner.hide();
-      this.restriccionService.restricciones = res as RestriccionDTO[];
-      console.log(res);
-      this.dniFilterDamnificada = null;
-      this.dniFilterVictimario = null;
-    });
-  }
-
-  filtrarGrupo() {
-    this.restriccionService.getRestriccionesGrupo(this.grupoFilter).subscribe(res => {
-      this.spinner.hide();
-      this.restriccionService.restricciones = res as RestriccionDTO[];
-      console.log(res);
-      this.grupoFilter = null;
-    });
-  }
-
-
 
   //ordenamiento tabla restricciones
 
@@ -632,10 +628,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
     this.ordenDamnificada = !this.ordenDamnificada;
   }
-
-
-
-
 
   toggleSelect() {
     this.showSelect = !this.showSelect;

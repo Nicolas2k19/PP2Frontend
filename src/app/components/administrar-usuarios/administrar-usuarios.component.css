@@ -107,7 +107,6 @@ td {
   background-color: #8d3aff63;
   color: black;
   padding: 2.5rem;
-  border: 1px solid black;
 }
 
 .card2 {
@@ -116,6 +115,7 @@ td {
   padding: 2.5rem;
   border: 1px solid black;
   max-width: fit-content;
+  border-radius: 0.5rem;
 }
 
 .table {
@@ -242,6 +242,14 @@ body{
 }
 
 
+.filtro-grupo{
+  display: flex;
+  flex-direction: column;
+}
+
+.input-grupo-filtro{
+  padding: 0;
+}
 
 .contenedor-filtros{
   max-width: fit-content;

@@ -93,25 +93,25 @@ td {
 
 .input-texto-before-grupoF::before {
   content: "Grupo:";
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   text-align: left;
 }
 
 .input-texto-before-dniV::before {
   content: "DNI victimario:";
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   text-align: left;
 }
 
 .input-texto-before-dniD::before {
   content: "DNI damnificada:";
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   text-align: left;
 }
 
 .input-texto-before-emailA::before {
   content: "Email administrativo:";
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   text-align: left;
   
 }
@@ -223,10 +223,11 @@ td {
 }
 
 .card2 {
-  background-color: #8d3aff63;
+  border: 1px solid black;
   color: black;
-  padding: 1.5rem;
+  padding: 2rem;
   max-width: fit-content;
+  border-radius: 0.5rem;
 }
 
 .table {
@@ -287,6 +288,7 @@ td {
 
 .filtro-btn {
   display: flex;
+  padding: 0;
 }
 
 

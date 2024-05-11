@@ -155,21 +155,20 @@
             </div>
 
 
-            <div class="card2" *ngIf="showSelect">
+            <div class="card2 caja-filtros" *ngIf="showSelect">
 
                 <div class="card-body">
                     <legend>Filtrar por:</legend>
+
+                    <div class="traer-todo">
+                        <button class="btn btn-primary btn-block" (click)="traerTodos()">Obtener todos</button>
+                    </div>
 
                     <!-- FILTRO DNI DAMNIFICADA-->
                     <div class="row input-texto-before-dniD filtro">
                         <div class="filtro-btn" input-group>
                             <input class="form-control input-texto" type="text" name="dniD"
                                 [(ngModel)]="dniFilterDamnificada">
-                            <div class="boton-filtro">
-                                <button class="btn btn-primary btn-block"
-                                    (click)="filtrarDamnificada()">Filtrar</button>
-                            </div>
-
                         </div>
                     </div>
                     <!-- FILTRO DNI VICTIMARIO-->
@@ -177,11 +176,6 @@
                         <div class="filtro-btn " input-group>
                             <input class="form-control input-texto" type="text" name="dniV"
                                 [(ngModel)]="dniFilterVictimario">
-
-                            <div class="boton-filtro">
-                                <button class="btn btn-primary btn-block" (click)="filtrarVictimario()">Filtrar</button>
-                            </div>
-
                         </div>
                     </div>
 
@@ -190,12 +184,6 @@
                     <div class="row input-texto-before-emailA filtro">
                         <div class="filtro-btn " input-group>
                             <input class="form-control input-texto" type="text" name="emailA" [(ngModel)]="emailFilter">
-
-                            <div class="boton-filtro">
-                                <button class="btn btn-primary btn-block"
-                                    (click)="filtrarAdministrativo()">Filtrar</button>
-                            </div>
-
                         </div>
                     </div>
 
@@ -203,14 +191,13 @@
                     <div class="row input-texto-before-grupoF filtro">
                         <div class="filtro-btn " input-group>
                             <input class="form-control input-texto" type="text" name="grupo" [(ngModel)]="grupoFilter">
-                            <div class="boton-filtro">
-                                <button class="btn btn-primary btn-block" (click)="filtrarGrupo()">Filtrar</button>
-                            </div>
-
                         </div>
                     </div>
 
 
+                    <div class="boton-filtro">
+                        <button class="btn btn-primary btn-block" (click)="filtrarTodo()">Filtrar</button>
+                    </div>
                 </div>
 
 
