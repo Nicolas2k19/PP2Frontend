@@ -48,13 +48,17 @@ export class AdministrarPersonasComponent implements OnInit {
 
   mostrarDomicilio : boolean;
 
-
-
+  // ordenamiento de tablas
   ordenApellido : boolean;
   ordenNombre : boolean;
   ordenEdad : boolean;
   ordenFechaNac : boolean;
   ordenDni : boolean;
+
+  //Filtros
+  showSelect: boolean = false;
+  dniFilter:string;
+  originalPeople : FormPersonaDTO[] = [];
 
 
   constructor(
@@ -87,6 +91,7 @@ export class AdministrarPersonasComponent implements OnInit {
       .subscribe(res => {
         this.spinner.hide();
         this.personaService.personas = res as FormPersonaDTO[];
+        this.originalPeople = res as FormPersonaDTO[];
         console.log(res);
       })
   }
@@ -429,7 +434,23 @@ export class AdministrarPersonasComponent implements OnInit {
       this.ordenEdad = !this.ordenEdad;
 
     }
+
+
+
+
+
+    /*Filtros*/
+
+    toggleSelect() {
+      this.showSelect = !this.showSelect;
+    }
     
-    
+    filtros(){
+
+      this.personaService.personas=this.originalPeople.filter(persona => {
+        return this.dniFilter === persona.persona.dni;
+      })
+
+    }
   
 }

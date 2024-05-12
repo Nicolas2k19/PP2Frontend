@@ -1,31 +1,33 @@
-.container{
-    color: #053667;
+.container {
+  color: #053667;
 }
 
-.row{
-    margin-top: 10px;
+
+.row {
+  margin-top: 10px;
+  flex-wrap: nowrap;
 }
 
 
 /*Estilos card*/
 
-.card{
-    text-align: left;
-    background-color: #8d3aff63;
-    padding: 2.5rem;
-    transition: all 10s ease-in-out;
+.card {
+  text-align: left;
+  background-color: #8d3aff63;
+  padding: 2.5rem;
+  transition: all 10s ease-in-out;
 }
 
 /*Estilos tabla*/
 
 
-th{
-    background-color: #480971;
-    color: #fff;
-    align-content: center;
+th {
+  background-color: #480971;
+  color: #fff;
+  align-content: center;
 }
 
-td{
+td {
   cursor: default;
 }
 
@@ -34,146 +36,187 @@ td{
   width: max-content;
 }
 
-.header-tabla{
+.header-tabla {
   display: flex;
   justify-content: center;
 }
 
 .table tr:hover {
-    background-color: azure;
-    cursor: pointer;
+  background-color: azure;
+  cursor: pointer;
 }
 
-.table i:hover{
-    opacity: .3;
+.table i:hover {
+  opacity: .3;
 }
 
-.spinner-grow{
-    position: fixed;
-    margin-top: 20%;
-    z-index: 9999;
+.spinner-grow {
+  position: fixed;
+  margin-top: 20%;
+  z-index: 9999;
 }
 
+/* filtros */
 
+.contenedor-filtros {
+  max-width: fit-content;
+}
 
+.filtro {
+  color: #480971;
+  max-width: fit-content;
+}
+
+.image-button {
+  border-color: transparent;
+  color: #480971;
+}
+
+.image-button {
+
+  padding: 5px;
+  /* ajusta el relleno según tus necesidades */
+  background-color: transparent;
+  /* quita el fondo del botón */
+  border: none;
+  cursor: pointer;
+}
 
 /*Estilos campos de ingreso de datos de texto */
 .input-texto {
-    background-color: inherit;
-    border: 0px solid #fff;
-    border-radius: 0;
-    border-bottom: 1px solid black;
-    padding: 0;
-  }
-
-
-  .input-texto-before{
-    display: flex;
-    flex-direction: column;
-  }
-
-  .input-texto-before-apellido::before{
-    content: "Apellido de la persona *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  .input-texto-before-nombre::before{
-    content: "Nombre de la persona *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-  .input-texto-before-dni::before{
-    content: "DNI de la persona *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  .input-texto-before-telefono::before{
-    content: "Teléfono de la persona *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  .input-texto-before-email::before{
-    content: "Email de la persona *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  .input-texto-before-nacimiento::before{
-    content: "Fecha de nacimiento *";
-    font-size: 0.7rem;
-    text-align: left;
-
-  }
-
-  .input-texto-before-altura::before{
-    content: "Altura *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-
-
-  /*Estilo selector*/
-  .select-estilo {
-    width: 100%;
-    border-radius: 5px;
-    height: 50px;
-    background-color: white;
-    color: black;
-  }
-
-  .input-selector-before-provincia::before{
-    content: "Provincia *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  .input-selector-before-localidad::before{
-    content: "Localidad *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  .input-selector-before-tipo::before{
-    content: "Tipo de persona*";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  .input-texto-before-calle::before{
-    content: "Calle *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  .input-texto-before-piso::before{
-    content: "Piso *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-
-  .input-texto-before-departamento::before{
-    content: "Departamento *";
-    font-size: 0.7rem;
-    text-align: left;
-  }
-
-  
-
-/*Botones*/
-
-.btn{
-    width: fit-content;
-    background-color: #480971;
-    color: white;
+  background-color: inherit;
+  border: 0px solid #fff;
+  border-radius: 0;
+  border-bottom: 1px solid black;
+  padding: 0;
 }
 
 
-.btn-verificar{
+.input-texto-before {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.input-texto-before-dniFilter {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-dni-filtro {
+  padding: 0;
+}
+
+.input-texto-before-dniFilter::before {
+  content: "DNI";
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+
+.input-texto-before-apellido::before {
+  content: "Apellido de la persona *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-nombre::before {
+  content: "Nombre de la persona *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-dni::before {
+  content: "DNI de la persona *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-telefono::before {
+  content: "Teléfono de la persona *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-email::before {
+  content: "Email de la persona *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-nacimiento::before {
+  content: "Fecha de nacimiento *";
+  font-size: 0.7rem;
+  text-align: left;
+
+}
+
+.input-texto-before-altura::before {
+  content: "Altura *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+
+
+/*Estilo selector*/
+.select-estilo {
+  width: 100%;
+  border-radius: 5px;
+  height: 50px;
+  background-color: white;
+  color: black;
+}
+
+.input-selector-before-provincia::before {
+  content: "Provincia *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-selector-before-localidad::before {
+  content: "Localidad *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-selector-before-tipo::before {
+  content: "Tipo de persona*";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-calle::before {
+  content: "Calle *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input-texto-before-piso::before {
+  content: "Piso *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+
+.input-texto-before-departamento::before {
+  content: "Departamento *";
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+
+
+/*Botones*/
+
+.btn {
+  width: fit-content;
+  background-color: #480971;
+  color: white;
+}
+
+
+.btn-verificar {
   margin-top: 1rem;
 }
 
@@ -186,11 +229,11 @@ td{
 
 /*Iconos google fonts*/
 
-.material-icons{
+.material-icons {
   color: #480971;
 }
 
-.ordenamiento{
+.ordenamiento {
   color: white;
 }
 
@@ -199,26 +242,35 @@ td{
 /*Animación legend*/
 
 legend {
-    color: black;
+  color: black;
+}
+
+legend::after {
+  content: "";
+  border-bottom: 5px solid #480971;
+  display: flex;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+@keyframes animacionafter {
+
+  0% {
+    width: 0;
   }
-  
-  legend::after {
-    content: "";
-    border-bottom: 5px solid #480971;
-    display: flex;
-    animation-name: animacionafter;
-    animation-duration: 3s;
-    animation-iteration-count: 1;
+
+  100% {
+    width: 100%;
   }
-  
-  @keyframes animacionafter {
-  
-    0% {
-      width: 0;
-    }
-  
-    100% {
-      width: 100%;
-    }
-  
-  }
+
+}
+
+.card2 {
+  background-color: white;
+  color: black;
+  padding: 2.5rem;
+  border: 1px solid black;
+  max-width: fit-content;
+  border-radius: 0.5rem;
+}
