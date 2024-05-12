@@ -20,6 +20,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
 import { Usuario } from 'src/app/models/usuario';
 import { MapService } from '../../services/mapa/mapa.service';
+import RestriccionFisica from 'src/app/models/RestriccionFisica/RestriccionFisica';
 
 @Component({
   selector: 'app-restricciones',
@@ -30,6 +31,7 @@ import { MapService } from '../../services/mapa/mapa.service';
 export class RestriccionesComponent implements OnInit {
 
   //UBICACIONES UTILIZADAS PARA MOSTRAR EN EL MAPA
+  restriccionesFisicas : RestriccionFisica[]
   ubicacionVictimario: Ubicacion;
   ubicacionDamnificada: Ubicacion;
   ubicacionDto: UbicacionDto;
@@ -40,10 +42,25 @@ export class RestriccionesComponent implements OnInit {
     private usuarioService: UsuarioService,private mapService: MapService) { }
 
   ngOnInit() {
+    this.mapService.iniciarMapa('map');
     this.getRestricciones(localStorage.getItem("emailUsuario"));
     this.getUsuarioByEmail(localStorage.getItem("emailUsuario"));
     
   }
+
+
+  /**
+   * Trae las restricciones físicas disponibles
+   * @author Nicolás
+   */
+  getRestriccionesFisicas(id : number){
+    this.restriccionService.getRestriccionesFisicasPorId(id)
+    .subscribe(res =>{
+        this.restriccionesFisicas=res as RestriccionFisica[]
+        this.mostrarRestriccion();
+    })
+  }
+
 
   getRestricciones(email: string) {
     this.spinnerService.show();
@@ -51,12 +68,13 @@ export class RestriccionesComponent implements OnInit {
       .subscribe(res => {
         this.spinnerService.hide();
         this.restriccionService.restricciones = res as RestriccionDTO[];
-        console.log(res);
       })
   }
 
   seleccionarRestriccion(restriccion: RestriccionDTO,fila) {
     this.desmarcarCeldas();
+    console.log(fila)
+    console.log(document.querySelectorAll("tr"))
     if(fila==null){
       document.querySelectorAll("tr")[1].style.backgroundColor = "#b780ff"
     }
@@ -65,9 +83,9 @@ export class RestriccionesComponent implements OnInit {
       fila.style.color = "white";
     }
 
-    console.log(fila)
+    this.getRestriccionesFisicas(restriccion.restriccion.idRestriccion);
     this.comunicacion.enviarRestriccion(restriccion);
-    this.mostrarRestriccion();
+    
     let thisjr = this;
     //CADA 15 SEGUNDOS ACTUALIZO EL MAPA
     clearInterval(this.intervalo);
@@ -96,7 +114,6 @@ export class RestriccionesComponent implements OnInit {
     this.usuarioService.getUsuarioByEmail(mail)
     .subscribe(res => {
       this.comunicacion.enviarUsuario(res as Usuario);
-      this.mapService.iniciarMapa('map');
       console.log(this.comunicacion.administrativo.email);
       this.seleccionarRestriccion(this.restriccionService.restricciones[0],null);
     })
@@ -152,7 +169,7 @@ export class RestriccionesComponent implements OnInit {
         this.mapService.clearLayers();
 
         //Creo el vector y capa para mostrar las ubicaciones
-        this.mapService.mostrarUbicaciones(markerVictimario, markerDamnificada, perimetro)
+        this.mapService.mostrarUbicaciones(markerVictimario, markerDamnificada, perimetro,this.pintarRestriccionFisica())
 
         //CENTRO EL MAPA EN LA UBICACION DE LA DAMNIFICADA Y AÑADO LA CAPA
         this.mapService.centrarMapa(this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud)
@@ -176,4 +193,42 @@ export class RestriccionesComponent implements OnInit {
         perimetro.setStyle(style);
       });
     }
+
+    /**
+     * Pinta la restriccion fisica
+     * @author Nicolás
+     */
+    pintarRestriccionFisica(){
+      let markerRestriccionFisica: Feature;
+      let perimetro: Feature;
+      let markers  :Feature[] = []
+
+      this.restriccionesFisicas.forEach(res => {
+
+      markerRestriccionFisica = new Feature({
+        geometry: new Point(fromLonLat([res.longuitud, res.latitud]))
+      });
+
+      markerRestriccionFisica.setStyle(new Style({
+        image: new Icon(({
+          src: 'assets/iconoRestriccionFisica.png',
+          imgSize: [60, 60]
+        }))
+      }));
+
+
+      perimetro = new Feature();
+      let forma = new Circle(fromLonLat([res.longuitud, res.latitud]));
+      forma.setRadius(res.distancia);
+      perimetro.setGeometry(forma);
+      this.pintarPerimetro(perimetro);
+      markers.push(markerRestriccionFisica)
+      markers.push(perimetro)
+    })
+
+      return markers;
+
+    }
+
+
 }

@@ -52,9 +52,9 @@ export class MapService {
     }
   }
 
-  mostrarUbicaciones(markerVictimario: Feature, markerDamnificada: Feature, perimetro: Feature) {
+  mostrarUbicaciones(markerVictimario: Feature, markerDamnificada: Feature, perimetro: Feature, marcasAdicionales : Feature) {
     this.vectorUbicaciones = new VectorSource({
-      features: [markerVictimario, markerDamnificada, perimetro]
+      features: [markerVictimario, markerDamnificada, perimetro,...marcasAdicionales]
     });
 
     this.capaUbicaciones = new VectorLayer({

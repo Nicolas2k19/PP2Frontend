@@ -64,6 +64,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
 
   /**
    * Trae las restricciones multiple disponibles
+   * @author Nicolás
    */
   traerRestriccionesMultiples(){
     this.restriccionService.getRestriccionesMultiplesDTO().subscribe(res =>{
@@ -171,7 +172,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
  * Crea una restricción multiple usando los datos del ngModel
  * @author Nicolás
  */
-
   crearRestriccionMultiple() :  RestriccionMultiple{
       let resMultiple : RestriccionMultiple = new RestriccionMultiple()
 

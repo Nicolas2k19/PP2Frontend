@@ -12,6 +12,9 @@ import { Restriccion } from 'src/app/models/restriccion';
 import { CommonModule } from '@angular/common';
 import RestriccionFisicaEditar from 'src/app/models/RestriccionFisica/RestriccionFisicaEditar';
 import RestriccionConInfo from 'src/app/models/RestriccionFisica/RestriccionConInfo';
+import NormalizadorService from 'src/app/services/normalizar/NomalizadorService';
+import UbicacionNormalizador from 'src/app/models/ObjetosNormalizador/UbicacionNormalizador';
+import Normalizacion from 'src/app/models/ObjetosNormalizador/Normalizacion';
 
 @Component({
   selector: 'app-administrar-restricciones-fisicas',
@@ -28,6 +31,10 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
   restriccionesFisicasAMostrar : RestriccionFisicaEditar[]
   provincias : Provincia[]
   provinciaSeleccionada : number;
+
+  datosProvinciaSeleccionada : Provincia
+  datosLocalidad : Localidad
+
   localidadSeleccionada : number;
   restriccionSeleccionada : number
   editar: Boolean;
@@ -50,7 +57,8 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
   constructor(public restriccionService : RestriccionService,
       public provinciaLocalidadService : ProvinciaLocalidadService,
       private toastr: ToastrService,
-      private spinner: NgxSpinnerService){
+      private spinner: NgxSpinnerService,
+      private normalizadorService : NormalizadorService){
       this.provincias = [];
       this.editar = false;
       this.ordenId  = false;
@@ -71,7 +79,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     this.obtenerRestriccionesFisicas();
     this.obtenerRestriccionesPerimetrales()
     this.obtenerProvincias();
-    this.obtenerLocalidades();
+    this.obtenerLocalidades(null);
   }
 
 
@@ -130,7 +138,10 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
    * Obtiene las localidades necesarias 
    * @author Nicolás
   */
-  obtenerLocalidades() : void{
+  obtenerLocalidades(provincia : Provincia) : void{
+
+    this.datosProvinciaSeleccionada = provincia;
+
     this.spinner.show();
     this.provinciaLocalidadService.getLocalidades(this.provinciaSeleccionada)
       .subscribe(res => {
@@ -152,11 +163,37 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     restriccion.distancia = this.distancia;
     restriccion.idRestriccion = this.restriccionSeleccionada;
     this.spinner.show()
-    this.restriccionService.postRestriccioFisica(restriccion).subscribe(res =>{
-      this.toastr.success("Se ha ingresado con éxito la restricción física");
-      this.spinner.hide()
-      this.obtenerRestriccionesFisicasConInfo();
-    })
+    this.normalizadorService.obtenerCoordenadasConCalleAltura(
+      this.calle,
+      this.altura,
+      this.datosLocalidad.nombre,
+      this.datosProvinciaSeleccionada.nombre).subscribe(
+        res =>{
+            let respuesta  : Normalizacion =  res as Normalizacion;
+            console.log("Esta es la respuesta",respuesta);
+            if(respuesta.direcciones.length==0 ){
+              this.manejarErrores("La direccion ingresada no se puede normalizar.");
+              return;
+            }
+            restriccion.latitud = respuesta.direcciones[0].ubicacion.lat
+            restriccion.longuitud = respuesta.direcciones[0].ubicacion.lon
+
+            console.log(respuesta.direcciones[0].ubicacion.lat)
+            console.log(respuesta.direcciones[0].ubicacion.lon)
+            console.log(restriccion.latitud)
+            console.log(restriccion.longuitud)
+
+            this.restriccionService.postRestriccioFisica(restriccion).subscribe(res =>{
+              this.toastr.success("Se ha ingresado con éxito la restricción física");
+              this.spinner.hide()
+              this.obtenerRestriccionesFisicasConInfo();
+            })
+        }
+        
+        
+    )
+
+    
     
   }
   /**
@@ -204,7 +241,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     restriccion.direccion = this.armarDireccion()
     restriccion.distancia = this.distancia;
     restriccion.idRestriccion = this.restriccionSeleccionada;
-    restriccion.idRPLugar = this.restriccionAEditar;
+    restriccion.idRPLugar = this.restriccionAEditar;    
     this.spinner.show()
     this.restriccionService.updateRestricciónFisica(restriccion).subscribe(res =>{
         this.obtenerRestriccionesFisicasConInfo();
@@ -227,6 +264,8 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
       this.provinciaSeleccionada =restriccion.provincia.idProvincia;
       this.localidadSeleccionada =restriccion.localidad.idLocalidad;
       this.restriccionAEditar = restriccion.rpLugar.idRPLugar;
+      this.datosLocalidad  = restriccion.localidad;
+      this.datosProvinciaSeleccionada = restriccion.provincia;
       this.editar = true;
   }
 
@@ -326,6 +365,19 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
 
 
 
+  guardarLocalidad(localidad :Localidad){
+    this.datosLocalidad = localidad;
+  }
+
+  /**
+   * Maneja los errores de la pantalla
+   * @author Nicolás
+   */
+  manejarErrores(msj : string){
+    this.toastr.error(msj)
+    this.spinner.hide()
+    return
+  }
 
 
 }

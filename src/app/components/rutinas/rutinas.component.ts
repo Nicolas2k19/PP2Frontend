@@ -98,7 +98,7 @@ export class RutinasComponent implements OnInit {
             this.mapService.clearLayers()
 
             //Creo el vector y capa para mostrar Area rutinaria y la ubicacion
-            this.mapService.mostrarUbicaciones(markerVictimario,null,perimetro)
+            this.mapService.mostrarUbicaciones(markerVictimario,null,perimetro,[])
 
             //CENTRO EL MAPA EN LA UBICACION VICTIMARIO Y AÑADO LA CAPA
             this.mapService.centrarMapa(this.ubicacionesRestriccion.ubicacionVictimario.longitud,

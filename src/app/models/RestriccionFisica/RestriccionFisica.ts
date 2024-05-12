@@ -14,7 +14,7 @@ export default class RestriccionFisica{
     idRestriccion : number
     nombre : string
     direccion : Direccion
-    longitud : number
+    longuitud : number
     latitud : number
     distancia : number
 

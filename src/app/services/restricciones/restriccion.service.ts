@@ -81,6 +81,17 @@ export class RestriccionService {
     return this.http.get(this.URL_API_FISICA);
   }
 
+/**
+   * Obtiene las restricciones fisicas por id
+   * @returns RestriccionFisica
+   * @author Nicolás
+   */
+  getRestriccionesFisicasPorId(idRestriccionFisica : Number){
+    return this.http.get(this.URL_API_FISICA+"/Restriccion/"+idRestriccionFisica);
+  }
+
+
+
   /**
    * Obtiene las restricciones con la información adicional de la localidad y la provincia en la que se origino la restricción
    * @author Nicolás 
