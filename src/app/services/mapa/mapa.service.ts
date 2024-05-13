@@ -52,7 +52,9 @@ export class MapService {
     }
   }
 
-  mostrarUbicaciones(markerVictimario: Feature, markerDamnificada: Feature, perimetro: Feature, marcasAdicionales : Feature) {
+  mostrarUbicaciones(markerVictimario: Feature, markerDamnificada: Feature, perimetro: Feature, marcasAdicionales : Feature[]) {
+    console.log("Marcas adicionales",marcasAdicionales)
+
     this.vectorUbicaciones = new VectorSource({
       features: [markerVictimario, markerDamnificada, perimetro,...marcasAdicionales]
     });
@@ -65,6 +67,34 @@ export class MapService {
     if (this.map && this.capaUbicaciones) {
       this.map.addLayer(this.capaUbicaciones);
     }
+  }
+
+
+  anadirMultipleRestriccion(marcasAdicionales : Feature[]){
+
+    console.log("errrorrrrrrrr")
+
+    let featuresViejos: Feature[] =  (this.vectorUbicaciones.getFeatures());
+
+
+     console.log("Este es el vector ubicaciones",this.vectorUbicaciones.getFeatures())
+
+    this.vectorUbicaciones = new VectorSource({
+      features: [...marcasAdicionales,...featuresViejos]
+    });
+    
+
+    console.log("errrorrrrrrrr333")
+
+    this.capaUbicaciones = new VectorLayer({
+      source: this.vectorUbicaciones
+    });
+
+    // Añade la capa de ubicaciones al mapa
+    if (this.map && this.capaUbicaciones) {
+      this.map.addLayer(this.capaUbicaciones);
+    }
+
   }
 
   centrarMapa(longitude: number, latitude: number) {

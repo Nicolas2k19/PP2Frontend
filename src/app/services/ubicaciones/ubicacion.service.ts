@@ -14,6 +14,11 @@ export class UbicacionService {
 
   constructor(private http: HttpClient) { }
 
+
+  getUbicacionPorIdPersona(idPersona : number){
+    return this.http.get(this.URL_API +"/"+idPersona )
+  }
+
   getUbicacionesRestriccion(idRestriccion: number) {
     return this.http.get(this.URL_API + "/getByRestriccion/" + idRestriccion);
   }
