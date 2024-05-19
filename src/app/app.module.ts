@@ -26,6 +26,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { RecuperarContrasenaComponent } from './components/recuperar-contrasena/recuperar-contrasena.component';
 import { AdministrarRestriccionesFisicasComponent } from './components/administrar-restricciones-fisicas/administrar-restricciones-fisicas.component';
 import { AdministrarRestriccionesMultiplesPersonaComponent } from './components/administrar-restricciones-multiples-persona/administrar-restricciones-multiples-persona.component';
+import { SupervisorGeneralComponent } from './components/supervisor-general/supervisor-general';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { AdministrarRestriccionesMultiplesPersonaComponent } from './components/
     AdministrarRestriccionesComponent,
     AdministrarUsuariosComponent,
     AdministrarPersonasComponent,
+    SupervisorGeneralComponent,
     RutinasComponent,
     RecuperarContrasenaComponent,
     EstadoComponent

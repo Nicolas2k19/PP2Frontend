@@ -51,7 +51,7 @@ export class AdministrarUsuariosComponent implements OnInit {
     public grupoService: GrupoService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
-    this.roles = ['SUPERVISOR', 'ADMINISTRATIVO'];
+    this.roles = ['SUPERVISOR', 'ADMINISTRATIVO','SUPERVISOR_GENERAL'];
     this.grupos = []
     this.ordenGrupo = false;
     this.ordenID = false;

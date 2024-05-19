@@ -13,8 +13,10 @@ import { RutinasComponent } from './components/rutinas/rutinas.component';
 import { RecuperarContrasenaComponent } from './components/recuperar-contrasena/recuperar-contrasena.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthSupervisorGuard } from './guards/auth-supervisor.guard';
+import { AuthSupervisorGeneralGuard } from './guards/auth-supervisorGeneral.guard';
 import { AuthAdministrativoGuard } from './guards/auth-administrativo.guard';
 import { EstadoComponent } from './components/estado/estado.component';
+import { SupervisorGeneralComponent } from './components/supervisor-general/supervisor-general';
 
 const routes: Routes = [
   {
@@ -30,6 +32,7 @@ const routes: Routes = [
       { path: 'rutinas', component: RutinasComponent, canActivate : [ AuthAdministrativoGuard ]},
       { path: 'administrarPersonas', component: AdministrarPersonasComponent, canActivate : [ AuthSupervisorGuard ] },
       { path: 'administrarUsuarios', component: AdministrarUsuariosComponent, canActivate : [ AuthSupervisorGuard ] },
+      { path: 'supervisorGeneral', component: SupervisorGeneralComponent, canActivate : [ AuthSupervisorGeneralGuard ] },
       { path: 'administrarRestricciones', component: AdministrarRestriccionesComponent, canActivate : [ AuthSupervisorGuard ] },
       { path: 'recuperarContrasena', component: RecuperarContrasenaComponent },
       {path:'estado', component:EstadoComponent}

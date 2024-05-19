@@ -41,8 +41,9 @@ export class UsuarioComponent implements OnInit {
         .subscribe(res => {
           this.spinner.hide();
           datosValidos = res;
+          console.log("email y contraseña : " + mail  + " " + contrasena); 
+          console.log("es usuario valido? : " + datosValidos)
           if (datosValidos) {
-
             this.usuarioService.getUsuarioByEmail(mail).subscribe(res => {
               var usuarioLogueado = res as Usuario;
               this.comunicacionService.enviarUsuario(usuarioLogueado);
@@ -53,6 +54,10 @@ export class UsuarioComponent implements OnInit {
               }
               else if(usuarioLogueado.rolDeUsuario == 'SUPERVISOR'){
                 this.router.navigate(["/inicio/administrarRestricciones"]);
+              }
+              else if(usuarioLogueado.rolDeUsuario == 'SUPERVISOR_GENERAL'){
+                console.log("soy supervisor general")
+                this.router.navigate(["/inicio/supervisorGeneral"]);
               }
             })
           }
