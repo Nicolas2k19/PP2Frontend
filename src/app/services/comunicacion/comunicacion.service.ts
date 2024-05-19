@@ -14,6 +14,7 @@ export class ComunicacionService {
   administrativo: Usuario;
 
   enviarRestriccion(restriccion: RestriccionDTO){
+    console.log(restriccion)
     this.restriccionDTO = restriccion;
   }
 

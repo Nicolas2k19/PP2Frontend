@@ -4,6 +4,9 @@ import { UbicacionDto } from 'src/app/models/ubicacion-dto';
 import { environment } from '../../../environments/environment';
 
 
+
+///infringePasandoDistancia/{distancia}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,9 +26,38 @@ export class UbicacionService {
     return this.http.get(this.URL_API + "/getByRestriccion/" + idRestriccion);
   }
 
-  getEstaInfringiendo(idRestriccion: number, ubicacionDTO: UbicacionDto) {
+  getEstaInfringiendo(idRestriccion: number,ubicacionDTO: UbicacionDto) {
     return this.http.post(this.URL_API + "/infringe/" + idRestriccion, ubicacionDTO);
   }
+
+
+
+  /**
+  * Retorna un booleano informando si una restricción multiple esta siendo violada, se le debe pasar la distancia
+  * @author Nicolás
+  */
+  getEstaInfringiendoPasandoDistancia(distancia : number ,ubicacionDTO: UbicacionDto ) {
+    return this.http.post(this.URL_API + "/infringePasandoDistancia/" + distancia, ubicacionDTO);
+  }
+
+
+  /**
+   * Retorna un booleano que informa si una restricción fisica esta siendo violada
+   * @author Nicolás
+   */
+  getInfringeRestriccionFisica(){
+
+  }
+
+  /**
+  * Retorna un booleano informando si una restricción multiple esta siendo violada
+  * @author Nicolás
+  */
+  getInfringeRestriccionMultiple(){
+
+  }
+
+
 
   getUbicacionPromedioRutina(idPersona: number, dia: number, hora: number, minutos: number) {
     return this.http.get(this.URL_API_UBICACION_RUTINA+'/persona=' + idPersona +

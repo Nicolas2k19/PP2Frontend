@@ -24,6 +24,7 @@ import RestriccionFisica from 'src/app/models/RestriccionFisica/RestriccionFisic
 import RestriccionMultipleCompleta from 'src/app/models/RestriccionMultiple/RestriccionMultipleCompleta';
 import RestriccionMultipleDTO from 'src/app/models/RestriccionMultiple/RestriccionMultipleDTO';
 import { Observable } from 'rxjs';
+import AlertaService from 'src/app/services/alertas/alertaService';
 
 @Component({
   selector: 'app-restricciones',
@@ -43,17 +44,59 @@ export class RestriccionesComponent implements OnInit {
   intervalo;
   restriccionPintada: RestriccionDTO;
 
+
+  featuresRestriccion  : Feature []
+  featuresRestriccionFisica  : Feature []
+  featuresRestriccionMultiple : Feature [];
+  featuresPerimetroRestriccionFisica : Feature [];
+  featuresPerimetroRestriccionMultiple : Feature [];
+
+  ubicaciones : Ubicacion [][]
+
+
+
   constructor(public restriccionService: RestriccionService, private comunicacion: ComunicacionService,
     private ubicacionService: UbicacionService, private spinnerService: NgxSpinnerService,
-    private usuarioService: UsuarioService,private mapService: MapService) { }
+    private usuarioService: UsuarioService,private mapService: MapService
+  , private alertaService : AlertaService) { }
 
   ngOnInit() {
+    this.inicializarMapa()  
+  }
+
+
+  /**
+   * Inicializa todo lo necesario para lograr que el mapa funcione
+   * @author Nicolás
+   */
+
+  inicializarMapa(){
+    this.spinnerService.show();
     this.mapService.iniciarMapa('map');
-    this.getRestriccionesMultiples()
-    this.getRestricciones(localStorage.getItem("emailUsuario"));
-    this.getUsuarioByEmail(localStorage.getItem("emailUsuario"));
-    
-    
+    this.getUsuarioByEmail("emailUsuario").add(res =>{
+    this.getRestricciones(localStorage.getItem("emailUsuario")).add(res => {
+    this.getRestriccionesMultiples().add(res => {
+       this.getRestriccionesFisicas(this.restriccionService.restricciones[0].restriccion.idRestriccion).add(res =>{
+            this.seleccionarRestriccion(this.restriccionService.restricciones[0],null);
+              this.getUbicacion().subscribe(resUbicacion => {
+                this.dibujarRestriccionPerimetral(resUbicacion as UbicacionDto)
+                this.mostrarRestriccionMultiple()
+                this.pintarRestriccionFisica()
+                this.centrar()
+                this.spinnerService.hide()       
+            })
+        })
+      });
+      });
+})
+  }
+
+
+
+  dibujarRestriccionPerimetral(ubicacion:UbicacionDto){
+    this.crearElementosRestriccionPerimetral(ubicacion).add(res => {
+      this.dibujarMapa(this.featuresRestriccion)
+    });
   }
 
 
@@ -62,10 +105,9 @@ export class RestriccionesComponent implements OnInit {
    * @author Nicolás
    */
   getRestriccionesFisicas(id : number){
-    this.restriccionService.getRestriccionesFisicasPorId(id)
+    return this.restriccionService.getRestriccionesFisicasPorId(id)
     .subscribe(res =>{
         this.restriccionesFisicas=res as RestriccionFisica[]
-        this.mostrarRestriccion();
     })
   }
 
@@ -74,34 +116,28 @@ export class RestriccionesComponent implements OnInit {
    * @author Nicolás
    */
   getRestriccionesMultiples(){
-    this.restriccionService.getRestriccionesMultiplesDTO().subscribe(res =>{
+    return this.restriccionService.getRestriccionesMultiplesDTO().subscribe(res =>{
       this.restriccionesMultiples = res as RestriccionMultipleDTO[];
       this.restriccionesFiltradas =  this.restriccionesMultiples;
-      console.log(this.restriccionesFiltradas)
     })
 
   }
 
 
   getRestricciones(email: string) {
-    this.spinnerService.show();
-    this.restriccionService.getRestriccionesAdministrativo(email)
+    return this.restriccionService.getRestriccionesAdministrativo(email)
       .subscribe(res => {
-        this.spinnerService.hide();
         this.restriccionService.restricciones = res as RestriccionDTO[];
       })
   }
 
   seleccionarRestriccion(restriccion: RestriccionDTO,fila) {
-
+    this.featuresRestriccion = []
     this.restriccionPintada = restriccion;
-
+    this.comunicacion.enviarRestriccion(this.restriccionPintada);
     this.desmarcarCeldas();
+    this.actualizarMapa()
 
-    console.log("seleccionar restriccion")
-
-    console.log(fila)
-    console.log(document.querySelectorAll("tr"))
     if(fila==null){
       document.querySelectorAll("tr")[1].style.backgroundColor = "#b780ff"
     }
@@ -109,17 +145,28 @@ export class RestriccionesComponent implements OnInit {
       fila.style.backgroundColor = "#b780ff"
       fila.style.color = "white";
     }
-
-    this.getRestriccionesFisicas(restriccion.restriccion.idRestriccion);
-    this.comunicacion.enviarRestriccion(restriccion);
-    
     let thisjr = this;
     //CADA 15 SEGUNDOS ACTUALIZO EL MAPA
     clearInterval(this.intervalo);
     this.intervalo = setInterval(function () {
-      thisjr.mostrarRestriccion();
-      thisjr.pintarRestriccionMultiple()
-    }, 15000);
+      thisjr.actualizarMapa()       
+    }, 10000); 
+  }
+
+
+  /**
+   * Realiza las llamadas correspondientes para actualizar el mapa
+   * @author Nicolás
+   */
+  actualizarMapa(){
+    this.mapService.clearLayers()
+    this.spinnerService.show()  
+    this.getUbicacion().subscribe(resUbicacion => {
+        this.dibujarRestriccionPerimetral(resUbicacion as UbicacionDto)
+        this.mostrarRestriccionMultiple()
+        this.pintarRestriccionFisica()
+        this.spinnerService.hide()  
+    })
   }
 
 
@@ -139,74 +186,61 @@ export class RestriccionesComponent implements OnInit {
   }
 
   getUsuarioByEmail(mail: string){
-    this.usuarioService.getUsuarioByEmail(mail)
+    return this.usuarioService.getUsuarioByEmail(mail)
     .subscribe(res => {
       this.comunicacion.enviarUsuario(res as Usuario);
-      console.log(this.comunicacion.administrativo.email);
-      console.log(this.restriccionService.restricciones);
-      this.seleccionarRestriccion(this.restriccionService.restricciones[0],null);
     })
   }
 
   
 
-  async mostrarRestriccion() {
-    var markerVictimario: Feature;
-    var markerDamnificada: Feature;
-    var perimetro: Feature;
-
+   getUbicacion() {
     //GET UBICACIONES Y SET the this.ubicaciones
-    this.ubicacionService.getUbicacionesRestriccion(this.comunicacion.restriccionDTO.restriccion.idRestriccion)
-      .subscribe(async res => {
-
-        this.ubicacionDto = res as UbicacionDto;
-        this.ubicacionDamnificada = this.ubicacionDto.ubicacionDamnificada;
-        this.ubicacionVictimario = this.ubicacionDto.ubicacionVictimario;
-
-
-        //Marco Ubicaciones en Mapa
-        //Marco Victimario con su marker La longitud y latitud es de objeto Ubicacion
-        markerVictimario = new Feature({
-          geometry: new Point(fromLonLat([this.ubicacionVictimario.longitud, this.ubicacionVictimario.latitud]))
-        });
-        markerVictimario.setStyle(new Style({
-          image: new Icon(({
-            src: 'assets/markerVictimario.png',
-            imgSize: [60, 60]
-          }))
-        }));
-
-        //Marco Damnificada con su marker La longitud y latitud es de objeto Ubicacion
-        markerDamnificada = new Feature({
-          geometry: new Point(fromLonLat([this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud]))
-        });
-        markerDamnificada.setStyle(new Style({
-          image: new Icon(({
-            src: 'assets/markerDamnificada.png',
-            imgSize: [60, 60]
-          }))
-        }));
-
-        //Dibujo Circulo y le aplico un estilo 
-        perimetro = new Feature();
-        var forma = new Circle(fromLonLat([this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud]));
-        forma.setRadius(this.comunicacion.restriccionDTO.restriccion.distancia);
-        perimetro.setGeometry(forma);
-        this.pintarPerimetro(perimetro);
-
-        //Borro lo dibujado anteriormente en el mapa
-        this.mapService.clearLayers();
-        //Creo el vector y capa para mostrar las ubicaciones
-        this.mapService.mostrarUbicaciones(markerVictimario,markerDamnificada,perimetro,this.pintarRestriccionFisica())
-        //CENTRO EL MAPA EN LA UBICACION DE LA DAMNIFICADA Y AÑADO LA CAPA
-        this.mapService.centrarMapa(this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud)
-          
-        
-
-      });
-
-
+    return this.ubicacionService.getUbicacionesRestriccion(this.comunicacion.restriccionDTO.restriccion.idRestriccion)
   }
+
+
+  crearElementosRestriccionPerimetral(ubicacionDto : UbicacionDto){
+    let markerVictimario: Feature;
+    let markerDamnificada: Feature;
+    let perimetro: Feature;
+    this.ubicacionDto = ubicacionDto;
+    this.ubicacionDamnificada = this.ubicacionDto.ubicacionDamnificada;
+    this.ubicacionVictimario = this.ubicacionDto.ubicacionVictimario;
+    markerVictimario = this.marcarEnMapaLaRestriccion(this.ubicacionVictimario.longitud,
+                                                          this.ubicacionVictimario.latitud,
+                                                          'assets/markerVictimario.png')
+    markerDamnificada = this.marcarEnMapaLaRestriccion(this.ubicacionDamnificada.longitud,
+                                                           this.ubicacionDamnificada.latitud,
+                                                          'assets/markerDamnificada.png')
+    return this.getInfringe(this.comunicacion.restriccionDTO.restriccion.distancia,this.ubicacionDto)
+                        .subscribe(res =>{
+                        perimetro = this.crearPerimetro(this.ubicacionDamnificada.longitud,this.ubicacionDamnificada.latitud,this.comunicacion.restriccionDTO.restriccion.distancia)
+                        let infringe : boolean =  res as boolean
+                        if(infringe){
+                          this.alertaService.alertarPolicia(this.ubicacionDamnificada.latitud,this.ubicacionDamnificada.longitud,
+                                                            this.comunicacion.restriccionDTO.restriccion.idRestriccion).subscribe();
+                        }
+
+                        let perimetroDibujado = this.dibujarPerimetro(perimetro,infringe)
+                        let markersObtenidos = [markerDamnificada,markerVictimario,perimetroDibujado]
+                        this.featuresRestriccion = markersObtenidos         
+                        console.log(this.featuresRestriccion, "previo a entrar en inicalizar ")    
+        })
+  }
+
+
+
+  crearPerimetro(log : number ,lat : number,distancia : number){
+    let perimetro = new Feature();
+    var forma = new Circle(fromLonLat([log, lat]));
+    forma.setRadius(distancia);
+    perimetro.setGeometry(forma);
+
+    return perimetro;
+  }
+
+
 
   pintarPerimetro(perimetro) {
     //Pinto el perimetro dependiendo si infringe o no
@@ -227,81 +261,50 @@ export class RestriccionesComponent implements OnInit {
      * Pinta la restriccion fisica
      * @author Nicolás
      */
-     pintarRestriccionFisica() : Feature[]{
-      let markerRestriccionFisica: Feature;
-      let perimetro: Feature;
-      let markers  :Feature[] = []
+    pintarRestriccionFisica(){
       this.restriccionesFisicas.forEach(res => {
 
-      markerRestriccionFisica = new Feature({
-        geometry: new Point(fromLonLat([res.longuitud, res.latitud]))
-      });
-
-      markerRestriccionFisica.setStyle(new Style({
-        image: new Icon(({
-          src: 'assets/iconoRestriccionFisica.png',
-          imgSize: [60, 60]
-        }))
-      }));
-
-
-      perimetro = new Feature();
-      let forma = new Circle(fromLonLat([res.longuitud, res.latitud]));
-      forma.setRadius(res.distancia);
-      perimetro.setGeometry(forma);
-      this.pintarPerimetro(perimetro);
-      markers.push(markerRestriccionFisica)
-      markers.push(perimetro)
+      this.getInfringe(res.distancia
+                      ,new UbicacionDto(new Ubicacion(0,res.latitud,res.longuitud,"",0),
+                      this.ubicacionVictimario))
+                      .subscribe(respuesta =>{
+                        let features : Feature[] =this.marcarPerimetro(res.longuitud,
+                                                                        res.latitud,
+                                                                           res.distancia,
+                                                                           'assets/iconoRestriccionFisica.png'
+                                                                          ,respuesta as boolean);
+                        this.mapService.anadirFeatures(features);
+                                                     })
+      
     })
-
-      return markers;
 
     }
     
     
-    pintarRestriccionMultiple() : Feature[]{
-      //this.filtrarPorIdRestriccionesMultiples(this.restriccionPintada.damnificada.idPersona);
-      let markerRestriccionMultiple: Feature;
-      let perimetro: Feature;
+    mostrarRestriccionMultiple() : Feature[]{
+      this.filtrarPorIdRestriccionesMultiples(this.restriccionPintada.restriccion.idRestriccion);
       let markers  :Feature[] = [];
 
       this.restriccionesFiltradas.map(res =>{
         let resMul : RestriccionMultipleDTO = res as RestriccionMultipleDTO
-
-        console.log(resMul.persona.idPersona)
-
         this.ubicacionService.getUbicacionPorIdPersona(resMul.restriccionMultiple.idPersona).subscribe(res =>{
-            console.log("respuesta res",res)
-            let ubicacion  : Ubicacion = res as Ubicacion
-            markerRestriccionMultiple = new Feature({
-              geometry: new Point(fromLonLat([ubicacion.longitud, ubicacion.latitud]))
-            });
-
-            markerRestriccionMultiple.setStyle(new Style({
-              image: new Icon(({
-                src: 'assets/restriccionMultiple.png',
-                imgSize: [60, 60]
-              }))
-            }));
-
-            perimetro = new Feature();
-            let forma = new Circle(fromLonLat([ubicacion.longitud, ubicacion.latitud]));
-            forma.setRadius(resMul.restriccionMultiple.distancia);
-            perimetro.setGeometry(forma);
-            this.pintarPerimetro(perimetro);
-            markers.push(markerRestriccionMultiple);
-            markers.push(perimetro);
-
-            console.log(markers)
-
-            this.mapService.anadirMultipleRestriccion(markers);
+        let ubicacion  : Ubicacion = res as Ubicacion
+  
+        this.getInfringe(resMul.restriccionMultiple.distancia
+            ,new UbicacionDto(new Ubicacion(0,ubicacion.latitud,ubicacion.longitud,"",0)
+            ,this.ubicacionVictimario ))
+            .subscribe(res =>{
+                let features = this.marcarPerimetro(ubicacion.longitud, 
+                                     ubicacion.latitud,
+                                     resMul.restriccionMultiple.distancia,
+                                     'assets/restriccionMultiple.png',
+                                     res as boolean)      
+                this.mapService.anadirFeatures(features);        
+                                  })
         })
 
         
       })
-
-      console.log("marcadores",markers)
-
       return (markers);
     }
 
@@ -309,10 +312,123 @@ export class RestriccionesComponent implements OnInit {
 
     filtrarPorIdRestriccionesMultiples(id : number){
       this.restriccionesFiltradas = this.restriccionesMultiples.filter(res =>{
-        return res.restriccionMultiple.idRestriccionMultiple ==id;
+        console.log("adsdas")
+        console.log(res.restriccionMultiple.idRestriccion==id)
+        console.log(res.restriccionMultiple.idRestriccion,id)
+        return res.restriccionMultiple.idRestriccion ==id;
       })
 
     }
+
+    /**
+     * Dibuja el mapa
+     * @author Nicolás 
+     */
+    dibujarMapa(features : Feature[]){
+      console.log("estoy en dibujar mapa",features)
+
+      //Borro lo dibujado anteriormente en el mapa
+      this.mapService.clearLayers();
+      //Creo el vector y capa para mostrar las ubicaciones
+      this.mapService.anadirFeatures(features)
+    }
+
+
+
+    /**
+     * 
+     * Marca en el mapa la restriccion  
+     * @author Nicolás
+     *  
+     * @returns Feature
+     */
+
+    marcarEnMapaLaRestriccion(log: number,lat:number, asset : string){
+
+      let marker: Feature;
+      marker= new Feature({
+        geometry: new Point(fromLonLat([log,lat]))
+      });
+      marker.setStyle(new Style({
+        image: new Icon(({
+          src:  asset ,
+          imgSize: [60, 60]
+        }))
+      }));
+
+      return marker;
+
+    }
+
+
+    
+    /**
+     * 
+     * Marca en el mapa el perimetro de una restriccion
+     * @author Nicolás
+     *  
+     * @returns Feature
+     */
+    marcarPerimetro(log: number,lat:number,distancia : number, asset : string,infringe : boolean){
+     
+      let perimetro: Feature = new Feature();
+      let forma = new Circle(fromLonLat([log, lat]));
+      forma.setRadius(distancia);
+      perimetro.setGeometry(forma);
+      this.dibujarPerimetro(perimetro,infringe);
+      let marker = this.marcarEnMapaLaRestriccion(log,lat,asset)
+      return [perimetro,marker];
+      } 
+    
+
+    /**
+     * 
+     * Obtiene si la distancia asignada a la perimetral de la victima esta siendo violada
+     * @param ubicacionVictima 
+     * @returns 
+     */
+    getInfringe(distancia : number,ubicacionVictima : UbicacionDto){
+       return  this.ubicacionService.getEstaInfringiendoPasandoDistancia(distancia,ubicacionVictima)
+    }
+
+
+
+
+    
+    /**
+     * 
+     * Dibuja el perimetro en un mapa, dependiendo del estado de la perimetral se pintara en verde o en rojo.
+     * @author Nicolás
+     *  
+     * @returns Feature
+     */
+    dibujarPerimetro(perimetro : Feature,estaInfringiendo : boolean) {
+      //Pinto el perimetro dependiendo si infringe o no
+      let style = new Style({ fill: new Fill({}) });
+      
+      if (estaInfringiendo)
+          style.getFill().setColor([255, 0, 0, .4]);
+      else
+          style.getFill().setColor([0, 255, 0, .4]);
+  
+      perimetro.setStyle(style);
+      return perimetro;
+      }
+
+
+      /**
+       * Centra el mapa en la victima
+       * @author Nicolás
+       */
+      centrar(){
+        this.mapService.centrarMapa(this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud)
+      }
+
+
+
+
+
+
 
 
 }

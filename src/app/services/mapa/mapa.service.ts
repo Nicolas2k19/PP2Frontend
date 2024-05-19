@@ -48,7 +48,8 @@ export class MapService {
   clearLayers(): void {
     // Borra únicamente las capas de vectores
     if (this.vectorUbicaciones) {
-      this.vectorUbicaciones.clear();
+          this.map.removeLayer(this.capaUbicaciones);
+          this.map.removeLayer(this.vectorUbicaciones)
     }
   }
 
@@ -70,22 +71,16 @@ export class MapService {
   }
 
 
-  anadirMultipleRestriccion(marcasAdicionales : Feature[]){
+  anadirFeatures(featuresss: Feature[]){
 
-    console.log("errrorrrrrrrr")
+    console.log(featuresss)
 
-    let featuresViejos: Feature[] =  (this.vectorUbicaciones.getFeatures());
-
-
-     console.log("Este es el vector ubicaciones",this.vectorUbicaciones.getFeatures())
-
+    console.log(featuresss,"ESTOY ACA")
+  
     this.vectorUbicaciones = new VectorSource({
-      features: [...marcasAdicionales,...featuresViejos]
+      features: featuresss
     });
     
-
-    console.log("errrorrrrrrrr333")
-
     this.capaUbicaciones = new VectorLayer({
       source: this.vectorUbicaciones
     });
@@ -96,6 +91,7 @@ export class MapService {
     }
 
   }
+
 
   centrarMapa(longitude: number, latitude: number) {
     this.vistaMapa.setCenter(fromLonLat([longitude, latitude]));
