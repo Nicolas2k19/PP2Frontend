@@ -1,11 +1,12 @@
- <!--Spinner ---------------------------------------------->
+<!--Spinner ---------------------------------------------->
 
 <ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
     <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
 </ngx-spinner>
-<div class="container2">
+<div class="container2" [ngClass]="{'blurred': modalAbierta}">
     <!--Agregar restricciones fisicas ---------------------------------------------->
-    <form #restriccionLForm="ngForm" class="card form-control"  action="POST" (ngSubmit)="agregarRestriccionFisica(restriccionLForm)" novalidate>
+    <form #restriccionLForm="ngForm" class="card form-control" action="POST"
+        (ngSubmit)="agregarRestriccionFisica(restriccionLForm)" novalidate>
         <legend class="titulo">Agregar restriccion fisica</legend>
 
         <div class="input-texto-before-nombre">
@@ -21,38 +22,43 @@
         </div>
 
         <div class="input-texto-before-piso">
-            <input class="form-control input-texto piso"  name="piso" [(ngModel)]="piso" type="text">
+            <input class="form-control input-texto piso" name="piso" [(ngModel)]="piso" type="text">
         </div>
 
         <div class="input-texto-before-departamento">
-            <input class="form-control input-texto departamento"  name="departamento" [(ngModel)]="departamento" type="text">
+            <input class="form-control input-texto departamento" name="departamento" [(ngModel)]="departamento"
+                type="text">
         </div>
 
         <div class="input-texto-before-distancia">
-            <input class="form-control input-texto distancia"   name="distancia" [(ngModel)]="distancia" type="number" min="200" value="200">
+            <input class="form-control input-texto distancia" name="distancia" [(ngModel)]="distancia" type="number"
+                min="200" value="200">
         </div>
 
-        
+
         <div class="input-select-before input-select-before-perimetral">
-            <select  [(ngModel)]="restriccionSeleccionada" name="restriccion" class="select-estilo">
+            <select [(ngModel)]="restriccionSeleccionada" name="restriccion" class="select-estilo">
                 <option disabled>Restriccion perimetral</option>
-                <option value={{restriccionP.restriccion.idRestriccion}}  *ngFor="let restriccionP of restriccionesPerimetrales">
+                <option value={{restriccionP.restriccion.idRestriccion}}
+                    *ngFor="let restriccionP of restriccionesPerimetrales">
                     {{"Restriccion Nro°"+restriccionP.restriccion.idRestriccion}}
                 </option>
             </select>
         </div>
         <div class="input-select-before input-select-before-provincia">
-            <select  [(ngModel)]="provinciaSeleccionada" name="provincia" class="select-estilo">
+            <select [(ngModel)]="provinciaSeleccionada" name="provincia" class="select-estilo">
                 <option disabled>Elegí una provincia</option>
-                <option value={{provincia.idProvincia}}  *ngFor="let provincia of provincias" (click)="obtenerLocalidades(provincia)">
+                <option value={{provincia.idProvincia}} *ngFor="let provincia of provincias"
+                    (click)="obtenerLocalidades(provincia)">
                     {{provincia.nombre}}
                 </option>
             </select>
         </div>
         <div class="input-select-before  input-select-before-localidad">
-            <select   [(ngModel)]="localidadSeleccionada" name="localidad" class="select-estilo">
+            <select [(ngModel)]="localidadSeleccionada" name="localidad" class="select-estilo">
                 <option disabled>Elegí una localidad</option>
-                <option value={{localidad.idLocalidad}}  *ngFor="let localidad of localidades" (click)="guardarLocalidad(localidad)" >
+                <option value={{localidad.idLocalidad}} *ngFor="let localidad of localidades"
+                    (click)="guardarLocalidad(localidad)">
                     {{localidad.nombre}}
                 </option>
             </select>
@@ -60,13 +66,13 @@
 
 
         <button class="btn" *ngIf="editar" (click)="editarRestriccion()">
-           Editar
+            Editar
         </button>
         <button class="btn" *ngIf="editar" (click)="editar=false">
-           Volver
+            Volver
         </button>
         <button class="btn" *ngIf="!editar">
-           Agregar
+            Agregar
         </button>
 
     </form>
@@ -75,15 +81,23 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th  scope="col" >
+                    <th scope="col">
                         <div class="header-tabla">
-                            ID 
+                            RP ID
+                            <a (click)="ordenarPorIdR()">
+                                <i class="material-icons ordenamiento">unfold_more</i>
+                            </a>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="header-tabla">
+                            ID
                             <a (click)="ordenarPorId()">
                                 <i class="material-icons ordenamiento">unfold_more</i>
                             </a>
                         </div>
                     </th>
-                    <th  scope="col" >
+                    <th scope="col">
                         <div class="header-tabla">
                             Nombre
                             <a (click)="ordenarPorNombre()">
@@ -92,7 +106,7 @@
                         </div>
 
                     </th>
-                    <th  scope="col" >
+                    <th scope="col">
                         <div class="header-tabla">
                             Direccion
                             <a (click)="ordenarPorDireccion()">
@@ -100,7 +114,7 @@
                             </a>
                         </div>
                     </th>
-                    <th  scope="col" >
+                    <th scope="col">
                         <div class="header-tabla">
                             Localidad
                             <a (click)="ordenarPorLocalidad()">
@@ -108,24 +122,25 @@
                             </a>
                         </div>
                     </th>
-                    <th  scope="col" >
+                    <th scope="col">
                         <div class="header-tabla">
                             Provincia
                             <a (click)="ordenarPorProvincia()">
                                 <i class="material-icons ordenamiento">unfold_more</i>
                             </a>
                         </div>
-                        
+
                     </th>
-                    <th  scope="col" >
+                    <th scope="col">
                         <div class="header-tabla">
                             Operaciones
                         </div>
-                        </th>
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let restriccion of restriccionesConInfo">
+                    <td>{{restriccion.rpLugar.idRestriccion}}</td>
                     <td>{{restriccion.rpLugar.idRPLugar}}</td>
                     <td>{{restriccion.rpLugar.nombre}}</td>
                     <td>{{restriccion.rpLugar.direccion.calle+" "+restriccion.rpLugar.direccion.altura}}</td>
@@ -138,9 +153,48 @@
                         <a>
                             <i class="material-icons" (click)="eliminarRpFisica(restriccion.idRPLugar)">delete</i>
                         </a>
+                        <a>
+                            <i class="material-icons" (click)="masInfo(restriccion)">info</i>
+                        </a>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+    </div>
+</div>
+
+<!-- DIV MAS INFO VENTANA MODAL-->
+<div class="modal-info" *ngIf="modalAbierta" (click)="cerrarModal()">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>Restricción Perimetral # {{infoResIDP}}-{{infoResID}} </h2>
+            <i class="material-icons" (click)="cerrarModal()">close</i>
+        </div>
+
+        <div class="modal-body">
+
+
+            <!-- INFO Domicilio-->
+            <div class="modal-infoAdm input-texto-before-admin">
+                
+                <p class="input-texto-before-infoN"><strong>{{infoNombre}}</strong></p>
+                <p class="input-texto-before-infoD"><strong>{{infoDireccion}}</strong></p>
+                <p class="input-texto-before-infoDD"><strong>{{infoDepto}}</strong></p>
+                <p class="input-texto-before-infoP"><strong>{{infoProvincia}}</strong></p>
+                <p class="input-texto-before-infoL"><strong>{{infoLocalidad}}</strong></p>
+            </div>
+            <!-- INFO RESTRICCION-->
+            <div class="modal-infoRes">
+
+                <!-- INFO DISTANCIA -->
+                <div class="modal-infoRes1">
+                    <p class="input-texto-before-infoDis"> <strong> {{infoDistancia}}</strong></p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 </div>

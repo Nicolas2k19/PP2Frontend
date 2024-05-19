@@ -162,3 +162,106 @@ th{
   
   }
 
+/* ventana modal info*/
+
+.modal-info {
+
+  position: absolute;
+  background-color: #fff;
+  left: 50%;
+  top: 10%;
+  border: 1px solid;
+  border-color: #480971;;
+}
+
+
+.blurred {
+  filter: blur(1.5px) saturate(0.7);
+
+}
+
+.modal-infoAdm{
+  display: block;
+}
+
+.modal-infoRes{
+  display: flex;
+  margin-top: 0.5rem;
+
+}
+
+.modal-body{
+  display: grid;
+}
+
+.modal-infoRes1, .modal-infoRes2, .modal-infoP{
+  padding-right: 50px;
+}
+
+.modal-header{
+
+  color: #480971;
+}
+
+.input-texto-before-infoN::before {
+  content: "Nombre del lugar:";
+  font-size: 0.7rem;
+  text-align: left;
+  color: #9e58ffb5;
+  
+
+}
+
+.input-texto-before-infoD::before {
+  content: "Dirección del lugar:";
+  font-size: 0.7rem;
+  text-align: left;
+  color: #9e58ffb5;
+  
+
+}
+
+.input-texto-before-infoDD::before {
+  content: "Datos de departamento:";
+  font-size: 0.7rem;
+  text-align: left;
+  color: #9e58ffb5;
+  
+
+}
+
+.input-texto-before-infoP::before {
+  content: "Provincia:";
+  font-size: 0.7rem;
+  text-align: left;
+  color: #9e58ffb5;
+  
+
+}
+.input-texto-before-infoL::before {
+  content: "Localidad:";
+  font-size: 0.7rem;
+  text-align: left;
+  color: #9e58ffb5;
+  
+
+}
+
+.input-texto-before-infoDis::before {
+  content: "Distancia:";
+  font-size: 0.7rem;
+  text-align: left;
+  color: #9e58ffb5;
+  
+
+}
+
+.input-texto-before-infoDis,
+.input-texto-before-infoL,
+.input-texto-before-infoP,
+.input-texto-before-infoD,
+.input-texto-before-infoDD,
+.input-texto-before-infoN{
+  display: flex;
+  flex-direction: column;
+}

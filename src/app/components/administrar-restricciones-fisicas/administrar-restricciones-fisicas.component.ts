@@ -26,7 +26,7 @@ import Normalizacion from 'src/app/models/ObjetosNormalizador/Normalizacion';
 export class AdministrarRestriccionesFisicasComponent implements OnInit{
   
 
-  ordenId : boolean;
+  
   restriccionesConInfo : RestriccionConInfo[]
   restriccionesFisicasAMostrar : RestriccionFisicaEditar[]
   provincias : Provincia[]
@@ -52,6 +52,23 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
   ordenLocalidad: boolean;
   ordenProvincia: boolean;
   ordenDireccion: boolean;
+  ordenId : boolean;
+  ordenIdR : boolean;
+  
+
+
+
+  //ventana modal
+
+  modalAbierta: boolean = false;
+  infoDireccion: string;
+  infoResIDP: number;
+  infoResID: number;
+  infoNombre: string;
+  infoDepto: string;
+  infoProvincia: string;
+  infoLocalidad: string;
+  infoDistancia: number;
   
 
   constructor(public restriccionService : RestriccionService,
@@ -62,6 +79,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
       this.provincias = [];
       this.editar = false;
       this.ordenId  = false;
+      this.ordenIdR  = false;
       this.ordenNombre = false;
       this.ordenLocalidad = false;
       this.ordenProvincia = false;
@@ -274,7 +292,6 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
    * @author Nicolas
    */
   ordenarPorId(){
-    console.log("asdasdasdasdasdasdasdasdasdasdasdas")
     let orden : number = this.ordenId ?  1:-1
 
     let restriccionesFisicas : RestriccionConInfo [] = this.restriccionesConInfo;
@@ -286,6 +303,21 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     })
 
     this.ordenId = !this.ordenId;
+
+  }
+
+  ordenarPorIdR(){
+    let orden : number = this.ordenIdR ?  1:-1
+
+    let restriccionesFisicas : RestriccionConInfo [] = this.restriccionesConInfo;
+    restriccionesFisicas.sort((a,b)=>{
+      if(a.rpLugar.idRestriccion > b.rpLugar.idRestriccion){
+        return 1 * orden
+      }
+      return -1 * orden
+    })
+
+    this.ordenIdR = !this.ordenIdR;
 
   }
 
@@ -378,6 +410,35 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
     this.spinner.hide()
     return
   }
+
+
+/**VENTANA MODAL */
+
+masInfo(restriccion: RestriccionConInfo) {
+
+ console.log("VENTANA MODAL")
+
+ this.infoResIDP = restriccion.rpLugar.idRestriccion;
+ this.infoResID = restriccion.rpLugar.idRPLugar;
+ this.infoNombre = restriccion.rpLugar.nombre;
+ this.infoDireccion = restriccion.rpLugar.direccion.calle + " " + restriccion.rpLugar.direccion.altura;
+ this.infoDepto = restriccion.rpLugar.direccion.piso + " " + restriccion.rpLugar.direccion.departamento;
+ this.infoProvincia = restriccion.provincia.nombre;
+ this.infoLocalidad = restriccion.localidad.nombre;
+ this.infoDistancia = restriccion.rpLugar.distancia;
+ 
+
+
+  this.modalAbierta = true;
+}
+
+
+cerrarModal() {
+
+  this.modalAbierta = false;
+}
+
+
 
 
 }
