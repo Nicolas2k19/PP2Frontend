@@ -13,6 +13,7 @@ import { Persona } from 'src/app/models/persona';
 import { PersonaService } from 'src/app/services/personas/persona.service';
 import { Usuario } from 'src/app/models/usuario';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
+import { NotificacionService } from 'src/app/services/notificaciones/notificacion.service';
 
 @Component({
   selector: 'app-pruebas-de-vida',
@@ -40,6 +41,16 @@ export class PruebasDeVidaComponent implements OnInit {
   showFiltros: boolean = false;
   orderedColumn: string = ''; 
   ascendingOrder: boolean = true; 
+  opciones = [
+    { valor: "ambosOjosCerrados", texto: "Ambos Ojos Cerrados" },
+    { valor: "ambosOjosAbiertos", texto: "Ambos Ojos Abiertos" },
+    { valor: "ojoIzquierdoCerrado", texto: "Ojo Izquierdo Cerrado" },
+    { valor: "ojoDerechoCerrado", texto: "Ojo Derecho Cerrado" },
+    { valor: "bocaAbierta", texto: "Boca Abierta" },
+    { valor: "bocaCerrada", texto: "Boca Cerrada" },
+    { valor: "sonrisa", texto: "Sonrisa" }
+  ];
+  
   
   constructor(
     private pruevaDeVidaService: PruebaDeVidaService,
@@ -48,6 +59,7 @@ export class PruebasDeVidaComponent implements OnInit {
     private spinnerService: NgxSpinnerService,
     private personaService: PersonaService,
     private usuarioService: UsuarioService,
+    private notificacionService: NotificacionService,
     private fotoIdentificacionService: FotoIdentificacionService) {
 
     config.backdrop = 'static';
@@ -188,6 +200,7 @@ export class PruebasDeVidaComponent implements OnInit {
         this.modalService.dismissAll();
         this.spinnerService.hide();
       })
+   
   }
 
   open(content, prueba: PruebaDeVida) {
@@ -213,6 +226,30 @@ export class PruebasDeVidaComponent implements OnInit {
         }
       });
   }
+
+  seleccionarAccion(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedIndex = selectElement.selectedIndex;
+    const selectedOption = selectElement.options[selectedIndex];
+
+    this.pruebaDeVida.accion = selectElement.value;
+    this.pruebaDeVida.descripcion = selectedOption.textContent.trim();
+
+    console.log('Valor seleccionado:', this.pruebaDeVida.accion);
+    console.log('Texto seleccionado:', this.pruebaDeVida.descripcion);
+  }
+
+  transformarEstado(estado: string): string {
+    switch (estado) {
+      case 'AceptadaAutomaticamente':
+        return 'Aceptada Automaticamente';
+      case 'RechazadaAutomaticamente':
+        return 'Rechazada Automaticamente';
+      default:
+        return estado; 
+    }
+  }
+
 
   cerrarModal() {
     this.pruebaDeVida = new PruebaDeVida;

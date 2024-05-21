@@ -32,4 +32,5 @@ export class NotificacionService {
   getCantNotificacionesNoVistas(email: String){
     return this.http.get(this.URL_API + '/getCantNoVistas/' + email);
   }
+  
 }

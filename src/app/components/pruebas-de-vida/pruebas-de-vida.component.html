@@ -63,8 +63,10 @@
                     <form #pruebaDeVidaForm="ngForm" (ngSubmit)="enviarPruebaDeVida(pruebaDeVidaForm)">
                         <div class="input-texto-before-descripcion">
                                 <div class="input-group">
-                                    <input type="text" class="form-control input-texto" placeholder="" name="descripcion" 
-                                    ngbTooltip="Descripción" [(ngModel)]="pruebaDeVida.descripcion" required>
+                                    <select class="select-estilo" name="accion" (change)="seleccionarAccion($event)" required>
+                                        <option value="">Seleccionar opción</option>
+                                        <option *ngFor="let opcion of opciones" [value]="opcion.valor">{{ opcion.texto }}</option>
+                                      </select>                                                                                                   
                                 </div>
                         </div>
                         
@@ -135,9 +137,9 @@
                     <tr *ngFor="let prueba of pruebasFiltradas">
                         <td class="joinedDate">{{ prueba.fecha | date:'dd-MM-yyyy HH:mm' }}</td>
                         <td>{{ prueba.descripcion }}</td>
-                        <td>{{ prueba.estado }}</td>
+                        <td>{{ transformarEstado(prueba.estado) }}</td>
                         <td>
-                            <a (click)="open(content, prueba)" *ngIf="prueba.estado === 'Pendiente'">
+                            <a (click)="open(content, prueba)" >
                                 <i class="material-icons photo-icon">insert_photo</i>
                             </a>
                         </td>

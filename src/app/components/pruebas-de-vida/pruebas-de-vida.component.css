@@ -258,7 +258,7 @@ label {
 }
 
 .input-texto-before-descripcion::before {
-  content: "Descripción prueba de vida *";
+  content: "Acción a realizar *";
   font-size: 0.7rem;
   text-align: left;
 }
