@@ -77,13 +77,7 @@ export class PruebasDeVidaComponent implements OnInit {
         this.getPruebasDeVidaPersona(this.seleccionado.idPersona); 
       }
       this.spinnerService.show();
-      this.fotoIdentificacionService.getFotoPefil(this.comunicacion.restriccionDTO.victimario.idPersona)
-        .subscribe(res => {
-          this.spinnerService.hide();
-          var foto = res as FotoIdentificacion;
-          this.imgPerfil = foto.foto;
-          console.log(res);
-        });
+      this.obtenerFotoDePerfil();
     }
     this.opcionesDesplegable = [this.restriccion.victimario, this.restriccion.damnificada];
     console.log("Opciones desplegable:", this.opcionesDesplegable);
@@ -96,6 +90,7 @@ export class PruebasDeVidaComponent implements OnInit {
         (res: Persona) => {
           this.seleccionado = res;
           this.selectedUserLabel = "Pruebas de vida para: " + this.seleccionado.apellido;
+          this.obtenerFotoDePerfil();
         },
         (error) => {
           console.error('Error al obtener persona:', error);
@@ -103,6 +98,15 @@ export class PruebasDeVidaComponent implements OnInit {
       );
   }
 
+  obtenerFotoDePerfil(){
+    this.fotoIdentificacionService.getFotoPefil(this.seleccionado.idPersona)
+    .subscribe(res => {
+      this.spinnerService.hide();
+      var foto = res as FotoIdentificacion;
+      this.imgPerfil = foto.foto;
+      console.log(res);
+    });
+  }
 
   enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
     this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
