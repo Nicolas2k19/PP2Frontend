@@ -32,4 +32,5 @@ export class PruebaDeVidaService {
     return this.http.get(this.URL_API_FOTO+"/getFotoPruebaDeVida/"+idPruebaDeVida); 
    }
 
+
 }

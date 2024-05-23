@@ -61,19 +61,48 @@
                 <div class="card-body" text-center>
                     <legend>Generar prueba de vida</legend>
                     <form #pruebaDeVidaForm="ngForm" (ngSubmit)="enviarPruebaDeVida(pruebaDeVidaForm)">
-                        <div class="input-texto-before-descripcion">
-                                <div class="input-group">
-                                    <select class="select-estilo" name="accion" (change)="seleccionarAccion($event)" required>
-                                        <option value="">Seleccionar opción</option>
-                                        <option *ngFor="let opcion of opciones" [value]="opcion.valor">{{ opcion.texto }}</option>
-                                      </select>                                                                                                   
-                                </div>
+                        
+                        <!-- Nuevo desplegable para seleccionar el tipo de prueba de vida -->
+                        <div class="input-group">
+                            <label for="tipoPruebaDeVida">Tipo de Prueba de Vida</label>
+                            <select class="form-control" id="tipoPruebaDeVida" name="tipoPruebaDeVida" [(ngModel)]="tipoPruebaDeVida" (change)="cambiarTipoPruebaDeVida($event)">
+                                <option value="simple">Simple</option>
+                                <option value="multiple">Múltiple</option>
+                            </select>
                         </div>
-                        
-                        
+        
+                        <!-- Desplegable para acción en caso de prueba de vida simple -->
+                        <div *ngIf="tipoPruebaDeVida === 'simple'">
+                            <div class="acciones">
+                                <label for="accionSimple">Acción</label>
+                                <select class="form-control" id="accionSimple" name="accionSimple" (change)="seleccionarAccion($event)" required>
+                                    <option value="">Seleccionar opción</option>
+                                    <option *ngFor="let opcion of opciones" [value]="opcion.valor">{{ opcion.texto }}</option>
+                                </select>
+                            </div>
+                        </div>
+        
+                        <!-- Desplegables para acciones en caso de prueba de vida múltiple -->
+                        <div *ngIf="tipoPruebaDeVida === 'multiple'">
+                            <div *ngFor="let accion of accionesMultiples; let i = index" class="d-flex align-items-center mb-3">
+                              <div class="acciones flex-grow-1">
+                                <label for="accionMultiple{{i}}">Acción {{i + 1}}</label>
+                                <select class="form-control" id="accionMultiple{{i}}" name="accionMultiple{{i}}" [(ngModel)]="accion.valor" required>
+                                  <option value="">Seleccionar opción</option>
+                                  <option *ngFor="let opcion of opciones" [value]="opcion.valor">{{ opcion.texto }}</option>
+                                </select>
+                              </div>
+                              <button type="button" class="btn btn-danger align-self-end ml-2" (click)="eliminarAccion(i)" [disabled]="accionesMultiples.length <= 1">
+                                <i class="material-icons" style="font-size: 16px;">remove</i>
+                              </button>
+                            </div>
+                            <button type="button" class="btn btn-secondary rounded-circle agregar-accion" (click)="agregarAccion()">
+                              <i class="material-icons">add</i>
+                            </button>
+                          </div>
+        
                         <div class="form-group">
-                            <button class="btn btn-primary btn-block"
-                                [disabled]="!pruebaDeVidaForm.valid">Enviar</button>
+                            <button class="btn btn-primary btn-block" [disabled]="!pruebaDeVidaForm.valid">Enviar</button>
                         </div>
                     </form>
                 </div>
@@ -85,8 +114,9 @@
                     <span class="sr-only">Loading...</span>
                 </div>
             </div>
-        
+
             <table class="table table-striped">
+
                 <thead>
                     <tr>
                         <th scope="col">
@@ -129,6 +159,8 @@
                                   </button>
                             </div>
                           </th>
+                          <th scope="col">Tipo</th> 
+
                           
                     </tr>
                 </thead>
@@ -143,6 +175,8 @@
                                 <i class="material-icons photo-icon">insert_photo</i>
                             </a>
                         </td>
+                        <td>{{ prueba.esMultiple ? 'Múltiple' : 'Simple' }}</td> <!-- Mostrar el tipo de prueba -->
+                        
                     </tr>
                 </tbody>
             </table>

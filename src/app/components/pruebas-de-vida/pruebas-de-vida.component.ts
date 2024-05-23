@@ -14,6 +14,8 @@ import { PersonaService } from 'src/app/services/personas/persona.service';
 import { Usuario } from 'src/app/models/usuario';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
 import { NotificacionService } from 'src/app/services/notificaciones/notificacion.service';
+import { PruebaDeVidaMultiple } from 'src/app/models/prueba-de-vida-multiple';
+import { PruebaDeVidaMultipleService } from 'src/app/services/pruebaDeVidaMultiple/prueba-de-vida-multiple.service';
 
 @Component({
   selector: 'app-pruebas-de-vida',
@@ -50,6 +52,8 @@ export class PruebasDeVidaComponent implements OnInit {
     { valor: "bocaCerrada", texto: "Boca Cerrada" },
     { valor: "sonrisa", texto: "Sonrisa" }
   ];
+  tipoPruebaDeVida: string = 'simple'; // Tipo de prueba de vida seleccionada
+  accionesMultiples: { valor: string }[] = [{ valor: '' }]; // Acciones para prueba de vida múltiple
   
   
   constructor(
@@ -59,7 +63,7 @@ export class PruebasDeVidaComponent implements OnInit {
     private spinnerService: NgxSpinnerService,
     private personaService: PersonaService,
     private usuarioService: UsuarioService,
-    private notificacionService: NotificacionService,
+    private pruebaDeVidaMultipleService: PruebaDeVidaMultipleService,
     private fotoIdentificacionService: FotoIdentificacionService) {
 
     config.backdrop = 'static';
@@ -108,43 +112,113 @@ export class PruebasDeVidaComponent implements OnInit {
     });
   }
 
-  enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
-    this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
-    this.usuarioService.getUsuario(this.seleccionado.idUsuario)
-      .subscribe(
-        (res: Usuario) => {
-          this.usuarioSeleccionado = res;
 
-          if (this.usuarioSeleccionado) {
-            //Según el rol, verifico a quién enviar
-            this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
-
-            this.pruebaDeVida.estado = "Pendiente";
-            this.spinnerService.show();
-            this.pruevaDeVidaService.postPruebaDeVida(this.pruebaDeVida)
-              .subscribe(
-                (res) => {
-                  this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
-                  this.spinnerService.hide();
-                  console.log(res);
-                  pruebaDeVidaForm.reset();
-                  this.pruebaDeVida = new PruebaDeVida;
-                },
-                (error) => {
-                  console.error('Error al enviar prueba de vida:', error);
-                  this.spinnerService.hide();
-                }
-              );
-            return false;
-          } else {
-            console.error('Usuario seleccionado no está definido.');
-          }
-        },
-        (error) => {
-          console.error('Error al obtener usuario:', error);
-        }
-      );
+  cambiarTipoPruebaDeVida(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.tipoPruebaDeVida = selectElement.value;
+    if (this.tipoPruebaDeVida === 'simple') {
+      this.accionesMultiples = [{ valor: '' }]; // Reiniciar acciones múltiples si se cambia a simple
+    }
   }
+
+  agregarAccion() {
+    this.accionesMultiples.push({ valor: '' });
+  }
+
+  eliminarAccion(index: number) {
+    if (this.accionesMultiples.length > 1) {
+      this.accionesMultiples.splice(index, 1);
+    }
+  }
+
+  seleccionarAccion(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedIndex = selectElement.selectedIndex;
+    const selectedOption = selectElement.options[selectedIndex];
+    this.pruebaDeVida.accion = selectElement.value;
+    this.pruebaDeVida.descripcion = selectedOption.textContent.trim();
+  }
+
+  enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
+    if (this.tipoPruebaDeVida === 'simple') {
+        // Código para enviar prueba de vida simple
+        this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
+        this.usuarioService.getUsuario(this.seleccionado.idUsuario).subscribe(
+            (res: Usuario) => {
+                this.usuarioSeleccionado = res;
+                if (this.usuarioSeleccionado) {
+                    this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
+                    this.pruebaDeVida.estado = "Pendiente";
+                    this.pruebaDeVida.esMultiple = false;
+                    this.spinnerService.show();
+                    this.pruevaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(
+                        (res) => {
+                            this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
+                            this.spinnerService.hide();
+                            pruebaDeVidaForm.reset();
+                            this.pruebaDeVida = new PruebaDeVida();
+                        },
+                        (error) => {
+                            console.error('Error al enviar prueba de vida:', error);
+                            this.spinnerService.hide();
+                        }
+                    );
+                } else {
+                    console.error('Usuario seleccionado no está definido.');
+                }
+            },
+            (error) => {
+                console.error('Error al obtener usuario:', error);
+            }
+        );
+    } else if (this.tipoPruebaDeVida === 'multiple') {
+        const nuevasPruebasDeVida: PruebaDeVida[] = [];
+        this.accionesMultiples.forEach((accion) => {
+            const nuevaPruebaDeVida = new PruebaDeVida();
+            nuevaPruebaDeVida.accion = accion.valor;
+            nuevaPruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
+            nuevaPruebaDeVida.estado = "Pendiente";
+            nuevaPruebaDeVida.esMultiple = true;
+            nuevaPruebaDeVida.descripcion = this.tranformaAccion(accion.valor)
+            nuevasPruebasDeVida.push(nuevaPruebaDeVida);
+        });
+
+        // Realizar un POST al servidor para enviar las nuevas pruebas de vida múltiples
+        this.spinnerService.show();
+        nuevasPruebasDeVida.forEach( prueba =>{
+          let pruebaDeVidaMultiple = new PruebaDeVidaMultiple();
+          
+          this.pruevaDeVidaService.postPruebaDeVida(prueba).subscribe(
+            (res) => {
+                this.getPruebasDeVidaPersona(prueba.idPersonaRestriccion);
+                this.spinnerService.hide();
+                pruebaDeVidaForm.reset();
+                let respuesta = res as PruebaDeVida;
+                pruebaDeVidaMultiple.idPruebaDeVida = respuesta.idPruebaDeVida;
+                this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(
+                  (res) => {
+                      this.spinnerService.hide();
+                      pruebaDeVidaForm.reset();
+                    },
+                  (error) => {
+                      console.error('Error al enviar pruebas de vida múltiples:', error);
+                      this.spinnerService.hide();
+                  }
+              );
+            },
+            (error) => {
+                console.error('Error al enviar prueba de vida:', error);
+                this.spinnerService.hide();
+            }
+        );
+
+          
+
+        })
+        
+    }
+}
+
 
 
   getPruebasDeVidaPersona(idPersona: number) {
@@ -231,17 +305,7 @@ export class PruebasDeVidaComponent implements OnInit {
       });
   }
 
-  seleccionarAccion(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const selectedIndex = selectElement.selectedIndex;
-    const selectedOption = selectElement.options[selectedIndex];
 
-    this.pruebaDeVida.accion = selectElement.value;
-    this.pruebaDeVida.descripcion = selectedOption.textContent.trim();
-
-    console.log('Valor seleccionado:', this.pruebaDeVida.accion);
-    console.log('Texto seleccionado:', this.pruebaDeVida.descripcion);
-  }
 
   transformarEstado(estado: string): string {
     switch (estado) {
@@ -252,6 +316,16 @@ export class PruebasDeVidaComponent implements OnInit {
       default:
         return estado; 
     }
+  }
+
+  tranformaAccion(accion: string): string{
+    let accionTransformada = ''
+    this.opciones.forEach( opcion =>{
+      if(accion == opcion.valor){
+        accionTransformada = opcion.texto;
+      }
+    })
+    return accionTransformada
   }
 
 

@@ -271,8 +271,49 @@ label {
   animation-duration: 3s;
   animation-iteration-count: 1;
 }
+.agregar-accion {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 40px;
+  margin-top: 10px;
+  background-color: #480971;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
+.agregar-accion i {
+  font-size: 24px; /* Tamaño del ícono */
+  line-height: 40px; /* Alineación vertical */
+}
 
+.agregar-accion:hover {
+  background-color: #6e1eff;
+}
+
+.form-group {
+  margin-top: 10px;
+}
+
+select.select-estilo {
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 50px;
+  background-color: white;
+  color: black;
+  padding: 0.5rem;
+  margin-top: 10px;
+}
+
+.acciones{
+  padding-top: 5px;
+}
 
 @keyframes animacionafter {
   0% {
