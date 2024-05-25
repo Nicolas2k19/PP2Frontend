@@ -3,7 +3,7 @@
 <ngx-spinner type="ball-pulse-sync" size="medium" bdColor="rgba(51,51,51,0.5)">
     <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
 </ngx-spinner>
-<div class="container">
+<div class="container" [ngClass]="{'blurred': modalAbierta}">
     <!--Agregar restricciones fisicas ---------------------------------------------->
     <form #restriccionLForm="ngForm" class="card form-control" (ngSubmit)="buscarPersona()" action="POST" novalidate>
         <legend class="titulo">Agregar restriccion multiple</legend>
@@ -60,7 +60,7 @@
                 </option>
             </select>
         </div>
-        <button (click) = "editarRestriccionMultiple()" class="btn" *ngIf="editar">
+        <button (click)="editarRestriccionMultiple()" class="btn" *ngIf="editar">
             Editar
         </button>
         <button (click)="desactivarEdicion()" class="btn" *ngIf="editar">
@@ -70,7 +70,9 @@
             Agregar
         </button>
 
+
     </form>
+
     <!-- TABLA DE RESTRICCIONES FISICAS --------------------->
     <div class="col">
         <table class="table table-striped">
@@ -86,8 +88,8 @@
                     </th>
                     <th scope="col">
                         <div class="header-tabla">
-                            ID RM 
-                            <a  (click)="ordenarPorRM()">
+                            ID RM
+                            <a (click)="ordenarPorRM()">
                                 <i class="material-icons ordenamiento">unfold_more</i>
                             </a>
                         </div>
@@ -133,10 +135,14 @@
                     <td>{{res.provincia.nombre}}</td>
                     <td>
                         <a>
-                            <i (click)="activarEdicion(res)"  class="material-icons">edit</i>
+                            <i (click)="activarEdicion(res)" class="material-icons">edit</i>
                         </a>
                         <a>
-                            <i (click)="eliminarRestriccionMultiple(res.restriccionMultiple.idRestriccionMultiple)" class="material-icons">delete</i>
+                            <i (click)="eliminarRestriccionMultiple(res.restriccionMultiple.idRestriccionMultiple)"
+                                class="material-icons">delete</i>
+                        </a>
+                        <a>
+                            <i class="material-icons" (click)="masInfo(res)">info</i>
                         </a>
                     </td>
                 </tr>
@@ -144,3 +150,53 @@
         </table>
 
     </div>
+
+</div>
+
+
+<!-- DIV MAS INFO VENTANA MODAL-->
+<div class="modal-info" *ngIf="modalAbierta" (click)="cerrarModal()">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>Restricción Perimetral # {{infoResID}}-{{infoResIDM}}</h2>
+            <i class="material-icons" (click)="cerrarModal()">close</i>
+        </div>
+
+        <div class="modal-body">
+
+            <!-- INFO Domicilio-->
+            <div class="modal-infoPer input-texto-before-admin">
+                <p class="input-texto-before-infoNP"><strong>{{infoNombrePersona}}</strong></p>
+                <p class="input-texto-before-infoDNI"><strong>{{infoDNI}}</strong></p>
+                <p class="input-texto-before-infoFN"><strong>{{infoNacimiento}}</strong></p>
+                <p class="input-texto-before-infoT"><strong>{{infoTelefono}}</strong></p>
+
+            </div>
+            <!-- INFO Domicilio-->
+            <div class="modal-infoAdm input-texto-before-admin">
+                <p class="input-texto-before-infoD"><strong>{{infoDireccion}}</strong></p>
+                <p class="input-texto-before-infoDD"><strong>{{infoDepto}}</strong></p>
+                <p class="input-texto-before-infoP"><strong>{{infoProvincia}}</strong></p>
+                <p class="input-texto-before-infoL"><strong>{{infoLocalidad}}</strong></p>
+                <p class="input-texto-before-infoCP"><strong>{{infoCodigoPostal}}</strong></p>
+                <p class="input-texto-before-infoDis"><strong>{{infoDistancia}}</strong></p>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+    
+    
+    
+    
+
+
+
+
+    
+    
+</div>

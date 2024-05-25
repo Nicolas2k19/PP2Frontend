@@ -16,7 +16,8 @@ import { RestriccionService } from 'src/app/services/restricciones/restriccion.s
 @Component({
   selector: 'app-administrar-restricciones-multiples-persona',
   templateUrl: './administrar-restricciones-multiples-persona.component.html',
-  styleUrl: './administrar-restricciones-multiples-persona.component.css'
+  styleUrls: ['./administrar-restricciones-multiples-persona.component.css' , '../styles/mas-info.css']
+
 })
 export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit{
  
@@ -43,6 +44,21 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   ordenLocalidad: any;
   ordenDireccion: any;
   ordenID: any;
+
+  //Ventana modal
+  modalAbierta: boolean;
+  infoResIDM: number;
+  infoResID: number;
+  infoNacimiento: Date;
+  infoNombrePersona: string;
+  infoTelefono: string;
+  infoDNI: string;
+  infoDireccion: string;
+  infoDepto: string;
+  infoProvincia: string;
+  infoLocalidad: string;
+  infoDistancia: number;
+  infoCodigoPostal: string;
  
  
   constructor(public personaService :PersonaService,
@@ -456,6 +472,37 @@ ordenarPorProvincia(){
   
 }
 
+
+/**VENTANA MODAL */
+
+masInfo(restriccion: RestriccionMultipleDTO) {
+ 
+  this.infoResIDM = restriccion.restriccionMultiple.idRestriccionMultiple;
+  this.infoResID = restriccion.restriccionMultiple.idRestriccion;
+
+  //Datos persona
+  this.infoNombrePersona = restriccion.persona.nombre + " " + restriccion.persona.apellido;
+  this.infoTelefono= restriccion.persona.telefono;
+  this.infoNacimiento = restriccion.persona.fechaNacimiento;
+  this.infoDNI = restriccion.persona.dni;
+
+
+  //Datos domicilio
+  this.infoDireccion = restriccion.restriccionMultiple.direccion.calle + " " + restriccion.restriccionMultiple.direccion.altura;
+  this.infoDepto = restriccion.restriccionMultiple.direccion.piso + "-" + restriccion.restriccionMultiple.direccion.departamento;
+  this.infoProvincia = restriccion.provincia.nombre;
+  this.infoLocalidad = restriccion.localidad.nombre;
+  this.infoDistancia = restriccion.restriccionMultiple.distancia;
+  this.infoCodigoPostal = restriccion.localidad.codigoPostal;
+ 
+   this.modalAbierta = true;
+ }
+ 
+ 
+ cerrarModal() {
+ 
+   this.modalAbierta = false;
+ }
 
 
 
