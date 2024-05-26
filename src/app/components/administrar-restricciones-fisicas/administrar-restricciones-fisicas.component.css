@@ -265,3 +265,62 @@ th{
   display: flex;
   flex-direction: column;
 }
+
+
+/* filtros */
+
+
+.contenedor-filtros {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+  max-width: fit-content;
+}
+
+.filtro {
+  color: #480971;
+  display: flex;
+  gap: 10px;
+  max-width: fit-content;
+}
+
+.image-button {
+  border-color: transparent;
+  color: #480971;
+  background-color: transparent;
+}
+
+.boton-filtro {
+  padding: 10px;
+}
+
+.filtro-btn {
+  display: flex;
+  padding: 0;
+}
+
+.input-texto-before-idpadre,
+.input-texto-before-idresP {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-texto-before-idpadre::before {
+  content: "ID restricción perimetral:";
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.input-texto-before-idresP::before {
+  content: "ID restricción múltiple - persona:";
+  font-size: 0.9rem;
+  text-align: left;
+}
+.card2 {
+  border: 1px solid black;
+  color: black;
+  padding: 2rem;
+  max-width: fit-content;
+  border-radius: 0.5rem;
+}

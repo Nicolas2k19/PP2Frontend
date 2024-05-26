@@ -69,7 +69,14 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
   infoProvincia: string;
   infoLocalidad: string;
   infoDistancia: number;
-  
+
+
+  //filtros
+
+  originalResConInfo : RestriccionConInfo[] = [];
+  idPadreFilter: null;
+  idFilter: null;
+  showSelect: boolean;
 
   constructor(public restriccionService : RestriccionService,
       public provinciaLocalidadService : ProvinciaLocalidadService,
@@ -108,6 +115,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
   obtenerRestriccionesFisicasConInfo(){
     this.restriccionService.getRestriccionesConInfo().subscribe(res =>{
        this.restriccionesConInfo = res as RestriccionConInfo[];
+       this.originalResConInfo = res as RestriccionConInfo[]
        console.log(this.restriccionesConInfo)
     })
 
@@ -437,6 +445,42 @@ cerrarModal() {
 
   this.modalAbierta = false;
 }
+
+//filtros
+
+
+traerTodos(){
+  this.obtenerRestriccionesFisicasConInfo();
+
+  this.idPadreFilter = null;
+  this.idFilter = null;
+}
+
+
+filtrarTodo(){
+  let resultadosFiltrados = this.originalResConInfo;
+
+    if (this.idPadreFilter) {
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+        restriccion.rpLugar.idRestriccion.toString() === this.idPadreFilter);
+    }
+  
+    if (this.idFilter) {
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+        restriccion.rpLugar.idRPLugar.toString() === this.idFilter);
+    }
+
+    this.restriccionesConInfo = resultadosFiltrados;
+
+
+
+}
+
+
+toggleSelect() {
+  this.showSelect = !this.showSelect;
+}
+
 
 
 

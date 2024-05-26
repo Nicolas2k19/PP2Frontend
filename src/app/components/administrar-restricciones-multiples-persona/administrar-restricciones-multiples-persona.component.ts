@@ -59,6 +59,12 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   infoLocalidad: string;
   infoDistancia: number;
   infoCodigoPostal: string;
+
+  //filtros
+  idFilter: null;
+  idPadreFilter: null;
+  originalRes: RestriccionMultipleDTO[] = [];
+  showSelect: boolean;
  
  
   constructor(public personaService :PersonaService,
@@ -85,6 +91,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   traerRestriccionesMultiples(){
     this.restriccionService.getRestriccionesMultiplesDTO().subscribe(res =>{
       this.restriccionesMultiples = res as RestriccionMultipleDTO[]
+      this.originalRes= res as RestriccionMultipleDTO[];
       console.log(this.restriccionesMultiples)
     })
   }
@@ -503,6 +510,47 @@ masInfo(restriccion: RestriccionMultipleDTO) {
  
    this.modalAbierta = false;
  }
+
+
+
+//filtros
+
+
+traerTodos(){
+  this.traerRestriccionesMultiples();
+
+  this.idPadreFilter = null;
+  this.idFilter = null;
+}
+
+filtrarTodo(){
+  let resultadosFiltrados = this.originalRes;
+
+    // Filtrar por administrativo si el filtro de email está presente
+    if (this.idPadreFilter) {
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+        restriccion.restriccionMultiple.idRestriccion.toString() === this.idPadreFilter);
+    }
+  
+    // Filtrar por damnificada si el filtro de DNI de damnificada está presente
+    if (this.idFilter) {
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+        restriccion.restriccionMultiple.idRestriccionMultiple.toString() === this.idFilter);
+    }
+
+    // Asignar los resultados finales al arreglo de restricciones
+
+    this.restriccionesMultiples = resultadosFiltrados;
+
+
+
+}
+
+
+toggleSelect() {
+  this.showSelect = !this.showSelect;
+}
+
 
 
 

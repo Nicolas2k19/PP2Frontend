@@ -245,14 +245,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
             this.usuarioService.getUsuarioByGrupo(grupo.idGrupo).subscribe(user => { this.usuariosDelGrupo = (user as Usuario[]) });
             this.restriccionService.getByidGrupo(grupo.idGrupo).subscribe(restriccion => { this.restriccionesDelGrupo = (restriccion as Restriccion[]) });
           });
-
-
         })
-
-
-
-
-
 
       });
   }
