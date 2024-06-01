@@ -2,13 +2,15 @@ import { PruebaDeVida } from "./prueba-de-vida";
 
 export class PruebaDeVidaMultiple {
 
-    constructor(id=0,descripcion='', idPruebaDeVida=0){
-        this.id = id;
+    constructor(idPruebaDeVidaMultiple=0,descripcion='',idPersona = 0, estado=''){
+        this.idPruebaDeVidaMultiple = idPruebaDeVidaMultiple;
         this.descripcion = descripcion;
-        this.idPruebaDeVida =idPruebaDeVida;
+        this.idPersona = idPersona;
+        this.estado = estado;
     }
 
-    id: number;
+    idPruebaDeVidaMultiple: number;
     descripcion: string;
-    idPruebaDeVida: number;
+    idPersona: number;
+    estado: string;
 }

@@ -14,7 +14,7 @@ export class PruebaDeVidaService {
 
   constructor(private http: HttpClient) { }
 
-  getPruevasDeVidaPersona(idPersona: number){
+  getPruebasDeVidaPersona(idPersona: number){
     return this.http.get(this.URL_API + '/' + idPersona);
   }
 
@@ -30,6 +30,10 @@ export class PruebaDeVidaService {
   
   getFotoPruebaDeVida(idPruebaDeVida: number){
     return this.http.get(this.URL_API_FOTO+"/getFotoPruebaDeVida/"+idPruebaDeVida); 
+   }
+
+   getPruebaDeVidaByidPruebaDeVidaMultiple(idPruebaDeVidaMultiple: number){
+    return this.http.get(this.URL_API+"/multiple/"+idPruebaDeVidaMultiple); 
    }
 
 

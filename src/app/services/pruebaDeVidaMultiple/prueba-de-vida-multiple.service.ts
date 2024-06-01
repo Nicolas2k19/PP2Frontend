@@ -16,4 +16,12 @@ export class PruebaDeVidaMultipleService {
    postPruebaDeVidaMultiple(pruebaDeVidaMultiple: PruebaDeVidaMultiple){
     return this.http.post(this.URL_API, pruebaDeVidaMultiple);
   }
+
+  getPruebasDeVidaMultiples(idPersona:number){
+    return this.http.get(this.URL_API+'/getAll/'+idPersona);
+  }
+
+  actualizarEstadoPruebaDeVida(idPruebaDeVida: number, nuevoEstado: string){
+    return this.http.put(this.URL_API + "/estado/" + idPruebaDeVida, { estado: nuevoEstado });
+  }
 }

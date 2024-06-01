@@ -96,11 +96,6 @@ legend{
   margin-top: 10px;
 }
 
-.table tr:hover {
-  background-color: #480971;
-  cursor: pointer;
-}
-
 .table i:hover {
   opacity: 0.3;
 }
@@ -314,6 +309,58 @@ select.select-estilo {
 .acciones{
   padding-top: 5px;
 }
+
+.nav-tabs .nav-link {
+  color: #480971; 
+  background-color: #fff; 
+  border: 1px solid #eeeeee; 
+  transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+.nav-tabs .nav-link:hover {
+  color: white; 
+  background-color: #480971; 
+}
+
+.nav-tabs .nav-link.active {
+  color: white;
+  background-color: #480971; 
+  border: 1px solid #480971; 
+}
+
+.accordion-item {
+  border: 1px solid #aaaaaa; 
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.accordion-item:first-of-type {
+  border-top: 1px solid #aaaaaa;
+}
+
+.accordion-item:last-of-type {
+  border-bottom: 1px solid #aaaaaa;
+}
+
+.accordion-button {
+  background-color: #fff; 
+  color: #480971; 
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #480971; 
+  color: white; 
+}
+
+.accordion-body {
+  padding: 20px;
+  background-color: #fff; 
+}
+
 
 @keyframes animacionafter {
   0% {

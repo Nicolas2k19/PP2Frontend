@@ -54,10 +54,14 @@ export class PruebasDeVidaComponent implements OnInit {
   ];
   tipoPruebaDeVida: string = 'simple'; // Tipo de prueba de vida seleccionada
   accionesMultiples: { valor: string }[] = [{ valor: '' }]; // Acciones para prueba de vida múltiple
-  
+  pruebasSimples: PruebaDeVida[] = [];
+  pruebasMultiples: PruebaDeVidaMultiple[] = [];
+  pruebasGrupo:PruebaDeVida[] = [];
+  estadoGrupo: string = 'Pendiente'
+  descripcionPruebaMultiple: string = ''; 
   
   constructor(
-    private pruevaDeVidaService: PruebaDeVidaService,
+    private pruebaDeVidaService: PruebaDeVidaService,
     private comunicacion: ComunicacionService,
     config: NgbModalConfig, private modalService: NgbModal,
     private spinnerService: NgxSpinnerService,
@@ -81,10 +85,14 @@ export class PruebasDeVidaComponent implements OnInit {
         this.getPruebasDeVidaPersona(this.seleccionado.idPersona); 
       }
       this.spinnerService.show();
+      this.cargarPruebasSimples();
       this.obtenerFotoDePerfil();
+      this.cargarPruebasMultiples();
     }
     this.opcionesDesplegable = [this.restriccion.victimario, this.restriccion.damnificada];
     console.log("Opciones desplegable:", this.opcionesDesplegable);
+    this.cargarPruebasSimples();
+    this.cargarPruebasMultiples();
   }
 
 
@@ -95,6 +103,8 @@ export class PruebasDeVidaComponent implements OnInit {
           this.seleccionado = res;
           this.selectedUserLabel = "Pruebas de vida para: " + this.seleccionado.apellido;
           this.obtenerFotoDePerfil();
+          this.cargarPruebasSimples();
+          this.cargarPruebasMultiples();
         },
         (error) => {
           console.error('Error al obtener persona:', error);
@@ -151,7 +161,7 @@ export class PruebasDeVidaComponent implements OnInit {
                     this.pruebaDeVida.estado = "Pendiente";
                     this.pruebaDeVida.esMultiple = false;
                     this.spinnerService.show();
-                    this.pruevaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(
+                    this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(
                         (res) => {
                             this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
                             this.spinnerService.hide();
@@ -172,50 +182,28 @@ export class PruebasDeVidaComponent implements OnInit {
             }
         );
     } else if (this.tipoPruebaDeVida === 'multiple') {
-        const nuevasPruebasDeVida: PruebaDeVida[] = [];
-        this.accionesMultiples.forEach((accion) => {
-            const nuevaPruebaDeVida = new PruebaDeVida();
-            nuevaPruebaDeVida.accion = accion.valor;
-            nuevaPruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
-            nuevaPruebaDeVida.estado = "Pendiente";
-            nuevaPruebaDeVida.esMultiple = true;
-            nuevaPruebaDeVida.descripcion = this.tranformaAccion(accion.valor)
-            nuevasPruebasDeVida.push(nuevaPruebaDeVida);
-        });
-
-        // Realizar un POST al servidor para enviar las nuevas pruebas de vida múltiples
-        this.spinnerService.show();
-        nuevasPruebasDeVida.forEach( prueba =>{
-          let pruebaDeVidaMultiple = new PruebaDeVidaMultiple();
-          
-          this.pruevaDeVidaService.postPruebaDeVida(prueba).subscribe(
-            (res) => {
-                this.getPruebasDeVidaPersona(prueba.idPersonaRestriccion);
-                this.spinnerService.hide();
-                pruebaDeVidaForm.reset();
-                let respuesta = res as PruebaDeVida;
-                pruebaDeVidaMultiple.idPruebaDeVida = respuesta.idPruebaDeVida;
-                this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(
-                  (res) => {
-                      this.spinnerService.hide();
-                      pruebaDeVidaForm.reset();
-                    },
-                  (error) => {
-                      console.error('Error al enviar pruebas de vida múltiples:', error);
-                      this.spinnerService.hide();
-                  }
-              );
-            },
-            (error) => {
-                console.error('Error al enviar prueba de vida:', error);
-                this.spinnerService.hide();
-            }
-        );
-
-          
-
+        let pruebaDeVidaMultiple = new PruebaDeVidaMultiple();
+        pruebaDeVidaMultiple.descripcion = this.descripcionPruebaMultiple
+        pruebaDeVidaMultiple.idPersona =this.seleccionado.idPersona;
+        pruebaDeVidaMultiple.estado = 'Pendiente';
+        this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(res => {
+          let nuevaPruebaDeVidaMultiple = res as PruebaDeVidaMultiple;
+          this.accionesMultiples.forEach(async (accion) => {
+              this.pruebaDeVida.accion = accion.valor;
+              this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
+              this.pruebaDeVida.estado = "Pendiente";
+              this.pruebaDeVida.esMultiple = true;
+              this.pruebaDeVida.descripcion = this.tranformaAccion(accion.valor)
+              this.pruebaDeVida.idPruebaDeVidaMultiple = nuevaPruebaDeVidaMultiple.idPruebaDeVidaMultiple;
+              await this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(res => {                
+                this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+                this.pruebaDeVida = new PruebaDeVida();
+              })
+              this.spinnerService.hide();
+              pruebaDeVidaForm.reset();
+              this.cargarPruebasMultiples();
+          });
         })
-        
     }
 }
 
@@ -223,11 +211,12 @@ export class PruebasDeVidaComponent implements OnInit {
 
   getPruebasDeVidaPersona(idPersona: number) {
     this.spinnerService.show();
-    this.pruevaDeVidaService.getPruevasDeVidaPersona(idPersona)
+    this.pruebaDeVidaService.getPruebasDeVidaPersona(idPersona)
       .subscribe(res => {
         this.spinnerService.hide();
         this.pruebasDeVida = res as PruebaDeVida[];
         console.log(res);
+        this.cargarPruebasSimples();
         this.aplicarFiltros();
       })
   }
@@ -237,7 +226,8 @@ export class PruebasDeVidaComponent implements OnInit {
       const fechaPrueba = new Date(prueba.fecha); // Convertir fecha de prueba a objeto Date
       const cumpleFecha = !this.fechaFiltro || this.formatoFecha(fechaPrueba) === this.fechaFiltro;
       const cumpleEstado = !this.estadoFiltro || prueba.estado === this.estadoFiltro;
-      return cumpleFecha && cumpleEstado;
+      const cumpleSimple = prueba.esMultiple == false;
+      return cumpleFecha && cumpleEstado && cumpleSimple;
     });
   }
 
@@ -257,7 +247,7 @@ export class PruebasDeVidaComponent implements OnInit {
   aceptarPruebaDeVida() {
     this.spinnerService.show();
     this.pruebaDeVida.estado = "Aceptada";
-    this.pruevaDeVidaService.putPruebaDeVida(this.pruebaDeVida)
+    this.pruebaDeVidaService.putPruebaDeVida(this.pruebaDeVida)
       .subscribe(res => {
         console.log(res);
         this.pruebaDeVida = new PruebaDeVida;
@@ -270,7 +260,7 @@ export class PruebasDeVidaComponent implements OnInit {
   rechazarPruebaDeVida() {
     this.spinnerService.show();
     this.pruebaDeVida.estado = "Rechazada";
-    this.pruevaDeVidaService.putPruebaDeVida(this.pruebaDeVida)
+    this.pruebaDeVidaService.putPruebaDeVida(this.pruebaDeVida)
       .subscribe(res => {
         console.log(res);
         this.pruebaDeVida = new PruebaDeVida;
@@ -285,13 +275,13 @@ export class PruebasDeVidaComponent implements OnInit {
     this.pruebaDeVida = prueba;
     this.imgPruebaDeVida = "";
     this.respondio = true;
-    this.getRespuestaPruebaDeVida();
+    this.getRespuestaPruebaDeVida(prueba);
     this.modalService.open(content, { size: 'xl' });
   }
 
-  getRespuestaPruebaDeVida() {
+  getRespuestaPruebaDeVida(prueba: PruebaDeVida) {
     this.spinnerService.show();
-    this.pruevaDeVidaService.getFotoPruebaDeVida(this.pruebaDeVida.idPruebaDeVida).
+    this.pruebaDeVidaService.getFotoPruebaDeVida(prueba.idPruebaDeVida).
       subscribe(res => {
         this.spinnerService.hide();
         var foto = res as FotoPruebaDeVida;
@@ -305,7 +295,46 @@ export class PruebasDeVidaComponent implements OnInit {
       });
   }
 
+  cargarPruebasSimples() {
+    this.pruebasSimples = this.pruebasDeVida.filter(prueba => !prueba.esMultiple);
+    this.pruebasFiltradas = this.pruebasSimples;
+    console.log(this.pruebasSimples);
+  }
 
+  cargarPruebasMultiples() {
+    this.pruebaDeVidaMultipleService.getPruebasDeVidaMultiples(this.seleccionado.idPersona).subscribe(res=>{
+      this.pruebasMultiples = res as PruebaDeVidaMultiple[];
+    });
+  }
+
+
+
+  obtenerPruebasGrupo(prueba: any) {
+    this.pruebaDeVidaService.getPruebaDeVidaByidPruebaDeVidaMultiple(prueba.idPruebaDeVidaMultiple).subscribe(res=>{
+        this.pruebasGrupo = res as PruebaDeVida[];
+        this.verificarEstadoDePruebaDeVidaMultiples(this.pruebasGrupo)
+    })
+  }
+
+  verificarEstadoDePruebaDeVidaMultiples(pruebasDeVida:PruebaDeVida[]){
+    let countAceptadas = 0;
+    let countRechazadas = 0;
+    this.estadoGrupo = 'Pendiente'
+    let idPruebaMultiple = 0
+    pruebasDeVida.forEach(prueba =>{
+      idPruebaMultiple = prueba.idPruebaDeVidaMultiple;
+      if(prueba.estado == 'Aceptada' || prueba.estado == 'AceptadaAutomaticamente')
+        countAceptadas++
+      if(prueba.estado == 'Rechazada' || prueba.estado == 'RechazadaAutomaticamente')
+        countRechazadas++
+    })
+    if(countAceptadas == pruebasDeVida.length)
+      this.estadoGrupo = 'Aceptada'
+    if(countRechazadas > 0)
+      this.estadoGrupo = 'Rechazada'
+
+    this.pruebaDeVidaMultipleService.actualizarEstadoPruebaDeVida(idPruebaMultiple,this.estadoGrupo).subscribe(res=>{})
+  }
 
   transformarEstado(estado: string): string {
     switch (estado) {

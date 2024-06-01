@@ -9,7 +9,8 @@ export class PruebaDeVida {
         idRestriccion: number = 0,
         idPersonaRestriccion: number = 0,
         accion: string = '',
-        esMultiple = false
+        esMultiple = false,
+        idPruebaDeVidaMultiple = 0
     ) {
         this.idPruebaDeVida = idPruebaDeVida;
         this.fecha = fecha;
@@ -18,7 +19,8 @@ export class PruebaDeVida {
         this.idRestriccion = idRestriccion;
         this.idPersonaRestriccion = idPersonaRestriccion;
         this.accion = accion;
-        this.esMultiple = esMultiple
+        this.esMultiple = esMultiple;
+        this.idPruebaDeVidaMultiple =idPruebaDeVidaMultiple;
     }
 
     idPruebaDeVida: number;
@@ -29,4 +31,5 @@ export class PruebaDeVida {
     idPersonaRestriccion: number;
     accion: string;
     esMultiple: boolean;
+    idPruebaDeVidaMultiple: number;
 }

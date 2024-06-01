@@ -57,6 +57,8 @@ export class RutinasComponent implements OnInit {
   mostrarRutina() {
     this.ubicacionService.getUbicacionesRestriccion(this.comunicacion.restriccionDTO.restriccion.idRestriccion)
       .subscribe(res => {
+        console.log("🚀 ~ RutinasComponent ~ mostrarRutina ~ this.comunicacion.restriccionDTO.victimario.idPersona, this.dias.indexOf(this.diaSeleccionado) 1, this.time.hour, this.time.minute:", this.comunicacion.restriccionDTO.victimario.idPersona, this.dias.indexOf(this.diaSeleccionado) + 1, this.time.hour, this.time.minute)
+
         this.ubicacionesRestriccion = res as UbicacionDto;;
         this.ubicacionService.getUbicacionPromedioRutina(this.comunicacion.restriccionDTO.victimario.idPersona, 
           this.dias.indexOf(this.diaSeleccionado) + 1, this.time.hour, this.time.minute)
@@ -108,6 +110,6 @@ export class RutinasComponent implements OnInit {
           });
              
       });
-  }
+}
 
 }
