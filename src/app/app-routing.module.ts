@@ -17,6 +17,9 @@ import { AuthSupervisorGeneralGuard } from './guards/auth-supervisorGeneral.guar
 import { AuthAdministrativoGuard } from './guards/auth-administrativo.guard';
 import { EstadoComponent } from './components/estado/estado.component';
 import { SupervisorGeneralComponent } from './components/supervisor-general/supervisor-general';
+import { InformesComponent } from './components/informes/informes.component';
+import { JuzgadoComponent } from './components/juzgado/juzgado.component';
+import { ParametrosComponent } from './components/parametros/parametros.component';
 
 const routes: Routes = [
   {
@@ -35,7 +38,10 @@ const routes: Routes = [
       { path: 'supervisorGeneral', component: SupervisorGeneralComponent, canActivate : [ AuthSupervisorGeneralGuard ] },
       { path: 'administrarRestricciones', component: AdministrarRestriccionesComponent, canActivate : [ AuthSupervisorGuard ] },
       { path: 'recuperarContrasena', component: RecuperarContrasenaComponent },
-      {path:'estado', component:EstadoComponent}
+      {path:'estado', component:EstadoComponent},
+      {path:'informes', component:InformesComponent},
+      {path:'juzgado', component:JuzgadoComponent},
+      {path:'parametros', component:ParametrosComponent}
     ]
   },
   { path: 'ingresar', component: UsuarioComponent },

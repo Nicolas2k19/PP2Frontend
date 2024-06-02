@@ -1,0 +1,87 @@
+.container {
+    padding: 20px;
+    max-width: -webkit-fill-available;
+}
+
+
+
+button {
+    padding: 5px 10px;
+    background-color: transparent;
+    color: #480971;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    color: #8d3aff63;
+}
+
+
+
+
+/*Para el titulo*/
+
+.contenedor-titulo {
+    background-color: #8d3aff63;
+}
+
+
+.navbar-brand::after {
+
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+}
+
+
+@keyframes animacionafter {
+
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+
+
+/*Para la tabla*/
+
+.columna-operaciones {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.table tr:hover {
+    background-color: azure;
+    cursor: pointer;
+}
+
+.table i:hover {
+    opacity: .3;
+}
+
+th {
+    background-color: #480971;
+    color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}
