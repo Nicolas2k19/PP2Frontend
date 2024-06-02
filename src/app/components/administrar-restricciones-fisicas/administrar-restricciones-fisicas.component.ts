@@ -160,6 +160,17 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit{
         this.provincias = res as Provincia[];
       });
   }
+
+  onProvinciaChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const selectedId = parseInt(selectElement.value, 10);
+    const selectedProvincia = this.provincias.find(prov => prov.idProvincia === selectedId);
+    
+    if (selectedProvincia) {
+      this.obtenerLocalidades(selectedProvincia);
+    }
+  }
+
   /**
    * Obtiene las localidades necesarias 
    * @author Nicolás

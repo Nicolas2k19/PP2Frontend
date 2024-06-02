@@ -124,17 +124,16 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    * @author Nicolás
    */
   traerLocalidades() {
-    if (this.idProvincia == undefined) {
-      this.toastr.error("Por favor,selecciona una provincia.")
-      return;
+    if (!this.idProvincia) {
+        this.toastr.error("Por favor, selecciona una provincia.");
+        return;
     }
 
-    this.provinciaLocalidadService.getLocalidades(this.idProvincia).subscribe(res => {
-      this.localidades = res as Localidad[]
-      console.log(this.localidades)
-    })
-
+    this.provinciaLocalidadService.getLocalidades(this.idProvincia).subscribe((res: Localidad[]) => {
+        this.localidades = res;
+    });
   }
+
 
 
   /**

@@ -44,22 +44,22 @@
             </select>
         </div>
         <div class="input-select-before input-select-before-provincia">
-            <select name="provincia" [(ngModel)]="idProvincia" class="select-estilo">
-                <option disabled></option>
-                <option value={{provincia.idProvincia}} *ngFor="let provincia of provincias"
-                    (click)="traerLocalidades()">
+            <select name="provincia" [(ngModel)]="idProvincia" class="select-estilo" (change)="traerLocalidades()">
+                <option disabled selected>Elegí una provincia</option>
+                <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">
                     {{provincia.nombre}}
                 </option>
             </select>
         </div>
-        <div class="input-select-before  input-select-before-localidad">
+        <div class="input-select-before input-select-before-localidad">
             <select name="localidad" [(ngModel)]="idLocalidad" class="select-estilo">
-                <option disabled>Elegí una localidad</option>
-                <option value={{localidad.idLocalidad}} *ngFor="let localidad of localidades">
+                <option disabled selected>Elegí una localidad</option>
+                <option *ngFor="let localidad of localidades" [value]="localidad.idLocalidad">
                     {{localidad.nombre}}
                 </option>
             </select>
         </div>
+        
         <button (click)="editarRestriccionMultiple()" class="btn" *ngIf="editar">
             Editar
         </button>

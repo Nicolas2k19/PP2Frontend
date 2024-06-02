@@ -46,14 +46,13 @@
             </select>
         </div>
         <div class="input-select-before input-select-before-provincia">
-            <select [(ngModel)]="provinciaSeleccionada" name="provincia" class="select-estilo">
-                <option disabled>Elegí una provincia</option>
-                <option value={{provincia.idProvincia}} *ngFor="let provincia of provincias"
-                    (click)="obtenerLocalidades(provincia)">
+            <select [(ngModel)]="provinciaSeleccionada" name="provincia" class="select-estilo" (change)="onProvinciaChange($event)">
+                <option disabled selected>Elegí una provincia</option>
+                <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">
                     {{provincia.nombre}}
                 </option>
             </select>
-        </div>
+        </div>        
         <div class="input-select-before  input-select-before-localidad">
             <select [(ngModel)]="localidadSeleccionada" name="localidad" class="select-estilo">
                 <option disabled>Elegí una localidad</option>
