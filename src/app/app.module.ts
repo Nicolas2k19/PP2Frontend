@@ -31,6 +31,8 @@ import { InformesComponent } from './components/informes/informes.component';
 import { JuzgadoComponent } from './components/juzgado/juzgado.component';
 import { ParametrosComponent } from './components/parametros/parametros.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,

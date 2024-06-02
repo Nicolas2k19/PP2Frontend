@@ -1,11 +1,35 @@
 <div class="container">
-    <ngx-spinner type="ball-clip-rotate" size="medium" bdColor="rgba(51,51,51,0.3)" color="#26294D">
-        <p style="font-size: 15px; font-weight: bold; color: #26294D">Cargando...</p>
-    </ngx-spinner>
+    <div class="contenedor-titulo">
+        <nav class="navbar navbar-expand-lg navbar-light titulo-informes">
+            <a class="navbar-brand"> Informes </a>
+        </nav>
+    </div>
 
-    <p> pantalla de informes
 
-    </p>
+    <div class="tabla-informes">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tipo de Informe</th>
+                    <th class="columna-operaciones">Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let informe of informes">
+                    <td>{{ informe.tipo }}</td>
+                    <td class="columna-operaciones">
+                        <button ngbTooltip="Print" (click)="generarReportes(informe.tipo)">
+                            <span class="material-icons">
+                                print
+                            </span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <button (click)="generarReporteRestricciones()">Generar Reporte de Restricciones</button>
+    </div>
+
+
+
 </div>
