@@ -37,6 +37,7 @@ export class NavComponent implements OnInit {
   }
 
   controlarNotificaciones(thisjr) {
+    if(localStorage.getItem("emailUsuario")!=""){
     //BUSCO LA CANTIDAD DE NOTIFICACIONES NO VISTAS
     thisjr.notificacionService.getCantNotificacionesNoVistas(localStorage.getItem("emailUsuario")).subscribe(
       res => {
@@ -60,6 +61,7 @@ export class NavComponent implements OnInit {
         
       }
     );
+    }
   }
 
   salir() {

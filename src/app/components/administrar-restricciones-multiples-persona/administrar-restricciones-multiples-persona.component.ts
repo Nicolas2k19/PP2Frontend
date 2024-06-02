@@ -123,7 +123,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    * Este método trae las localidades disponibles
    * @author Nicolás
    */
-  traerLocalidades() {
+  traerLocalidades() { 
     if (!this.idProvincia) {
         this.toastr.error("Por favor, selecciona una provincia.");
         return;
