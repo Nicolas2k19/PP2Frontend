@@ -37,4 +37,7 @@ export class PruebaDeVidaService {
    }
 
 
+   getPruebasDeVida(){
+    return this.http.get(this.URL_API);
+  }
 }

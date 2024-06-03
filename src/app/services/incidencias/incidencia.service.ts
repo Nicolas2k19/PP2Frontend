@@ -26,4 +26,8 @@ export class IncidenciaService {
     console.log(incidencia.topico);
     return this.http.post(this.URL_API + "/agregar", incidencia);
   }
+
+  getIncidencias(){
+    return this.http.get(this.URL_API);
+  }
 }
