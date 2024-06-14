@@ -13,7 +13,6 @@ import { Persona } from 'src/app/models/persona';
 import { PersonaService } from 'src/app/services/personas/persona.service';
 import { Usuario } from 'src/app/models/usuario';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
-import { NotificacionService } from 'src/app/services/notificaciones/notificacion.service';
 import { PruebaDeVidaMultiple } from 'src/app/models/prueba-de-vida-multiple';
 import { PruebaDeVidaMultipleService } from 'src/app/services/pruebaDeVidaMultiple/prueba-de-vida-multiple.service';
 
@@ -52,6 +51,7 @@ export class PruebasDeVidaComponent implements OnInit {
     { valor: "bocaCerrada", texto: "Boca Cerrada" },
     { valor: "sonrisa", texto: "Sonrisa" }
   ];
+  accionSimple = '';
   tipoPruebaDeVida: string = 'simple'; // Tipo de prueba de vida seleccionada
   accionesMultiples: { valor: string }[] = [{ valor: '' }]; // Acciones para prueba de vida múltiple
   pruebasSimples: PruebaDeVida[] = [];
@@ -149,6 +149,41 @@ export class PruebasDeVidaComponent implements OnInit {
     this.pruebaDeVida.descripcion = selectedOption.textContent.trim();
   }
 
+  generarAleatorio(form: NgForm) {
+    // Genera valores aleatorios para los campos del formulario
+    const tipoAleatorio = Math.random() < 0.5 ? 'simple' : 'multiple';
+    form.controls['tipoPruebaDeVida'].setValue(tipoAleatorio);
+
+    if (tipoAleatorio === 'simple') {
+      // Elige una opción aleatoria para el campo de acción simple
+      const opcionAleatoria = this.opciones[Math.floor(Math.random() * this.opciones.length)]; 
+      this.accionSimple = opcionAleatoria.valor;
+      this.pruebaDeVida.descripcion = opcionAleatoria.texto;
+    } else {
+      // Genera una descripción aleatoria para el campo de descripción
+      this.descripcionPruebaMultiple = 'Prueba generada el: '+this.obtenerFechaHoraActual();
+      // Genera acciones múltiples aleatorias
+      this.accionesMultiples = [{ valor: '' }];
+      const numAcciones = Math.floor(Math.random() * 5) + 1; // Genera entre 1 y 5 acciones
+      for (let i = 0; i < numAcciones; i++) {
+        const opcionAleatoria = this.opciones[Math.floor(Math.random() * this.opciones.length)];
+        this.accionesMultiples[i] = { valor: opcionAleatoria.valor };
+      }
+    }
+  }
+
+  obtenerFechaHoraActual(){
+    let fechaActual = new Date();
+    let dia = String(fechaActual.getDate()).padStart(2, '0');
+    let mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Enero es 0
+    let anio = fechaActual.getFullYear();
+  
+    let horas = String(fechaActual.getHours()).padStart(2, '0');
+    let minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+  
+    return `${dia}/${mes}/${anio} ${horas}:${minutos}`;
+  };
+
   enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
     if (this.tipoPruebaDeVida === 'simple') {
         // Código para enviar prueba de vida simple
@@ -160,6 +195,7 @@ export class PruebasDeVidaComponent implements OnInit {
                     this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
                     this.pruebaDeVida.estado = "Pendiente";
                     this.pruebaDeVida.esMultiple = false;
+                    this.pruebaDeVida.accion = this.accionSimple;
                     this.spinnerService.show();
                     this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(
                         (res) => {
@@ -303,15 +339,13 @@ export class PruebasDeVidaComponent implements OnInit {
 
   cargarPruebasMultiples() {
     this.pruebaDeVidaMultipleService.getPruebasDeVidaMultiples(this.seleccionado.idPersona).subscribe(res=>{
-      this.pruebasMultiples = res as PruebaDeVidaMultiple[];
+      this.pruebasMultiples = (res as PruebaDeVidaMultiple[]).reverse();
     });
   }
 
-
-
   obtenerPruebasGrupo(prueba: any) {
     this.pruebaDeVidaService.getPruebaDeVidaByidPruebaDeVidaMultiple(prueba.idPruebaDeVidaMultiple).subscribe(res=>{
-        this.pruebasGrupo = res as PruebaDeVida[];
+        this.pruebasGrupo = (res as PruebaDeVida[]);
         this.verificarEstadoDePruebaDeVidaMultiples(this.pruebasGrupo)
     })
   }

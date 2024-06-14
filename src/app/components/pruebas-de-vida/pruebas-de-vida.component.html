@@ -76,7 +76,7 @@
                         <div *ngIf="tipoPruebaDeVida === 'simple'">
                             <div class="acciones">
                                 <label for="accionSimple">Acción</label>
-                                <select class="form-control" id="accionSimple" name="accionSimple"
+                                <select class="form-control" id="accionSimple" name="accionSimple" [(ngModel)]="accionSimple" 
                                     (change)="seleccionarAccion($event)" required>
                                     <option value="">Seleccionar opción</option>
                                     <option *ngFor="let opcion of opciones" [value]="opcion.valor">{{ opcion.texto }}
@@ -112,7 +112,9 @@
                                 <i class="material-icons">add</i>
                             </button>
                         </div>
-
+                        <div class="form-group">
+                            <button type="button"  class="btn btn-secondary btn-block" (click)="generarAleatorio(pruebaDeVidaForm)"><i class="bi bi-dice-5" style="padding-right:25px; "> </i> Generar <i class="bi bi-dice-3" style="padding-left: 25px;"> </i> aleatoriamente </button>
+                        </div>
                         <div class="form-group">
                             <button class="btn btn-primary btn-block"
                                 [disabled]="!pruebaDeVidaForm.valid">Enviar</button>
