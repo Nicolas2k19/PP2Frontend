@@ -21,7 +21,10 @@
         <a class="nav-link" routerLink="estado" [hidden]="rolDeUsuario!='ADMINISTRATIVO'">Estado</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="parametros" [hidden]="rolDeUsuario!='SUPERVISOR_GENERAL'">Parámetros</a>
+        <a class="nav-link" routerLink="parametros" [hidden]="rolDeUsuario!='SUPERVISOR_GENERAL'">Parámetros de rutina</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="parametros" [hidden]="rolDeUsuario!='SUPERVISOR_GENERAL'">Parámetros de prueba de vida</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="juzgado" [hidden]="rolDeUsuario!='SUPERVISOR_GENERAL'">Juzgado</a>
