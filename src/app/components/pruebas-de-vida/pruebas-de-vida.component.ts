@@ -10,11 +10,13 @@ import { FotoIdentificacion } from 'src/app/models/foto-identificacion';
 import { FotoIdentificacionService } from 'src/app/services/fotoIdentificacion/foto-identificacion.service';
 import { FotoPruebaDeVida } from 'src/app/models/foto-prueba-de-vida';
 import { Persona } from 'src/app/models/persona';
-import { PersonaService } from 'src/app/services/personas/persona.service';
+import { PersonaService } from 'src/app/services/personas/persona.service'; 
 import { Usuario } from 'src/app/models/usuario';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
 import { PruebaDeVidaMultiple } from 'src/app/models/prueba-de-vida-multiple';
 import { PruebaDeVidaMultipleService } from 'src/app/services/pruebaDeVidaMultiple/prueba-de-vida-multiple.service';
+import { ParametroService } from 'src/app/services/parametros/parametro.service';
+import { Parametro } from 'src/app/models/parametro';
 
 @Component({
   selector: 'app-pruebas-de-vida',
@@ -59,6 +61,7 @@ export class PruebasDeVidaComponent implements OnInit {
   pruebasGrupo:PruebaDeVida[] = [];
   estadoGrupo: string = 'Pendiente'
   descripcionPruebaMultiple: string = ''; 
+  tiempoDeRespuesta: Date = new Date();
   
   constructor(
     private pruebaDeVidaService: PruebaDeVidaService,
@@ -68,7 +71,8 @@ export class PruebasDeVidaComponent implements OnInit {
     private personaService: PersonaService,
     private usuarioService: UsuarioService,
     private pruebaDeVidaMultipleService: PruebaDeVidaMultipleService,
-    private fotoIdentificacionService: FotoIdentificacionService) {
+    private fotoIdentificacionService: FotoIdentificacionService,
+    private parametroService: ParametroService) {
 
     config.backdrop = 'static';
     config.keyboard = false;
@@ -184,31 +188,38 @@ export class PruebasDeVidaComponent implements OnInit {
     return `${dia}/${mes}/${anio} ${horas}:${minutos}`;
   };
 
-  enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
+  async enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
     if (this.tipoPruebaDeVida === 'simple') {
         // Código para enviar prueba de vida simple
         this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
         this.usuarioService.getUsuario(this.seleccionado.idUsuario).subscribe(
-            (res: Usuario) => {
+            async (res: Usuario) => {
                 this.usuarioSeleccionado = res;
                 if (this.usuarioSeleccionado) {
                     this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
                     this.pruebaDeVida.estado = "Pendiente";
                     this.pruebaDeVida.esMultiple = false;
                     this.pruebaDeVida.accion = this.accionSimple;
-                    this.spinnerService.show();
-                    this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(
-                        (res) => {
-                            this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
-                            this.spinnerService.hide();
-                            pruebaDeVidaForm.reset();
-                            this.pruebaDeVida = new PruebaDeVida();
-                        },
-                        (error) => {
-                            console.error('Error al enviar prueba de vida:', error);
-                            this.spinnerService.hide();
-                        }
-                    );
+                    await this.parametroService.getById(1).subscribe(async res => {
+                      let parametro = res as Parametro;
+                      this.parseHoraStringToFecha(parametro.valor);
+                      this.pruebaDeVida.tiempoDeRespuesta = this.tiempoDeRespuesta
+                      
+                      this.spinnerService.show();
+                      this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(
+                          (res) => {
+                              this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
+                              this.spinnerService.hide();
+                              pruebaDeVidaForm.reset();
+                              this.pruebaDeVida = new PruebaDeVida();
+                          },
+                          (error) => {
+                              console.error('Error al enviar prueba de vida:', error);
+                              this.spinnerService.hide();
+                          }
+                      );
+                    });
+              
                 } else {
                     console.error('Usuario seleccionado no está definido.');
                 }
@@ -222,28 +233,44 @@ export class PruebasDeVidaComponent implements OnInit {
         pruebaDeVidaMultiple.descripcion = this.descripcionPruebaMultiple
         pruebaDeVidaMultiple.idPersona =this.seleccionado.idPersona;
         pruebaDeVidaMultiple.estado = 'Pendiente';
-        this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(res => {
-          let nuevaPruebaDeVidaMultiple = res as PruebaDeVidaMultiple;
-          this.accionesMultiples.forEach(async (accion) => {
-              this.pruebaDeVida.accion = accion.valor;
-              this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
-              this.pruebaDeVida.estado = "Pendiente";
-              this.pruebaDeVida.esMultiple = true;
-              this.pruebaDeVida.descripcion = this.tranformaAccion(accion.valor)
-              this.pruebaDeVida.idPruebaDeVidaMultiple = nuevaPruebaDeVidaMultiple.idPruebaDeVidaMultiple;
-              await this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(res => {                
-                this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
-                this.pruebaDeVida = new PruebaDeVida();
-              })
-              this.spinnerService.hide();
-              pruebaDeVidaForm.reset();
-              this.cargarPruebasMultiples();
+        await this.parametroService.getById(1).subscribe(async res => {
+          let parametro = res as Parametro;
+          this.parseHoraStringToFecha(parametro.valor);
+          this.pruebaDeVida.tiempoDeRespuesta = this.tiempoDeRespuesta
+          this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(res => {
+            let nuevaPruebaDeVidaMultiple = res as PruebaDeVidaMultiple;
+            this.accionesMultiples.forEach(async (accion) => {
+                this.pruebaDeVida.accion = accion.valor;
+                this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
+                this.pruebaDeVida.estado = "Pendiente";
+                this.pruebaDeVida.esMultiple = true;
+                this.pruebaDeVida.descripcion = this.tranformaAccion(accion.valor)
+                this.pruebaDeVida.idPruebaDeVidaMultiple = nuevaPruebaDeVidaMultiple.idPruebaDeVidaMultiple;
+                await this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(res => {                
+                  this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+                  this.pruebaDeVida = new PruebaDeVida();
+                })
+                this.spinnerService.hide();
+                pruebaDeVidaForm.reset();
+                this.cargarPruebasMultiples();
+            });
           });
         })
     }
 }
 
+parseHoraStringToFecha(hora: string) {
+  // Parsear la cadena
+  const [horas, minutos] = hora.split(':').map(num => parseInt(num, 10));
 
+  // Obtener la fecha actual
+  const fechaActual = new Date();
+
+  // Crear un objeto Date sumando las horas y minutos a la fecha actual
+  this.tiempoDeRespuesta = new Date(fechaActual);
+  this.tiempoDeRespuesta.setHours(fechaActual.getHours() + horas - 3); //Resto 3 para acomodar las horas
+  this.tiempoDeRespuesta.setMinutes(fechaActual.getMinutes() + minutos);
+}
 
   getPruebasDeVidaPersona(idPersona: number) {
     this.spinnerService.show();
