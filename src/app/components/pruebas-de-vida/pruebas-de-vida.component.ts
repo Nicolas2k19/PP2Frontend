@@ -10,7 +10,7 @@ import { FotoIdentificacion } from 'src/app/models/foto-identificacion';
 import { FotoIdentificacionService } from 'src/app/services/fotoIdentificacion/foto-identificacion.service';
 import { FotoPruebaDeVida } from 'src/app/models/foto-prueba-de-vida';
 import { Persona } from 'src/app/models/persona';
-import { PersonaService } from 'src/app/services/personas/persona.service'; 
+import { PersonaService } from 'src/app/services/personas/persona.service';
 import { Usuario } from 'src/app/models/usuario';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
 import { PruebaDeVidaMultiple } from 'src/app/models/prueba-de-vida-multiple';
@@ -24,7 +24,6 @@ import { Parametro } from 'src/app/models/parametro';
   styleUrls: ['./pruebas-de-vida.component.css']
 })
 export class PruebasDeVidaComponent implements OnInit {
-
 
   pruebaDeVida = new PruebaDeVida;
   spinnerBoolean: boolean = false;
@@ -42,8 +41,8 @@ export class PruebasDeVidaComponent implements OnInit {
   estadoFiltro: string = '';
   showSelect: boolean = false;
   showFiltros: boolean = false;
-  orderedColumn: string = ''; 
-  ascendingOrder: boolean = true; 
+  orderedColumn: string = '';
+  ascendingOrder: boolean = true;
   opciones = [
     { valor: "ambosOjosCerrados", texto: "Ambos Ojos Cerrados" },
     { valor: "ambosOjosAbiertos", texto: "Ambos Ojos Abiertos" },
@@ -58,11 +57,12 @@ export class PruebasDeVidaComponent implements OnInit {
   accionesMultiples: { valor: string }[] = [{ valor: '' }]; // Acciones para prueba de vida múltiple
   pruebasSimples: PruebaDeVida[] = [];
   pruebasMultiples: PruebaDeVidaMultiple[] = [];
-  pruebasGrupo:PruebaDeVida[] = [];
+  pruebasGrupo: PruebaDeVida[] = [];
   estadoGrupo: string = 'Pendiente'
-  descripcionPruebaMultiple: string = ''; 
+  descripcionPruebaMultiple: string = '';
   tiempoDeRespuesta: Date = new Date();
-  
+  diferenciaHoraria: number = 3; //Diferencia de argentina
+
   constructor(
     private pruebaDeVidaService: PruebaDeVidaService,
     private comunicacion: ComunicacionService,
@@ -83,10 +83,10 @@ export class PruebasDeVidaComponent implements OnInit {
       this.restriccion = this.comunicacion.restriccionDTO;
       if (this.seleccionado != null) {
         this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
-      }else{
+      } else {
         this.selectedUserLabel += this.comunicacion.restriccionDTO.victimario.apellido;
         this.seleccionado = this.comunicacion.restriccionDTO.victimario;//Por defecto toma al agresor
-        this.getPruebasDeVidaPersona(this.seleccionado.idPersona); 
+        this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
       }
       this.spinnerService.show();
       this.cargarPruebasSimples();
@@ -94,7 +94,6 @@ export class PruebasDeVidaComponent implements OnInit {
       this.cargarPruebasMultiples();
     }
     this.opcionesDesplegable = [this.restriccion.victimario, this.restriccion.damnificada];
-    console.log("Opciones desplegable:", this.opcionesDesplegable);
     this.cargarPruebasSimples();
     this.cargarPruebasMultiples();
   }
@@ -116,16 +115,14 @@ export class PruebasDeVidaComponent implements OnInit {
       );
   }
 
-  obtenerFotoDePerfil(){
+  obtenerFotoDePerfil() {
     this.fotoIdentificacionService.getFotoPefil(this.seleccionado.idPersona)
-    .subscribe(res => {
-      this.spinnerService.hide();
-      var foto = res as FotoIdentificacion;
-      this.imgPerfil = foto.foto;
-      console.log(res);
-    });
+      .subscribe(res => {
+        this.spinnerService.hide();
+        var foto = res as FotoIdentificacion;
+        this.imgPerfil = foto.foto;
+      });
   }
-
 
   cambiarTipoPruebaDeVida(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -154,19 +151,15 @@ export class PruebasDeVidaComponent implements OnInit {
   }
 
   generarAleatorio(form: NgForm) {
-    // Genera valores aleatorios para los campos del formulario
     const tipoAleatorio = Math.random() < 0.5 ? 'simple' : 'multiple';
     form.controls['tipoPruebaDeVida'].setValue(tipoAleatorio);
 
     if (tipoAleatorio === 'simple') {
-      // Elige una opción aleatoria para el campo de acción simple
-      const opcionAleatoria = this.opciones[Math.floor(Math.random() * this.opciones.length)]; 
+      const opcionAleatoria = this.opciones[Math.floor(Math.random() * this.opciones.length)];
       this.accionSimple = opcionAleatoria.valor;
-      this.pruebaDeVida.descripcion = opcionAleatoria.texto;
+      this.pruebaDeVida.descripcion = opcionAleatoria.texto
     } else {
-      // Genera una descripción aleatoria para el campo de descripción
-      this.descripcionPruebaMultiple = 'Prueba generada el: '+this.obtenerFechaHoraActual();
-      // Genera acciones múltiples aleatorias
+      this.descripcionPruebaMultiple = 'Prueba multiple,';
       this.accionesMultiples = [{ valor: '' }];
       const numAcciones = Math.floor(Math.random() * 5) + 1; // Genera entre 1 y 5 acciones
       for (let i = 0; i < numAcciones; i++) {
@@ -176,101 +169,94 @@ export class PruebasDeVidaComponent implements OnInit {
     }
   }
 
-  obtenerFechaHoraActual(){
-    let fechaActual = new Date();
-    let dia = String(fechaActual.getDate()).padStart(2, '0');
-    let mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Enero es 0
-    let anio = fechaActual.getFullYear();
-  
-    let horas = String(fechaActual.getHours()).padStart(2, '0');
-    let minutos = String(fechaActual.getMinutes()).padStart(2, '0');
-  
-    return `${dia}/${mes}/${anio} ${horas}:${minutos}`;
-  };
-
   async enviarPruebaDeVida(pruebaDeVidaForm: NgForm) {
     if (this.tipoPruebaDeVida === 'simple') {
-        // Código para enviar prueba de vida simple
-        this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
-        this.usuarioService.getUsuario(this.seleccionado.idUsuario).subscribe(
-            async (res: Usuario) => {
-                this.usuarioSeleccionado = res;
-                if (this.usuarioSeleccionado) {
-                    this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
-                    this.pruebaDeVida.estado = "Pendiente";
-                    this.pruebaDeVida.esMultiple = false;
-                    this.pruebaDeVida.accion = this.accionSimple;
-                    await this.parametroService.getById(1).subscribe(async res => {
-                      let parametro = res as Parametro;
-                      this.parseHoraStringToFecha(parametro.valor);
-                      this.pruebaDeVida.tiempoDeRespuesta = this.tiempoDeRespuesta
-                      
-                      this.spinnerService.show();
-                      this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(
-                          (res) => {
-                              this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
-                              this.spinnerService.hide();
-                              pruebaDeVidaForm.reset();
-                              this.pruebaDeVida = new PruebaDeVida();
-                          },
-                          (error) => {
-                              console.error('Error al enviar prueba de vida:', error);
-                              this.spinnerService.hide();
-                          }
-                      );
-                    });
-              
-                } else {
-                    console.error('Usuario seleccionado no está definido.');
-                }
-            },
-            (error) => {
-                console.error('Error al obtener usuario:', error);
-            }
-        );
+      this.enviarPruebaDeVidaSimple(pruebaDeVidaForm);
+
     } else if (this.tipoPruebaDeVida === 'multiple') {
-        let pruebaDeVidaMultiple = new PruebaDeVidaMultiple();
-        pruebaDeVidaMultiple.descripcion = this.descripcionPruebaMultiple
-        pruebaDeVidaMultiple.idPersona =this.seleccionado.idPersona;
-        pruebaDeVidaMultiple.estado = 'Pendiente';
-        await this.parametroService.getById(1).subscribe(async res => {
-          let parametro = res as Parametro;
-          this.parseHoraStringToFecha(parametro.valor);
-          this.pruebaDeVida.tiempoDeRespuesta = this.tiempoDeRespuesta
-          this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(res => {
-            let nuevaPruebaDeVidaMultiple = res as PruebaDeVidaMultiple;
-            this.accionesMultiples.forEach(async (accion) => {
-                this.pruebaDeVida.accion = accion.valor;
-                this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
-                this.pruebaDeVida.estado = "Pendiente";
-                this.pruebaDeVida.esMultiple = true;
-                this.pruebaDeVida.descripcion = this.tranformaAccion(accion.valor)
-                this.pruebaDeVida.idPruebaDeVidaMultiple = nuevaPruebaDeVidaMultiple.idPruebaDeVidaMultiple;
-                await this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(res => {                
-                  this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
-                  this.pruebaDeVida = new PruebaDeVida();
-                })
+      this.enviarPruebaDeVidaMultiple(pruebaDeVidaForm);
+    }
+  }
+
+  enviarPruebaDeVidaSimple(pruebaDeVidaForm: NgForm) {
+    this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
+    this.usuarioService.getUsuario(this.seleccionado.idUsuario).subscribe( async (res: Usuario) => {
+        this.usuarioSeleccionado = res;
+        if (this.usuarioSeleccionado) {
+          this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
+          this.pruebaDeVida.estado = "Pendiente";
+          this.pruebaDeVida.esMultiple = false;
+          this.pruebaDeVida.accion = this.accionSimple;
+          await this.parametroService.getById(1).subscribe(async res => {
+            let parametro = res as Parametro;
+            this.parseHoraStringToFecha(parametro.valor);
+            this.pruebaDeVida.tiempoDeRespuesta = this.tiempoDeRespuesta
+            const fechaActual = new Date(this.pruebaDeVida.tiempoDeRespuesta.getTime());
+            fechaActual.setHours(fechaActual.getHours() + this.diferenciaHoraria);
+            this.pruebaDeVida.descripcion += " (disponible hasta las: " + fechaActual.getHours() + ":" + fechaActual.getMinutes() + ")";
+
+            this.spinnerService.show();
+            this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe((res) => {
+                this.getPruebasDeVidaPersona(this.pruebaDeVida.idPersonaRestriccion);
                 this.spinnerService.hide();
                 pruebaDeVidaForm.reset();
-                this.cargarPruebasMultiples();
-            });
+                this.pruebaDeVida = new PruebaDeVida();
+              },(error) => {
+                console.error('Error al enviar prueba de vida:', error);
+                this.spinnerService.hide();
+              }
+            );
           });
-        })
-    }
-}
+        } else {
+          console.error('Usuario seleccionado no está definido.');
+        }
+      },(error) => {
+        console.error('Error al obtener usuario:', error);
+      });
+  }
 
-parseHoraStringToFecha(hora: string) {
-  // Parsear la cadena
-  const [horas, minutos] = hora.split(':').map(num => parseInt(num, 10));
+  async enviarPruebaDeVidaMultiple(pruebaDeVidaForm: NgForm) {
+    let pruebaDeVidaMultiple = new PruebaDeVidaMultiple();
+    pruebaDeVidaMultiple.idPersona = this.seleccionado.idPersona;
+    pruebaDeVidaMultiple.estado = 'Pendiente';
+    await this.parametroService.getById(1).subscribe(async res => {
+      let parametro = res as Parametro;
+      this.parseHoraStringToFecha(parametro.valor);
+      this.pruebaDeVida.tiempoDeRespuesta = this.tiempoDeRespuesta
+      pruebaDeVidaMultiple.tiempoDeRespuesta = this.tiempoDeRespuesta
+      const fechaActual = new Date(this.tiempoDeRespuesta.getTime());
+      fechaActual.setHours(fechaActual.getHours() + this.diferenciaHoraria);
+      pruebaDeVidaMultiple.descripcion = this.descripcionPruebaMultiple + " disponible hasta las: " + fechaActual.getHours() + ":" + fechaActual.getMinutes();;
 
-  // Obtener la fecha actual
-  const fechaActual = new Date();
+      this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(res => {
+        let nuevaPruebaDeVidaMultiple = res as PruebaDeVidaMultiple;
+        this.accionesMultiples.forEach(async (accion) => {
+          this.pruebaDeVida.accion = accion.valor;
+          this.pruebaDeVida.idPersonaRestriccion = this.seleccionado.idPersona;
+          this.pruebaDeVida.estado = "Pendiente";
+          this.pruebaDeVida.esMultiple = true;
+          this.pruebaDeVida.descripcion = this.tranformaAccion(accion.valor)
+          this.pruebaDeVida.idPruebaDeVidaMultiple = nuevaPruebaDeVidaMultiple.idPruebaDeVidaMultiple;
+          await this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(res => {
+            this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+            this.pruebaDeVida = new PruebaDeVida();
+          })
+          this.spinnerService.hide();
+          pruebaDeVidaForm.reset();
+          this.cargarPruebasMultiples();
+        });
+      });
+    })
+  }
 
-  // Crear un objeto Date sumando las horas y minutos a la fecha actual
-  this.tiempoDeRespuesta = new Date(fechaActual);
-  this.tiempoDeRespuesta.setHours(fechaActual.getHours() + horas - 3); //Resto 3 para acomodar las horas
-  this.tiempoDeRespuesta.setMinutes(fechaActual.getMinutes() + minutos);
-}
+  parseHoraStringToFecha(hora: string) {
+    const [horas, minutos] = hora.split(':').map(num => parseInt(num, 10));
+    const fechaActual = new Date();
+
+    this.tiempoDeRespuesta = new Date(fechaActual);
+    this.tiempoDeRespuesta.setHours(fechaActual.getHours() + horas - this.diferenciaHoraria); //Resto 3 para acomodar las horas
+    this.tiempoDeRespuesta.setMinutes(fechaActual.getMinutes() + minutos);
+  }
 
   getPruebasDeVidaPersona(idPersona: number) {
     this.spinnerService.show();
@@ -278,7 +264,6 @@ parseHoraStringToFecha(hora: string) {
       .subscribe(res => {
         this.spinnerService.hide();
         this.pruebasDeVida = res as PruebaDeVida[];
-        console.log(res);
         this.cargarPruebasSimples();
         this.aplicarFiltros();
       })
@@ -295,7 +280,6 @@ parseHoraStringToFecha(hora: string) {
   }
 
   formatoFecha(fecha: Date): string {
-    // Formatear la fecha como 'YYYY-MM-DD' para comparación con el filtro
     const year = fecha.getFullYear();
     const month = fecha.getMonth() + 1; // Sumar 1 porque los meses van de 0 a 11
     const day = fecha.getDate();
@@ -312,7 +296,6 @@ parseHoraStringToFecha(hora: string) {
     this.pruebaDeVida.estado = "Aceptada";
     this.pruebaDeVidaService.putPruebaDeVida(this.pruebaDeVida)
       .subscribe(res => {
-        console.log(res);
         this.pruebaDeVida = new PruebaDeVida;
         this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
         this.modalService.dismissAll();
@@ -325,13 +308,12 @@ parseHoraStringToFecha(hora: string) {
     this.pruebaDeVida.estado = "Rechazada";
     this.pruebaDeVidaService.putPruebaDeVida(this.pruebaDeVida)
       .subscribe(res => {
-        console.log(res);
         this.pruebaDeVida = new PruebaDeVida;
         this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
         this.modalService.dismissAll();
         this.spinnerService.hide();
       })
-   
+
   }
 
   open(content, prueba: PruebaDeVida) {
@@ -353,7 +335,6 @@ parseHoraStringToFecha(hora: string) {
         }
         else {
           this.imgPruebaDeVida = foto.foto;
-          console.log(res);
         }
       });
   }
@@ -361,40 +342,39 @@ parseHoraStringToFecha(hora: string) {
   cargarPruebasSimples() {
     this.pruebasSimples = this.pruebasDeVida.filter(prueba => !prueba.esMultiple);
     this.pruebasFiltradas = this.pruebasSimples;
-    console.log(this.pruebasSimples);
   }
 
   cargarPruebasMultiples() {
-    this.pruebaDeVidaMultipleService.getPruebasDeVidaMultiples(this.seleccionado.idPersona).subscribe(res=>{
+    this.pruebaDeVidaMultipleService.getPruebasDeVidaMultiples(this.seleccionado.idPersona).subscribe(res => {
       this.pruebasMultiples = (res as PruebaDeVidaMultiple[]).reverse();
     });
   }
 
   obtenerPruebasGrupo(prueba: any) {
-    this.pruebaDeVidaService.getPruebaDeVidaByidPruebaDeVidaMultiple(prueba.idPruebaDeVidaMultiple).subscribe(res=>{
-        this.pruebasGrupo = (res as PruebaDeVida[]);
-        this.verificarEstadoDePruebaDeVidaMultiples(this.pruebasGrupo)
+    this.pruebaDeVidaService.getPruebaDeVidaByidPruebaDeVidaMultiple(prueba.idPruebaDeVidaMultiple).subscribe(res => {
+      this.pruebasGrupo = (res as PruebaDeVida[]);
+      this.verificarEstadoDePruebaDeVidaMultiples(this.pruebasGrupo)
     })
   }
 
-  verificarEstadoDePruebaDeVidaMultiples(pruebasDeVida:PruebaDeVida[]){
+  verificarEstadoDePruebaDeVidaMultiples(pruebasDeVida: PruebaDeVida[]) {
     let countAceptadas = 0;
     let countRechazadas = 0;
     this.estadoGrupo = 'Pendiente'
     let idPruebaMultiple = 0
-    pruebasDeVida.forEach(prueba =>{
+    pruebasDeVida.forEach(prueba => {
       idPruebaMultiple = prueba.idPruebaDeVidaMultiple;
-      if(prueba.estado == 'Aceptada' || prueba.estado == 'AceptadaAutomaticamente')
+      if (prueba.estado == 'Aceptada' || prueba.estado == 'AceptadaAutomaticamente')
         countAceptadas++
-      if(prueba.estado == 'Rechazada' || prueba.estado == 'RechazadaAutomaticamente')
+      if (prueba.estado == 'Rechazada' || prueba.estado == 'RechazadaAutomaticamente')
         countRechazadas++
     })
-    if(countAceptadas == pruebasDeVida.length)
+    if (countAceptadas == pruebasDeVida.length)
       this.estadoGrupo = 'Aceptada'
-    if(countRechazadas > 0)
+    if (countRechazadas > 0)
       this.estadoGrupo = 'Rechazada'
 
-    this.pruebaDeVidaMultipleService.actualizarEstadoPruebaDeVida(idPruebaMultiple,this.estadoGrupo).subscribe(res=>{})
+    this.pruebaDeVidaMultipleService.actualizarEstadoPruebaDeVida(idPruebaMultiple, this.estadoGrupo).subscribe(res => { })
   }
 
   transformarEstado(estado: string): string {
@@ -404,14 +384,14 @@ parseHoraStringToFecha(hora: string) {
       case 'RechazadaAutomaticamente':
         return 'Rechazada Automaticamente';
       default:
-        return estado; 
+        return estado;
     }
   }
 
-  tranformaAccion(accion: string): string{
+  tranformaAccion(accion: string): string {
     let accionTransformada = ''
-    this.opciones.forEach( opcion =>{
-      if(accion == opcion.valor){
+    this.opciones.forEach(opcion => {
+      if (accion == opcion.valor) {
         accionTransformada = opcion.texto;
       }
     })
@@ -441,12 +421,12 @@ parseHoraStringToFecha(hora: string) {
       this.ascendingOrder = true;
       this.orderedColumn = columnName;
     }
-  
+
     // Ordena el arreglo pruebasFiltradas según la columna y el estado de orden
     this.pruebasFiltradas.sort((a, b) => {
       const valueA = a[columnName];
       const valueB = b[columnName];
-  
+
       if (valueA < valueB) {
         return this.ascendingOrder ? -1 : 1;
       }
