@@ -1,0 +1,175 @@
+table{
+    height: fit-content;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.select-perimetral{
+    width: 150px;
+    background-color: #9E58FF;
+    border: 0px;
+}
+
+.select-dia{
+    width: 100px;
+    background-color: #9E58FF;
+    border: 0px;
+}
+
+.btn{
+    background-color: #9E58FF;
+    color: black;
+}
+
+.container-elementos-configuracion{
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    
+}
+
+
+
+
+
+.header-config{
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+}
+
+option{
+    text-overflow: ellipsis;
+}
+
+.input-container{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.cantidad-inputs{
+    width: 100px;
+}
+
+.configuraciones{
+    background-color: #480971;
+    padding: 2rem;
+    color: white;
+    flex-direction: column;
+    display: flex;
+
+}
+
+input[type=range] {
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+    width: 150px; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+  }
+  
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+  }
+  
+  input[type=range]:focus {
+    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+  }
+  
+  input[type=range]::-ms-track {
+    width: 150px;
+    cursor: pointer;
+    /* Hides the slider so custom styles can be added */
+    background: transparent; 
+    border-color: transparent;
+    color: transparent;
+  }
+
+  input[type=range]::-webkit-slider-runnable-track {
+    cursor: pointer;
+    height: 15px;
+    border-radius: 5px;
+  }
+  
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #367ebd;
+  }
+  
+  input[type=range]::-moz-range-track {
+    height: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  input[type=range]::-ms-track {
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+  }
+  input[type=range]::-ms-fill-lower {
+    background: #9E58FF;
+    border-radius: 5px;
+    height: 15px;
+
+  }
+  
+  input[type=range]:focus::-ms-fill-lower {
+    background: #9E58FF;
+    border-radius: 5px;
+    height: 15px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+  }
+  input[type=range]::-ms-fill-upper {
+    background: white;
+  }
+  input[type=range]:focus::-ms-fill-upper {
+    background: white;
+  }
+
+
+  
+input[type="range"]::-moz-range-progress {
+    background: #9E58FF;
+    border-radius: 5px;
+    height: 15px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+}
+  
+  input[type="range"]::-moz-range-track {  
+    background: white;
+  }
+
+
+  input[type=range]::-ms-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+  }
+
+  input[type="file"]{
+    -webkit-appearance: none;
+    text-align: left;
+    -webkit-rtl-ordering:  left;
+ }
+ input[type="file"]::file-selector-button {
+    background-color: #9E58FF;
+    border-radius: 5px;
+    border: 0px;
+   
+  }

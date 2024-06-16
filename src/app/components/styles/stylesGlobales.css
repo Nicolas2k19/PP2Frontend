@@ -1,0 +1,42 @@
+:root{
+  --strong-pink : #480971;
+  --light-pink : #9E58FF;
+}
+
+legend::after,h1::after,h2::after,h3::after{
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+  }
+
+  .btn {
+    background-color: #480971;
+    color: white;
+    width: fit-content;
+    margin-top: 1rem;
+  }
+
+
+  .select-estilo {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 50px;
+    background-color: white;
+    color: black;
+  }
+  
+  @keyframes animacionafter {
+  
+    0% {
+      width: 0;
+    }
+  
+    100% {
+      width: 100%;
+    }
+  
+  }

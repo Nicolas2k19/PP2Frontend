@@ -4,47 +4,81 @@
     </ngx-spinner>
 
     
+    <select class="select-estilo select-dia" name="dia">
+        <option value="">Lunes</option>
+        <option value="">Martes</option>
+        <option value="">Miercoles</option>
+        <option value="">Jueves</option>
+        <option value="">Viernes</option>
+        <option value="">Sabado</option>
+        <option value="">Domingo</option>
+    </select>
 
-    <div>
-        <div>
-            <h1>Configuración</h1>
-            <select name="perimetral">
-                <option value=""></option>
-            </select>
-            <input type="range" name="input-length">
-            <input type="range" name="distancia-permitida">
-            <input type="range" name="nunits">
-            <input type="range" name="batch-size">
+    <div class="container-elementos-configuracion">
+        <form class="configuraciones">
+                <div class="header-config">
+                    <h3>Configuración</h3>
+                    <select class="select-estilo select-perimetral" name="perimetral">
+                        <option value="" disabled>Seleccione una perimetral</option>
+                        <option value="">perimetral 1</option>
+                    </select>
+                </div>
+               
+                
+                <div class="input-container">
+                    <label class="cantidad-inputs" for="distancia-permitida">Distancia permitida</label>
+                    <input id="distancia-permitida" min="1" max="10" value="3" type="range" name="distancia-permitida">
+                </div>
+                <div class ="input-container">
+                    <label class="cantidad-inputs" for="cantidad-epochs">Epochs</label>
+                    <input id="cantidad-epochs" type="range" min="1" max="240" value="80" name="input-length">
+                </div>
+                <div class ="input-container">
+                    <label class="cantidad-inputs" for="cantidad-inputs">Input length</label>
+                    <input id="cantidad-inputs" type="range" min="1" max="50" value="25" name="input-length">
+                </div>
+                <div class="input-container">
+                    <label class="cantidad-inputs" for="cantidad-nunits">Nunits</label>
+                    <input id="cantidad-nunits" type="range" min="64" max="256" value="128" name="nunits">
+                </div>
+                <div class="input-container">
+                    <label class="cantidad-inputs" for="cantidad-batch">Batch size</label>
+                    <input id="cantidad-batch" min="64" max="512" value="256" type="range" name="batch-size">
+                </div>
+                <input
+                type="file"
+                id="csv"
+                accept=".csv" />
+                
+                <button class="btn">Entrenar</button>
 
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Latitud</th>
-                    <th>Longitud</th>
-                    <th>Día de la semana</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        2
-                    </td>
-                </tr>
-            </tbody>
+        </form>
+        <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Latitud</th>
+                        <th>Longitud</th>
+                        <th>Día de la semana</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            2
+                        </td>
+                    </tr>
+                </tbody>
         </table>
-
     </div>
-
 
 </div>
