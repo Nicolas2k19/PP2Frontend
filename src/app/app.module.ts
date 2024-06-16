@@ -29,7 +29,8 @@ import { AdministrarRestriccionesMultiplesPersonaComponent } from './components/
 import { SupervisorGeneralComponent } from './components/supervisor-general/supervisor-general';
 import { InformesComponent } from './components/informes/informes.component';
 import { JuzgadoComponent } from './components/juzgado/juzgado.component';
-import { ParametrosComponent } from './components/parametros/parametros.component';
+import { ParametrosRutinaComponent } from './components/parametros-rutina/parametros-rutina.component';
+import { ParametrosPruebaDeVidaComponent } from './components/parametros-prueba-de-vida/parametros-prueba-de-vida.component';
 
 
 
@@ -54,7 +55,8 @@ import { ParametrosComponent } from './components/parametros/parametros.componen
     EstadoComponent, 
     InformesComponent,
     JuzgadoComponent,
-    ParametrosComponent
+    ParametrosRutinaComponent,
+    ParametrosPruebaDeVidaComponent,
   ],
   imports: [
     BrowserModule,

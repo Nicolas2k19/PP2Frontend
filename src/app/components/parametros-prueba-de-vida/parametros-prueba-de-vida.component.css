@@ -1,0 +1,122 @@
+.container {
+    padding: 20px;
+    max-width: auto;
+}
+
+.btn-block {
+    background-color: #480971;
+    color: white;
+}
+
+legend{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/*Para el titulo*/
+
+label{
+    font-size: 17px;
+}
+
+.contenedor-titulo {
+    background-color: #8d3aff63;
+}
+
+.navbar-brand::after {
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+}
+
+@keyframes animacionafter {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+/*Para la tabla*/
+
+.columna-parametros {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.table tr:hover {
+    background-color: azure;
+    cursor: pointer;
+}
+
+.table i:hover {
+    opacity: .3;
+}
+
+th {
+    background-color: #480971;
+    color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    margin: 10px;
+    text-align: left;
+}
+
+/*Para la form*/
+
+.card {
+    background-color: white;
+    color: black;
+    padding: 2.5rem;
+    border: 1px solid black;
+    width: 290px;
+}
+
+.card button {
+    background-color: #480971;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.card button:hover {
+    background-color: #6e1eff;
+}
+
+.navbar-brand::after,
+legend::after {
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+}
+
+/*Subtitulos*/
+
+.input-texto-before-minutos::before {
+    content: "Minutos *";
+    text-align: left;
+    font-size: 12px;
+}
+
+.input-texto-before-horas::before {
+    content: "Horas *";
+    text-align: left;
+    font-size: 12px;
+}

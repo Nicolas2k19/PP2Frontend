@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="contenedor-titulo">
+        <nav class="navbar navbar-expand-lg navbar-light titulo-informes">
+            <a class="navbar-brand"> Configurar pruebas de vida </a>
+        </nav>
+    </div>
+
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body" text-center>
+                    <legend>Parámetros</legend>
+                    <form (ngSubmit)="onSubmit()">
+                        <label for="tiempoPruebaDeVida">Tiempo de Respuesta</label>
+                        <div class="form-group input-texto-before-horas">
+                            <input type="number" class="form-control" id="hours" [(ngModel)]="hours" name="hours" min="0" max="24">
+                        </div>
+                        <div class="form-group input-texto-before-minutos">
+                            <input type="number" class="form-control" id="minutes" [(ngModel)]="minutes" name="minutes" min="0" max="59">
+                        </div>
+                        <div class="form-group" >
+                            <button type="submit" class="btn btn-primary btn-block">Actulizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="tabla-parametros">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Párametro</th>
+                            <th class="columna-valor">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tiempo de respuesta</td>
+                            <td class="columna-parametros">{{ duration }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

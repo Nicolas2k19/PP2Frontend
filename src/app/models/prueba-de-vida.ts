@@ -10,7 +10,8 @@ export class PruebaDeVida {
         idPersonaRestriccion: number = 0,
         accion: string = '',
         esMultiple = false,
-        idPruebaDeVidaMultiple = 0
+        idPruebaDeVidaMultiple = 0,
+        tiempoDeRespuesta: Date | null = null,
     ) {
         this.idPruebaDeVida = idPruebaDeVida;
         this.fecha = fecha;
@@ -20,7 +21,8 @@ export class PruebaDeVida {
         this.idPersonaRestriccion = idPersonaRestriccion;
         this.accion = accion;
         this.esMultiple = esMultiple;
-        this.idPruebaDeVidaMultiple =idPruebaDeVidaMultiple;
+        this.idPruebaDeVidaMultiple = idPruebaDeVidaMultiple;
+        this.tiempoDeRespuesta = tiempoDeRespuesta;
     }
 
     idPruebaDeVida: number;
@@ -32,4 +34,5 @@ export class PruebaDeVida {
     accion: string;
     esMultiple: boolean;
     idPruebaDeVidaMultiple: number;
+    tiempoDeRespuesta: Date | null;
 }

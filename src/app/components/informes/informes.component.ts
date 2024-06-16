@@ -121,7 +121,6 @@ export class InformesComponent implements OnInit {
 
   //Generación de reportes
 
-  //Que reportes va a haber? 
 
   //Reporte de incidencias: graficos de cant de cada tipo de incidencias, cant de incidencias por cada restriccion
 
@@ -185,23 +184,33 @@ export class InformesComponent implements OnInit {
           );
           break;
         case 'Informe de Incidencias':
-          this.generarInforme(
+          this.generarInformeIncidencias(
             'Informe de Incidencias',
-            ['ID', 'IDRestriccion'],
+            ['ID', 'IDRestriccion','Fecha','Descripcion','Topico','Peligrosidad'],
             this.incidencias.map(r => ({
               ID: r.idIncidencia,
-              'IDRestriccion': r.idRestriccion
+              'IDRestriccion': r.idRestriccion,
+              'Fecha': r.fecha,
+              'Descripcion':r.descripcion,
+              'Topico':r.topico,
+              'Peligrosidad':r.peligrosidad
             })), this.incidencias
           );
           break;
         case 'Informe de Pruebas de Vida':
-          this.generarInforme(
+          this.generarInformePrueba(
             'Informe de Pruebas de Vida',
-            ['ID', 'IDRestriccion'],
+            ['ID', 'IDRestriccion', 'Fecha', 'Descripcion', 'Estado', 'IDPersona', 'Accion'],
             this.pruebas.map(r => ({
               ID: r.idPruebaDeVida,
-              'IDRestriccion': r.idRestriccion
-            })), this.incidencias
+              'IDRestriccion': r.idRestriccion, 
+              'Fecha': r.fecha, 
+              'Descripcion': r.descripcion, 
+              'Estado': r.estado, 
+              'IDPersona': r.idPersonaRestriccion, 
+              'Accion' : r.accion
+              
+            })), this.pruebas
           );
           break;
         default:
@@ -599,9 +608,247 @@ export class InformesComponent implements OnInit {
   }
 
 
+  //Reporte de incidencias ; grafico de cantidad por restriccion, grafico por topico y grafico por peligrosidad
 
+ 
+  generarInformeIncidencias(titulo, columnas, datos, lista) {
+
+    // Agrupar datos por restriccion, topico y peligrosidad
+    const groupBy = (key) => {
+        return lista.reduce((acc, obj) => {
+            const prop = obj[key];
+            if (!acc[prop]) {
+                acc[prop] = 0;
+            }
+            acc[prop]++;
+            return acc;
+        }, {});
+    };
+
+    const incidenciasPorRestriccion = groupBy('idRestriccion');
+    const incidenciasPorTopico = groupBy('topico');
+    const incidenciasPorPeligrosidad = groupBy('peligrosidad');
+
+    // Crear arrays para Chart.js
+    const labelsRestriccion = Object.keys(incidenciasPorRestriccion);
+    const dataRestriccion = Object.values(incidenciasPorRestriccion);
+
+    const labelsTopico = Object.keys(incidenciasPorTopico);
+    const dataTopico = Object.values(incidenciasPorTopico);
+
+    const labelsPeligrosidad = Object.keys(incidenciasPorPeligrosidad);
+    const dataPeligrosidad = Object.values(incidenciasPorPeligrosidad);
+
+    let popupWin = window.open('', '_blank', 'width=800, height=600');
+    popupWin!.document.open();
+    popupWin!.document.write(`
+      <html>
+      <button id="printButton" onclick="printPage()">Imprimir</button>
+        <head>
+          <title>${titulo}</title>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+          <style>
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            table, th, td {
+              border: 1px solid black;
+            }
+            th, td {
+              padding: 8px;
+              text-align: left;
+            }
+            canvas {
+              margin-top: 20px;
+            }
+            #printButton {
+              margin-top: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>${titulo}</h1>
+          <table>
+            <tr>
+              ${columnas.map(col => `<th>${col}</th>`).join('')}
+            </tr>
+            ${datos.map(d => `
+              <tr>
+                ${columnas.map(col => `<td>${d[col]}</td>`).join('')}
+              </tr>
+            `).join('')}
+          </table>
+
+          <canvas id="chartRestriccion"></canvas>
+          <canvas id="chartTopico"></canvas>
+          <canvas id="chartPeligrosidad"></canvas>
+
+          <script>
+              function printPage() {
+              var printButton = document.getElementById('printButton');
+              printButton.style.display = 'none';
+              window.print();
+              setTimeout(function() {
+                printButton.style.display = 'block';
+              }, 800); // Ajusta el tiempo según sea necesario
+            }
+
+            // Crear gráficos
+            function crearGrafico(id, labels, data, label) {
+              var ctx = document.getElementById(id).getContext('2d');
+              new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: labels,
+                  datasets: [{
+                    label: label,
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  scales: {
+                    yAxes: [{
+                      ticks: {
+                        beginAtZero: true
+                      }
+                    }]
+                  }
+                }
+              });
+            }
+
+            // Crear gráficos con los datos agrupados
+            crearGrafico('chartRestriccion', ${JSON.stringify(labelsRestriccion)}, ${JSON.stringify(dataRestriccion)}, 'Incidencias por Restricción');
+            crearGrafico('chartTopico', ${JSON.stringify(labelsTopico)}, ${JSON.stringify(dataTopico)}, 'Incidencias por Tópico');
+            crearGrafico('chartPeligrosidad', ${JSON.stringify(labelsPeligrosidad)}, ${JSON.stringify(dataPeligrosidad)}, 'Incidencias por Peligrosidad');
+          </script>
+        </body>
+      </html>
+    `);
+    popupWin!.document.close();
 }
 
 
+//Reporte de pruebas de vida: grafico por restriccion y grafico por estado.
+
+generarInformePrueba(titulo, columnas, datos, lista) {
+
+  // Agrupar datos por restriccion y estado
+  const groupBy = (key) => {
+    return lista.reduce((acc, obj) => {
+      const prop = obj[key];
+      if (!acc[prop]) {
+        acc[prop] = 0;
+      }
+      acc[prop]++;
+      return acc;
+    }, {});
+  };
+
+  const pruebasPorRestriccion = groupBy('idRestriccion');
+  const pruebasPorEstado = groupBy('estado');
+
+  // Crear arrays para Chart.js
+  const labelsRestriccion = Object.keys(pruebasPorRestriccion);
+  const dataRestriccion = Object.values(pruebasPorRestriccion);
+
+  const labelsEstado = Object.keys(pruebasPorEstado);
+  const dataEstado = Object.values(pruebasPorEstado);
+
+  let popupWin = window.open('', '_blank', 'width=800, height=600');
+  popupWin!.document.open();
+  popupWin!.document.write(`
+    <html>
+    <button id="printButton" onclick="printPage()">Imprimir</button>
+      <head>
+        <title>${titulo}</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+        <style>
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          table, th, td {
+            border: 1px solid black;
+          }
+          th, td {
+            padding: 8px;
+            text-align: left;
+          }
+          canvas {
+            margin-top: 20px;
+          }
+          #printButton {
+            margin-top: 20px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>${titulo}</h1>
+        <table>
+          <tr>
+            ${columnas.map(col => `<th>${col}</th>`).join('')}
+          </tr>
+          ${datos.map(d => `
+            <tr>
+              ${columnas.map(col => `<td>${d[col]}</td>`).join('')}
+            </tr>
+          `).join('')}
+        </table>
+
+        <canvas id="chartRestriccion"></canvas>
+        <canvas id="chartEstado"></canvas>
+
+        <script>
+          function printPage() {
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = 'none';
+            window.print();
+            setTimeout(function() {
+              printButton.style.display = 'block';
+            }, 800); // Ajusta el tiempo según sea necesario
+          }
+
+          // Crear gráficos
+          function crearGrafico(id, labels, data, label) {
+            var ctx = document.getElementById(id).getContext('2d');
+            new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: label,
+                  data: data,
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                }
+              }
+            });
+          }
+
+          // Crear gráficos con los datos agrupados
+          crearGrafico('chartRestriccion', ${JSON.stringify(labelsRestriccion)}, ${JSON.stringify(dataRestriccion)}, 'Pruebas de Vida por Restricción');
+          crearGrafico('chartEstado', ${JSON.stringify(labelsEstado)}, ${JSON.stringify(dataEstado)}, 'Pruebas de Vida por Estado');
+        </script>
+      </body>
+    </html>
+  `);
+  popupWin!.document.close();
+}
 
 
+}

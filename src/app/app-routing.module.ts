@@ -19,7 +19,8 @@ import { EstadoComponent } from './components/estado/estado.component';
 import { SupervisorGeneralComponent } from './components/supervisor-general/supervisor-general';
 import { InformesComponent } from './components/informes/informes.component';
 import { JuzgadoComponent } from './components/juzgado/juzgado.component';
-import { ParametrosComponent } from './components/parametros/parametros.component';
+import { ParametrosRutinaComponent } from './components/parametros-rutina/parametros-rutina.component';
+import { ParametrosPruebaDeVidaComponent } from './components/parametros-prueba-de-vida/parametros-prueba-de-vida.component';
 
 const routes: Routes = [
   {
@@ -41,7 +42,8 @@ const routes: Routes = [
       {path:'estado', component:EstadoComponent},
       {path:'informes', component:InformesComponent},
       {path:'juzgado', component:JuzgadoComponent},
-      {path:'parametros', component:ParametrosComponent}
+      {path:'parametros-rutina', component:ParametrosRutinaComponent},
+      {path:'parametros-prueba-de-vida', component:ParametrosPruebaDeVidaComponent}
     ]
   },
   { path: 'ingresar', component: UsuarioComponent },
