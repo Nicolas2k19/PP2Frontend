@@ -40,4 +40,8 @@ export class PruebaDeVidaService {
    getPruebasDeVida(){
     return this.http.get(this.URL_API);
   }
+
+  deletePruebaDeVida(idPruebaDeVida : number){
+    return this.http.delete(this.URL_API+"/"+idPruebaDeVida)
+  }
 }

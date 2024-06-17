@@ -34,10 +34,10 @@ export class ParametrosPruebaDeVidaComponent implements OnInit {
   onSubmit() {
     this.updateDuration();
   }
-
+  
   updateDuration() {
     this.normalizarRangos();
-    this.duration = `${this.hours}:${this.minutes.toString().padStart(2, '0')}:00`;
+    this.duration = `${(this.hours < 10 ? '0' : '') + this.hours}:${this.minutes.toString().padStart(2, '0')}:00`;
     this.tiempoDeEspera.valor = this.duration;
     this.parametroService.update(1,this.tiempoDeEspera).subscribe(res=>{
       console.log("Actulice correctamente el parametro: "+ (res as Parametro));

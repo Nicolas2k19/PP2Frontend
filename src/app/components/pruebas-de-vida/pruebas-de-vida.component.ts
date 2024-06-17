@@ -193,7 +193,7 @@ export class PruebasDeVidaComponent implements OnInit {
             this.pruebaDeVida.tiempoDeRespuesta = this.tiempoDeRespuesta
             const fechaActual = new Date(this.pruebaDeVida.tiempoDeRespuesta.getTime());
             fechaActual.setHours(fechaActual.getHours() + this.diferenciaHoraria);
-            this.pruebaDeVida.descripcion += " (disponible hasta las: " + fechaActual.getHours() + ":" + fechaActual.getMinutes() + ")";
+            this.pruebaDeVida.descripcion += " (disponible hasta las: " + fechaActual.getHours() + ":" + (fechaActual.getMinutes() < 10 ? '0' : '') + fechaActual.getMinutes() + ")";
 
             this.spinnerService.show();
             this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe((res) => {
@@ -226,7 +226,8 @@ export class PruebasDeVidaComponent implements OnInit {
       pruebaDeVidaMultiple.tiempoDeRespuesta = this.tiempoDeRespuesta
       const fechaActual = new Date(this.tiempoDeRespuesta.getTime());
       fechaActual.setHours(fechaActual.getHours() + this.diferenciaHoraria);
-      pruebaDeVidaMultiple.descripcion = this.descripcionPruebaMultiple + " disponible hasta las: " + fechaActual.getHours() + ":" + fechaActual.getMinutes();;
+      fechaActual.setMonth(fechaActual.getMonth()+1)
+      pruebaDeVidaMultiple.descripcion = this.descripcionPruebaMultiple + " disponible hasta las: " + fechaActual.getHours() + ":" + (fechaActual.getMinutes() < 10 ? '0' : '') + fechaActual.getMinutes() + " del " + fechaActual.getDate() + "/" + (fechaActual.getMonth() < 10 ? '0' : '') + fechaActual.getMonth() ;
 
       this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(res => {
         let nuevaPruebaDeVidaMultiple = res as PruebaDeVidaMultiple;
@@ -360,6 +361,7 @@ export class PruebasDeVidaComponent implements OnInit {
   verificarEstadoDePruebaDeVidaMultiples(pruebasDeVida: PruebaDeVida[]) {
     let countAceptadas = 0;
     let countRechazadas = 0;
+    let countSinRespuesta = 0;
     this.estadoGrupo = 'Pendiente'
     let idPruebaMultiple = 0
     pruebasDeVida.forEach(prueba => {
@@ -368,11 +370,15 @@ export class PruebasDeVidaComponent implements OnInit {
         countAceptadas++
       if (prueba.estado == 'Rechazada' || prueba.estado == 'RechazadaAutomaticamente')
         countRechazadas++
+      if (prueba.estado == 'SinRespuesta')
+        countSinRespuesta++
     })
     if (countAceptadas == pruebasDeVida.length)
       this.estadoGrupo = 'Aceptada'
     if (countRechazadas > 0)
       this.estadoGrupo = 'Rechazada'
+    if (countSinRespuesta > 0)
+      this.estadoGrupo = 'SinRespuesta'
 
     this.pruebaDeVidaMultipleService.actualizarEstadoPruebaDeVida(idPruebaMultiple, this.estadoGrupo).subscribe(res => { })
   }
@@ -383,6 +389,8 @@ export class PruebasDeVidaComponent implements OnInit {
         return 'Aceptada Automaticamente';
       case 'RechazadaAutomaticamente':
         return 'Rechazada Automaticamente';
+      case 'SinRespuesta':
+        return 'Sin Respuesta';
       default:
         return estado;
     }
@@ -397,7 +405,6 @@ export class PruebasDeVidaComponent implements OnInit {
     })
     return accionTransformada
   }
-
 
   cerrarModal() {
     this.pruebaDeVida = new PruebaDeVida;
