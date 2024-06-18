@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonaService } from 'src/app/services/personas/persona.service';
-import { Persona } from 'src/app/models/persona';
 import { NgForm } from '@angular/forms';
 import { FormPersonaDTO } from 'src/app/models/form-persona-dto';
 import { ErrorDTO } from 'src/app/models/error-dto';
@@ -12,19 +11,18 @@ import { FotoIdentificacion } from 'src/app/models/foto-identificacion';
 import { FotoIdentificacionService } from 'src/app/services/fotoIdentificacion/foto-identificacion.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
-
 @Component({
   selector: 'app-administrar-personas',
   templateUrl: './administrar-personas.component.html',
   styleUrls: ['./administrar-personas.component.css']
 })
+
 export class AdministrarPersonasComponent implements OnInit {
 
   personaDTOSelleccionada = new FormPersonaDTO;
   fotoIdentificacion = new FotoIdentificacion;
   fecha: Date = new Date();
   maxDatePicker = { year: this.fecha.getFullYear(), month: this.fecha.getMonth() + 1, day: this.fecha.getDate() };
-
   fechaMarcador;
 
   //COMBO ROLES
@@ -44,22 +42,19 @@ export class AdministrarPersonasComponent implements OnInit {
 
   hayError = false;
   editarBandera: boolean = false;
+  mostrarDomicilio: boolean;
 
-
-  mostrarDomicilio : boolean;
-
-  // ordenamiento de tablas
-  ordenApellido : boolean;
-  ordenNombre : boolean;
-  ordenEdad : boolean;
-  ordenFechaNac : boolean;
-  ordenDni : boolean;
+  //Ordenamiento de tablas
+  ordenApellido: boolean;
+  ordenNombre: boolean;
+  ordenEdad: boolean;
+  ordenFechaNac: boolean;
+  ordenDni: boolean;
 
   //Filtros
   showSelect: boolean = false;
-  dniFilter:string;
-  originalPeople : FormPersonaDTO[] = [];
-
+  dniFilter: string;
+  originalPeople: FormPersonaDTO[] = [];
 
   constructor(
     public personaService: PersonaService,
@@ -100,20 +95,11 @@ export class AdministrarPersonasComponent implements OnInit {
    * Guarda a una persona con la informacion del formulario pasada por parametro
    * @param personaForm 
    */
-  guardarPersona(personaForm: NgForm){   
-    console.log("Estoy guardando")
-    console.log(this.editarBandera)
-    //let ngbDate = personaForm.value.fechaNacimiento;
-    //let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day+1);
-    //this.personaDTOSelleccionada.persona.fechaNacimiento = myDate;
-    //this.personaDTOSelleccionada.persona.fechaNacimiento = myDate;
-    
-    if(this.editarBandera){
+  guardarPersona(personaForm: NgForm) {
+    if (this.editarBandera) {
       this.spinner.show();
       this.personaService.putPersona(this.personaDTOSelleccionada)
         .subscribe(res => {
-          console.log("Estoy en true")
-          console.log(res);
           this.getPersonas();
           personaForm.reset();
           this.editarBandera = false;
@@ -123,16 +109,11 @@ export class AdministrarPersonasComponent implements OnInit {
           this.cambiarAVentanaPersona()
         });
     }
-    else{
-      console.log("Estoy en el else")
+    else {
       this.agregarPersona(personaForm);
     }
 
-
-
-    console.log("nO ESTOY ENTRANDO EN NADA")
     this.editarBandera = false;
-
   }
 
   /**
@@ -157,16 +138,16 @@ export class AdministrarPersonasComponent implements OnInit {
       let img: string = imgBase64 as string;
       thisjr.personaDTOSelleccionada.foto = img;
       thisjr.personaService.postPersona(thisjr.personaDTOSelleccionada)
-        .subscribe(res => {   
+        .subscribe(res => {
           console.log("Estoy en el post con error")
           var error = res as ErrorDTO;
-          
+
           if (error.hayError) {
             //MOSTRAR ERROR
             thisjr.toastr.error("Ha ocurrido un error" + error.mensajeError, "Error!");
             thisjr.spinner.hide();
             personaForm.reset();
-            
+
           }
           else {
             thisjr.toastr.success("Persona agregada correctamente", "Agregada!");
@@ -177,7 +158,7 @@ export class AdministrarPersonasComponent implements OnInit {
             thisjr.spinner.hide();
           }
           thisjr.cambiarAVentanaPersona()
-         
+
         })
     })
 
@@ -270,9 +251,18 @@ export class AdministrarPersonasComponent implements OnInit {
       .subscribe(res => {
         this.spinner.hide();
         this.localidades = res as Localidad[];
-        if(this.localidad.nombre != ""){
+        if (this.localidad.nombre != "") {
           this.localidadSeleccionada = this.localidad.nombre;
         }
+        this.localidades.sort((a, b) => {
+          if (a.nombre < b.nombre) {
+            return -1;
+          }
+          if (a.nombre > b.nombre) {
+            return 1;
+          }
+          return 0;
+        });
       });
   }
 
@@ -304,153 +294,133 @@ export class AdministrarPersonasComponent implements OnInit {
     this.cambiarAVentanaPersona()
   }
 
-    //BUSCO LA LOCALIDAD DE LA PERSONA PARA TOMAR LA PROVINCIA 
-    //Y LLENO LOS COMBOS
-    getLocalidad(idLocalidad: number) {
-      this.spinner.show();
-      this.provinciaLocalidadService.getLocalidad(idLocalidad)
-        .subscribe(res => {
-          this.spinner.hide();
-          this.localidad = res as Localidad;
-          for(let i = 0; i < this.provincias.length; i++){
-            if(this.provincias[i].idProvincia == this.localidad.idProvincia){
-              this.provinciaSeleccionada = this.provincias[i].nombre;
-              this.getLocalidades(this.localidad.idProvincia);
-            }
+  //BUSCO LA LOCALIDAD DE LA PERSONA PARA TOMAR LA PROVINCIA 
+  //Y LLENO LOS COMBOS
+  getLocalidad(idLocalidad: number) {
+    this.spinner.show();
+    this.provinciaLocalidadService.getLocalidad(idLocalidad)
+      .subscribe(res => {
+        this.spinner.hide();
+        this.localidad = res as Localidad;
+        for (let i = 0; i < this.provincias.length; i++) {
+          if (this.provincias[i].idProvincia == this.localidad.idProvincia) {
+            this.provinciaSeleccionada = this.provincias[i].nombre;
+            this.getLocalidades(this.localidad.idProvincia);
           }
-        });
-    }
-
-
-    /**
-     * Cambio el valor de mostrar domicilio, a su contrario
-     */
-    negarMostrarDomicilio(personaForm){ 
-      let nombre : string = this.personaDTOSelleccionada.persona.nombre
-      let apellido : string = this.personaDTOSelleccionada.persona.apellido
-      let dni : string = this.personaDTOSelleccionada.persona.dni
-      let telefono : string = this.personaDTOSelleccionada.persona.telefono
-      let fechaNac : Date = this.personaDTOSelleccionada.persona.fechaNacimiento
-      let email : string  = this.personaDTOSelleccionada.usuario.email;
-      this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
-      let tipo : string  = this.personaDTOSelleccionada.usuario.rolDeUsuario;
-
-      if(nombre==""||apellido==""||dni==""||telefono==""||fechaNac==null||tipo==""||email==""){    
-        this.toastr.error("Faltan campos que llenar", "Error!");
-        return;
-      } 
-
-      let ngbDate = personaForm.value.fechaNacimiento;
-      let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
-      this.personaDTOSelleccionada.persona.fechaNacimiento = myDate
-
-      this.toastr.success("Se ha verificado al usuario");
-      this.mostrarDomicilio = !this.mostrarDomicilio;  
-    }
-
-
-    cambiarAVentanaPersona(){
-      this.mostrarDomicilio = false;
-      console.log("Este es el valor "+ this.mostrarDomicilio)
-    }
-
-
-    /**Ordena por orden alfabetico  la tabla de personas, tomando como referencia los nombres.
-     * @returns void
-     * @author Nicolás
-     */
-    ordenarPorNombreAscendente(){
-      let orden : number = this.ordenNombre ?  1:-1
-
-      let personas : FormPersonaDTO[] = this.personaService.personas;
-      personas.sort((a,b)=>{
-        if(a.persona.nombre > b.persona.nombre){
-          return 1 * orden
         }
-        return -1 * orden
-      })
+      });
+  }
 
-      this.ordenNombre = !this.ordenNombre;
+  /**
+   * Cambio el valor de mostrar domicilio, a su contrario
+  */
+  negarMostrarDomicilio(personaForm) {
+    let nombre: string = this.personaDTOSelleccionada.persona.nombre
+    let apellido: string = this.personaDTOSelleccionada.persona.apellido
+    let dni: string = this.personaDTOSelleccionada.persona.dni
+    let telefono: string = this.personaDTOSelleccionada.persona.telefono
+    let fechaNac: Date = this.personaDTOSelleccionada.persona.fechaNacimiento
+    let email: string = this.personaDTOSelleccionada.usuario.email;
+    this.personaDTOSelleccionada.usuario.rolDeUsuario = this.rolSeleccionado;
+    let tipo: string = this.personaDTOSelleccionada.usuario.rolDeUsuario;
 
+    if (nombre == "" || apellido == "" || dni == "" || telefono == "" || fechaNac == null || tipo == "" || email == "") {
+      this.toastr.error("Faltan campos que llenar", "Error!");
+      return;
     }
 
+    let ngbDate = personaForm.value.fechaNacimiento;
+    let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
+    this.personaDTOSelleccionada.persona.fechaNacimiento = myDate
 
-    /**Ordena por orden alfabetico  la tabla de personas, tomando como referencia los nombres.
-     * @returns void
-     * @author Nicolás
-     */
-    ordenarPorApellidoAscendente(){
-      let orden : number = this.ordenApellido ?  1:-1
-      let personas : FormPersonaDTO[] = this.personaService.personas;
-      personas.sort((a,b)=>{
-        if(a.persona.apellido > b.persona.apellido){
-          return 1 * orden
-        }
-        return -1 * orden
-      })
+    this.toastr.success("Se ha verificado al usuario");
+    this.mostrarDomicilio = !this.mostrarDomicilio;
+  }
 
-      this.ordenApellido = !this.ordenApellido;
+  cambiarAVentanaPersona() {
+    this.mostrarDomicilio = false;
+  }
 
-    }
+  /**Ordena por orden alfabetico  la tabla de personas, tomando como referencia los nombres.
+   * @returns void
+   * @author Nicolás
+  */
+  ordenarPorNombreAscendente() {
+    let orden: number = this.ordenNombre ? 1 : -1
 
-    /**Ordena la tabla de personas, tomando como referencia el dni.
-     * @returns void
-     * @author Nicolás
-     */
+    let personas: FormPersonaDTO[] = this.personaService.personas;
+    personas.sort((a, b) => {
+      if (a.persona.nombre > b.persona.nombre) {
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-    ordenarPorDNIAscendente(){
-      let orden : number = this.ordenDni ?  1:-1
+    this.ordenNombre = !this.ordenNombre;
+  }
 
+  /**Ordena por orden alfabetico  la tabla de personas, tomando como referencia los nombres.
+   * @returns void
+   * @author Nicolás
+  */
+  ordenarPorApellidoAscendente() {
+    let orden: number = this.ordenApellido ? 1 : -1
+    let personas: FormPersonaDTO[] = this.personaService.personas;
+    personas.sort((a, b) => {
+      if (a.persona.apellido > b.persona.apellido) {
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-      let personas : FormPersonaDTO[] = this.personaService.personas;
-      personas.sort((a,b)=>{
-        if(a.persona.dni > b.persona.dni){
-          return 1 * orden
-        }
-        return -1 * orden
-      })
+    this.ordenApellido = !this.ordenApellido;
+  }
 
-      this.ordenDni = !this.ordenDni;
+  /**Ordena la tabla de personas, tomando como referencia el dni.
+   * @returns void
+   * @author Nicolás
+  */
+  ordenarPorDNIAscendente() {
+    let orden: number = this.ordenDni ? 1 : -1
 
-    }
+    let personas: FormPersonaDTO[] = this.personaService.personas;
+    personas.sort((a, b) => {
+      if (a.persona.dni > b.persona.dni) {
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-    /**Ordena la tabla de personas, tomando como referencia la edad.
-     * @returns void
-     * @author Nicolás
-     */
+    this.ordenDni = !this.ordenDni;
+  }
 
-    ordenarPorEdad(){
-      let orden : number = this.ordenEdad ?  1:-1
+  /**Ordena la tabla de personas, tomando como referencia la edad.
+   * @returns void
+   * @author Nicolás
+   */
+  ordenarPorEdad() {
+    let orden: number = this.ordenEdad ? 1 : -1
 
+    let personas: FormPersonaDTO[] = this.personaService.personas;
+    personas.sort((a, b) => {
+      if (a.persona.fechaNacimiento > b.persona.fechaNacimiento) {
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-      let personas : FormPersonaDTO[] = this.personaService.personas;
-      personas.sort((a,b)=>{
-        if(a.persona.fechaNacimiento > b.persona.fechaNacimiento){
-          return 1 * orden
-        }
-        return -1 * orden
-      })
+    this.ordenEdad = !this.ordenEdad;
+  }
 
-      this.ordenEdad = !this.ordenEdad;
+  /*Filtros ------------------------------------*/
 
-    }
+  toggleSelect() {
+    this.showSelect = !this.showSelect;
+  }
 
-
-
-
-
-    /*Filtros*/
-
-    toggleSelect() {
-      this.showSelect = !this.showSelect;
-    }
-    
-    filtros(){
-
-      this.personaService.personas=this.originalPeople.filter(persona => {
-        return this.dniFilter === persona.persona.dni;
-      })
-
-    }
-  
+  filtros() {
+    this.personaService.personas = this.originalPeople.filter(persona => {
+      return this.dniFilter === persona.persona.dni;
+    })
+  }
 }

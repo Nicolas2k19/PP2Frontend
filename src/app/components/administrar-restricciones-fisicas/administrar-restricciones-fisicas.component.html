@@ -54,10 +54,9 @@
             </select>
         </div>        
         <div class="input-select-before  input-select-before-localidad">
-            <select [(ngModel)]="localidadSeleccionada" name="localidad" class="select-estilo">
+            <select [(ngModel)]="localidadSeleccionada" name="localidad" class="select-estilo" (change)="guardarLocalidad($event)">
                 <option disabled>Elegí una localidad</option>
-                <option value={{localidad.idLocalidad}} *ngFor="let localidad of localidades"
-                    (click)="guardarLocalidad(localidad)">
+                <option value={{localidad.idLocalidad}} *ngFor="let localidad of localidades">
                     {{localidad.nombre}}
                 </option>
             </select>
@@ -150,7 +149,7 @@
                             <i class="material-icons" (click)="pasarDatosAlFormulario(restriccion)">edit</i>
                         </a>
                         <a>
-                            <i class="material-icons" (click)="eliminarRpFisica(restriccion.idRPLugar)">delete</i>
+                            <i class="material-icons" (click)="eliminarRpFisica(restriccion.rpLugar.idRPLugar)">delete</i>
                         </a>
                         <a>
                             <i class="material-icons" (click)="masInfo(restriccion)">info</i>

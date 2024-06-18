@@ -19,8 +19,8 @@ import { RestriccionService } from 'src/app/services/restricciones/restriccion.s
   styleUrls: ['./administrar-restricciones-multiples-persona.component.css', '../styles/mas-info.css']
 
 })
-export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit {
 
+export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit {
 
   editar: boolean
   dni: string
@@ -60,12 +60,11 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   infoDistancia: number;
   infoCodigoPostal: string;
 
-  //filtros
+  //Filtros
   idFilter: null;
   idPadreFilter: null;
   originalRes: RestriccionMultipleDTO[] = [];
   showSelect: boolean;
-
 
   constructor(public personaService: PersonaService,
     public provinciaLocalidadService: ProvinciaLocalidadService
@@ -74,8 +73,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
     private spinner: NgxSpinnerService) {
     this.editar = false;
   }
-
-
 
   ngOnInit(): void {
     this.traerRestriccionesPerimetrales()
@@ -92,7 +89,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
     this.restriccionService.getRestriccionesMultiplesDTO().subscribe(res => {
       this.restriccionesMultiples = res as RestriccionMultipleDTO[]
       this.originalRes = res as RestriccionMultipleDTO[];
-      console.log(this.restriccionesMultiples)
     })
   }
 
@@ -123,18 +119,25 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    * Este método trae las localidades disponibles
    * @author Nicolás
    */
-  traerLocalidades() { 
+  traerLocalidades() {
     if (!this.idProvincia) {
-        this.toastr.error("Por favor, selecciona una provincia.");
-        return;
+      this.toastr.error("Por favor, selecciona una provincia.");
+      return;
     }
 
     this.provinciaLocalidadService.getLocalidades(this.idProvincia).subscribe((res: Localidad[]) => {
-        this.localidades = res;
+      this.localidades = res;
+      this.localidades.sort((a, b) => {
+        if (a.nombre < b.nombre) {
+          return -1;
+        }
+        if (a.nombre > b.nombre) {
+          return 1;
+        }
+        return 0;
+      });
     });
   }
-
-
 
   /**
    * Agrega una nueva restricción multiple
@@ -142,24 +145,14 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    */
   agregarRestriccionMultiple() {
     if (this.editar) return;
-
-    console.log("Llega a agregar")
-
     this.restriccionService.postRestriccionMultiple(this.crearRestriccionMultiple())
       .subscribe(res => {
-
-        console.log("Estoy funcionando bro")
-
         if (res == null) {
           this.toastr.error("Ha ocurrido un error al intentar agregar la restricción multiple")
-
         }
-
         else this.toastr.success("Se ha agregado la persona correctamente")
-
         this.traerRestriccionesMultiples();
       })
-
   }
 
 
@@ -183,12 +176,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       this.agregarRestriccionMultiple();
       this.spinner.hide()
     })
-
   }
-
-
-
-
 
   /**
    * Crea una restricción multiple usando los datos del ngModel
@@ -196,24 +184,13 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    */
   crearRestriccionMultiple(): RestriccionMultiple {
     let resMultiple: RestriccionMultiple = new RestriccionMultiple()
-
-    console.log("Llegue a crear RESTRICCION MULTIPLE")
-
     resMultiple.direccion = this.crearDireccion()
-
     resMultiple.distancia = this.distancia;
-
     resMultiple.idPersona = this.persona.idPersona;
-
     resMultiple.idRestriccion = this.idPerimetral;
-
     resMultiple.idProvincia = this.idProvincia;
 
-
-    console.log("CREÉ LA RESTRICCIÓN MULTIPLE SACO DE WEA")
-
     return resMultiple;
-
   }
 
   /**
@@ -231,30 +208,16 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
     return restriccionCompleta;
   }
 
-
-
-
   crearDireccion() {
     let nuevaDireccion: Direccion = new Direccion()
-
-    console.log("Llegue a crear dirección")
-
     nuevaDireccion.departamento = this.departamento
-    console.log("eRROR DEPA")
     nuevaDireccion.calle = this.calle;
-    console.log("eRROR CALLE")
     nuevaDireccion.altura = this.altura;
-    console.log("eRROR ALTURA")
     nuevaDireccion.idLocalidad = this.idLocalidad;
-    console.log("eRROR LOCALIDAD")
     nuevaDireccion.piso = this.piso
-    console.log("eRROR PISO")
-
-    console.log("Creé la dirección hdp")
 
     return nuevaDireccion;
   }
-
 
 
   /**
@@ -274,7 +237,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
     this.idLocalidad = restriccionMultiple.localidad.idLocalidad;
     this.idRestriccionMultipleAEditar = restriccionMultiple.restriccionMultiple.idRestriccionMultiple
     this.persona = restriccionMultiple.persona;
-    console.log(this.dni)
   }
 
   /**
@@ -298,14 +260,9 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
           this.toastr.success("Se ha editado correctamente")
           this.traerRestriccionesMultiples()
         })
-
       this.spinner.hide()
-
     })
-
   }
-
-
 
   /**
    * Desactiva la edición en la pantalla de restricciones multiples
@@ -314,7 +271,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   desactivarEdicion() {
     this.editar = false;
   }
-
 
   /**
    * Verifica que los campos no esten vacíos
@@ -339,7 +295,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
 
     if (this.campoVacio(this.distancia + "")) this.toastr.error("No se ingreso la distancia.")
 
-
     return !this.campoVacio(this.dni)
       && !this.campoVacio(this.calle)
       && !this.campoVacio(this.altura)
@@ -350,7 +305,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       && !this.campoVacio(this.departamento + "")
       && !this.campoVacio(this.distancia + "")
       && !this.campoVacio(this.idProvincia + "");
-
   }
 
   /**
@@ -358,18 +312,10 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    * @author Nicolás
    */
   campoVacio(campo: string) {
-
-    console.log(campo);
-    console.log(campo == undefined);
-
     if (campo == "undefined") return true;
-
     if (campo == "") return true;
-
-
     return false;
   }
-
 
   /**
    * Maneja el error al hacer una llamada que falle
@@ -384,7 +330,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
    * Elimina una restriccion multiple
    * @author Nicolás
    */
-
   eliminarRestriccionMultiple(idRestriccionMultiple: number) {
     this.spinner.show()
     this.restriccionService.deleteRestriccionMultiple(idRestriccionMultiple).subscribe(res => {
@@ -393,18 +338,10 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
     });
   }
 
-
-
-
-
-  /**
-   * Ordenamiento tablas
-   */
+  //Ordenamiento tablas -----------------------------------------
 
   ordenarPorRM() {
-
     let orden: number = this.ordenIDRM ? 1 : -1
-
     let restriccion: RestriccionMultipleDTO[] = this.restriccionesMultiples;
     restriccion.sort((a, b) => {
       if (a.restriccionMultiple.idRestriccionMultiple > b.restriccionMultiple.idRestriccionMultiple) {
@@ -412,15 +349,11 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       }
       return -1 * orden
     })
-
     this.ordenIDRM = !this.ordenIDRM;
-
   }
 
   ordenarPorID() {
-
     let orden: number = this.ordenID ? 1 : -1
-
     let restriccion: RestriccionMultipleDTO[] = this.restriccionesMultiples;
     restriccion.sort((a, b) => {
       if (a.restriccionMultiple.idRestriccion > b.restriccionMultiple.idRestriccion) {
@@ -428,9 +361,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       }
       return -1 * orden
     })
-
     this.ordenID = !this.ordenID;
-
   }
 
   ordenarPorDireccion() {
@@ -443,9 +374,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       }
       return -1 * orden
     })
-
     this.ordenDireccion = !this.ordenDireccion;
-
   }
 
   ordenarPorLocalidad() {
@@ -458,14 +387,11 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       }
       return -1 * orden
     })
-
     this.ordenLocalidad = !this.ordenLocalidad;
-
   }
 
   ordenarPorProvincia() {
     let orden: number = this.ordenProvincia ? 1 : -1
-
     let restriccion: RestriccionMultipleDTO[] = this.restriccionesMultiples;
     restriccion.sort((a, b) => {
       if (a.provincia.nombre > b.provincia.nombre) {
@@ -473,16 +399,13 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       }
       return -1 * orden
     })
-
     this.ordenProvincia = !this.ordenProvincia;
-
   }
 
 
-  /**VENTANA MODAL */
+  //Ventana modal ----------------------------------
 
   masInfo(restriccion: RestriccionMultipleDTO) {
-
     this.infoResIDM = restriccion.restriccionMultiple.idRestriccionMultiple;
     this.infoResID = restriccion.restriccionMultiple.idRestriccion;
 
@@ -491,7 +414,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
     this.infoTelefono = restriccion.persona.telefono;
     this.infoNacimiento = restriccion.persona.fechaNacimiento;
     this.infoDNI = restriccion.persona.dni;
-
 
     //Datos domicilio
     this.infoDireccion = restriccion.restriccionMultiple.direccion.calle + " " + restriccion.restriccionMultiple.direccion.altura;
@@ -504,20 +426,14 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
     this.modalAbierta = true;
   }
 
-
   cerrarModal() {
-
     this.modalAbierta = false;
   }
 
-
-
-  //filtros
-
+  //Filtros ------------------------------
 
   traerTodos() {
     this.traerRestriccionesMultiples();
-
     this.idPadreFilter = null;
     this.idFilter = null;
   }
@@ -534,23 +450,10 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
       resultadosFiltrados = resultadosFiltrados.filter(restriccion =>
         restriccion.restriccionMultiple.idRestriccionMultiple.toString() === this.idFilter);
     }
-
     this.restriccionesMultiples = resultadosFiltrados;
-
   }
-
 
   toggleSelect() {
     this.showSelect = !this.showSelect;
   }
-
-
-
-
 }
-
-
-
-
-
-
