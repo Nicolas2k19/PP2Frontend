@@ -1,5 +1,10 @@
+
 table{
     height: fit-content;
+}
+
+h3::after{
+  border-color: #9E58FF;
 }
 
 .container{
@@ -17,6 +22,7 @@ table{
     width: 100px;
     background-color: #9E58FF;
     border: 0px;
+    margin-bottom: 1rem;
 }
 
 .btn{
@@ -31,14 +37,21 @@ table{
     
 }
 
+.label-cantidad{
+  display: flex;
+  flex-direction: column;
+}
 
-
+th{
+  background-color: #480971;
+  color: white;
+}
 
 
 .header-config{
     display: flex;
     flex-direction: row;
-    gap: 1.5rem;
+    justify-content: space-between;
 }
 
 option{
@@ -57,10 +70,12 @@ option{
 
 .configuraciones{
     background-color: #480971;
-    padding: 2rem;
+    padding: 4rem;
     color: white;
     flex-direction: column;
     display: flex;
+    height: fit-content;
+    width: 600px;
 
 }
 
@@ -173,3 +188,9 @@ input[type="range"]::-moz-range-progress {
     border: 0px;
    
   }
+
+
+.scroll{
+  height: 400px;
+  overflow-y: scroll;
+}
