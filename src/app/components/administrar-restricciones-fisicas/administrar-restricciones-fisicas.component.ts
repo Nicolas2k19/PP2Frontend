@@ -274,6 +274,7 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit {
     this.restriccionSeleccionada = restriccion.rpLugar.idRestriccion;
     this.provinciaSeleccionada = restriccion.provincia.idProvincia;
     this.localidadSeleccionada = restriccion.localidad.idLocalidad;
+    this.obtenerLocalidades(restriccion.provincia)
     this.restriccionAEditar = restriccion.rpLugar.idRPLugar;
     this.datosLocalidad = restriccion.localidad;
     this.datosProvinciaSeleccionada = restriccion.provincia;

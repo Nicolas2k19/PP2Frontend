@@ -30,7 +30,7 @@ td {
   border: 0px solid #fff;
   border-radius: 0;
   border-bottom: 1px solid black;
-  padding: 0;
+  width: 100%;
 }
 
 /*Textos que describen los campos*/
@@ -54,23 +54,32 @@ td {
 .input-texto-before-juzgado,
 .input-texto-before-peligrosidad,
 .input-texto-before-fecha
-
-
  {
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+.fecha{
+  background-color: #fff;
+}
+
+.small{
+  color: #fff;
 }
 
 .input-texto-before-victimario::before {
   content: "DNI agresor*";
   font-size: 0.7rem;
   text-align: left;
+  width: 100%;
 }
 
 .input-texto-before-damnificada::before {
   content: "Dni damnificada *";
   font-size: 0.7rem;
   text-align: left;
+  width: 100%;
 }
 
 .input-before-selector-grupos::before {
@@ -83,37 +92,42 @@ td {
   content: "Distancia *";
   font-size: 0.7rem;
   text-align: left;
+  width: 100%;
 }
 
 .input-before-selector-fecha::before {
   content: "Inicio de restricción *";
   font-size: 0.7rem;
   text-align: left;
+  width: 100%;
 }
 
 .input-texto-before-grupoF::before {
   content: "Grupo:";
   font-size: 0.9rem;
   text-align: left;
+  width: 100%;
 }
 
 .input-texto-before-dniV::before {
   content: "DNI victimario:";
   font-size: 0.9rem;
   text-align: left;
+  width: 100%;
 }
 
 .input-texto-before-dniD::before {
   content: "DNI damnificada:";
   font-size: 0.9rem;
   text-align: left;
+  width: 100%;
 }
 
 .input-texto-before-emailA::before {
   content: "Email administrativo:";
   font-size: 0.9rem;
   text-align: left;
-  
+  width: 100%;
 }
 
 .input-texto-before-dniVic::before {
@@ -121,8 +135,6 @@ td {
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
 
 .input-texto-before-nameVic::before {
@@ -130,8 +142,6 @@ td {
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
 
 .input-texto-before-dniDam::before {
@@ -139,8 +149,6 @@ td {
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
 
 .input-texto-before-nameDam::before {
@@ -148,16 +156,13 @@ td {
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
+
 .input-texto-before-admin::before {
   content: "Administrador responsable:";
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
 
 .input-texto-before-distancia::before {
@@ -165,45 +170,40 @@ td {
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
+
 .input-texto-before-comisaria::before {
   content: "Comisaria responsable:";
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
+
 .input-texto-before-juzgado::before {
   content: "Juzgado responsable:";
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
+
 .input-texto-before-fecha::before {
   content: "Fecha de sentencia:";
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
 }
+
 .input-texto-before-peligrosidad::before {
   content: "Nivel de peligrosidad:";
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-
 }
 
 /*Control de errores*/
 .error {
   color: red;
 }
-
 
 /*Container*/
 .container {
@@ -219,7 +219,12 @@ td {
   background-color: #8d3aff63;
   color: black;
   padding: 2.5rem;
+}
 
+.card-body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card2 {
@@ -271,8 +276,10 @@ td {
 .filtro {
   color:#480971;
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
-  max-width: fit-content;
+  max-width: 100%;
 }
 
 .image-button {
@@ -280,15 +287,19 @@ td {
   color: #480971;
 }
 
-
-
 .boton-filtro {
-  padding: 10px;
+  padding-top: 10px;
+  width: 100%;
+}
+
+.traer-todo{
+  padding-top: 10px;
+  width: 100%;
 }
 
 .filtro-btn {
   display: flex;
-  padding: 0;
+  width: 100%;
 }
 
 
@@ -357,6 +368,7 @@ td {
 .input-before-texto-grupo {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .input-before-selector-seleccion-grupo::before {
@@ -378,6 +390,10 @@ td {
   color: #480971;
 }
 
+.calendario{
+  color: #fff;
+}
+
 .ordenamiento{
   color:#fff
 }
@@ -387,6 +403,7 @@ td {
 .btn {
   background-color: #480971;
   color: white;
+  width: 100%;
 }
 
 .btn-restriccion{

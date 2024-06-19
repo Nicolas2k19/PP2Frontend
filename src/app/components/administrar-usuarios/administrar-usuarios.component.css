@@ -13,7 +13,6 @@ td {
   cursor: pointer;
 }
 
-
 .table thead th {
   align-content: center;
 }
@@ -35,7 +34,6 @@ td {
   border: 0px solid #fff;
   border-radius: 0;
   border-bottom: 1px solid black;
- 
 }
 
 /*Textos que describen los campos*/
@@ -50,6 +48,8 @@ td {
 {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  margin: 0px;
 }
 
 .input-texto-before-email::before {
@@ -57,11 +57,13 @@ td {
   font-size: 0.7rem;
   text-align: left;
 }
+
 .input-texto-before-email2::before {
   content: "Email:";
   font-size: 0.7rem;
   text-align: left;
 }
+
 .input-texto-before-grupo::before {
   content: "Grupo:";
   font-size: 0.7rem;
@@ -72,30 +74,36 @@ td {
   content: "Asignar grupo *";
   font-size: 0.7rem;
   text-align: left;
+  width: 100%;
 }
 
 .input-before-selector-rol::before {
   content: "Asignar rol *";
   font-size: 0.7rem;
   text-align: left;
+  width: 100%;
 }
+
 .input-before-selector-rol2::before {
   content: "Rol:";
   font-size: 0.7rem;
   text-align: left;
+  width: 100%;
 }
+
 .input-before-selector-estado::before {
   content: "Estado:";
   font-size: 0.7rem;
   text-align: left;
+  width: 100%;
 }
 
 
 /*Container*/
 
-
 .container {
   color: #053667;
+  align-items: center;
 }
 
 .row {
@@ -107,6 +115,12 @@ td {
   background-color: #8d3aff63;
   color: black;
   padding: 2.5rem;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card2 {
@@ -154,7 +168,7 @@ td {
 .select-estilo {
   width: 100%;
   border: 1px solid black;
-  border-radius: 10px;
+  border-radius: 5px;
   height: 50px;
   background-color: white;
   color: black;
@@ -163,6 +177,7 @@ td {
 .select-estilo::before {
   content: "*";
   display: flex;
+  width: 100%;
 }
 
 
@@ -179,7 +194,8 @@ td {
 .btn {
   background-color: #480971;
   color: white;
-  border-radius: 50px;
+  width: 100%;
+  margin-top: 15px;
 }
 
 

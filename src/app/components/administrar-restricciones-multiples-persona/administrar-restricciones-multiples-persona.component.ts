@@ -235,6 +235,7 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
     this.idPerimetral = restriccionMultiple.restriccionMultiple.idRestriccion;
     this.idProvincia = restriccionMultiple.provincia.idProvincia;
     this.idLocalidad = restriccionMultiple.localidad.idLocalidad;
+    this.traerLocalidades()
     this.idRestriccionMultipleAEditar = restriccionMultiple.restriccionMultiple.idRestriccionMultiple
     this.persona = restriccionMultiple.persona;
   }

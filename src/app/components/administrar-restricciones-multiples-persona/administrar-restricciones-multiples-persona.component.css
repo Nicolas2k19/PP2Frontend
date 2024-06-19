@@ -4,7 +4,6 @@
   gap: 1rem;
 }
 
-
 /*Tabla de restricciones*/
 th {
   background-color: #480971;
@@ -29,9 +28,6 @@ th {
   justify-content: center;
 }
 
-
-
-
 /*Formulario para nuevas restricciones*/
 .card {
   background-color: #8d3aff63;
@@ -43,17 +39,14 @@ th {
 
 }
 
-
 .btn {
   background-color: #480971;
   color: white;
-  width: max-content;
-  margin-top: 1rem;
+  width: 100%;
+  margin-top: 10px;
 }
 
-
 /*Ingreso de datos  */
-
 .input-texto-before {
   display: flex;
   flex-direction: column;
@@ -86,17 +79,12 @@ th {
   text-align: left;
 }
 
-
 .input-texto-before-distancia::before {
   content: "Distancia de la restricción *";
   text-align: left;
 }
 
 /*Select before*/
-
-
-
-
 .input-select-before {
   display: flex;
   flex-direction: column;
@@ -117,9 +105,6 @@ th {
   text-align: left;
 }
 
-
-
-
 .input-texto {
   background-color: inherit;
   border: 0px solid #fff;
@@ -128,17 +113,14 @@ th {
   padding: 0;
 }
 
-
 .select-estilo {
-  width: fit-content;
+  width: 100%;
   border: 1px solid black;
   border-radius: 5px;
   height: 50px;
   background-color: white;
   color: black;
 }
-
-
 
 /*Animación titulo*/
 legend::after {
@@ -150,9 +132,7 @@ legend::after {
   animation-iteration-count: 1;
 }
 
-
 @keyframes animacionafter {
-
   0% {
     width: 0;
   }
@@ -163,15 +143,13 @@ legend::after {
 
 }
 
-
 /* filtros*/
-
 .contenedor-filtros {
   display: flex;
   flex-direction: column;
-
   align-items: flex-start;
   max-width: fit-content;
+  position: relative;
 }
 
 .filtro {
@@ -188,18 +166,22 @@ legend::after {
 }
 
 .boton-filtro {
-  padding: 10px;
+  width: 100%;
+}
+
+.traer-todo {
+  width: 100%;
 }
 
 .filtro-btn {
   display: flex;
-  padding: 0;
 }
 
 .input-texto-before-idpadre,
 .input-texto-before-idresP {
   display: flex;
   flex-direction: column;
+  padding-top: 10px;
 }
 
 .input-texto-before-idpadre::before {
@@ -213,10 +195,15 @@ legend::after {
   font-size: 0.9rem;
   text-align: left;
 }
+
 .card2 {
   border: 1px solid black;
   color: black;
   padding: 2rem;
-  max-width: fit-content;
+  width: 280px;
   border-radius: 0.5rem;
+  position: absolute;
+  top: 50px;
+  z-index: 2000;
+  background-color: white;
 }

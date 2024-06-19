@@ -1,135 +1,130 @@
-
-.container2{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+.container2 {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
-
 
 /*Tabla de restricciones*/
-th{
-    background-color: #480971;
-    color: #ffffff;
+th {
+  background-color: #480971;
+  color: #ffffff;
 }
 
-.material-icons{
-    color: #480971;
-    cursor: pointer;
+.material-icons {
+  color: #480971;
+  cursor: pointer;
 }
 
-.ordenamiento{
-  color:white;
+.ordenamiento {
+  color: white;
 }
 
 .table thead th {
   align-content: center;
 }
 
-.header-tabla{
+.header-tabla {
   display: flex;
   justify-content: center;
 }
 
-
 /*Formulario para nuevas restricciones*/
 .card {
-    background-color: #8d3aff63;
-    color: black;
-    padding: 2.5rem;
-    border: 1px solid black;
-    width: fit-content;
-    height: fit-content;
-  
-  }
+  background-color: #8d3aff63;
+  color: black;
+  padding: 2.5rem;
+  border: 1px solid black;
+  width: fit-content;
+  height: fit-content;
 
-  
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .btn {
-    background-color: #480971;
-    color: white;
-    width: fit-content;
-    margin-top: 1rem;
-  }
-
+  background-color: #480971;
+  color: white;
+  width: 100%;
+  margin-top: 10px;
+}
 
 /*Ingreso de datos  */
 
-.input-texto-before{
+.input-texto-before {
   display: flex;
   flex-direction: column;
   width: fit-content;
 }
 
-  /*Inputs before*/
-  .input-texto-before-nombre::before {
-    content: "Nombre *";
-    text-align: left;
-  }
+/*Inputs before*/
+.input-texto-before-nombre::before {
+  content: "Nombre *";
+  text-align: left;
+}
 
-  .input-texto-before-calle::before {
-    content: "Calle *";
-    text-align: left;
-  }
+.input-texto-before-calle::before {
+  content: "Calle *";
+  text-align: left;
+}
 
-  .input-texto-before-altura::before {
-    content: "Altura *";
-    text-align: left;
-  }
+.input-texto-before-altura::before {
+  content: "Altura *";
+  text-align: left;
+}
 
-  .input-texto-before-piso::before {
-    content: "Piso *";
-    text-align: left;
-  }
+.input-texto-before-piso::before {
+  content: "Piso *";
+  text-align: left;
+}
 
-  .input-texto-before-departamento::before {
-    content: "Departamento *";
-    text-align: left;
-  }
+.input-texto-before-departamento::before {
+  content: "Departamento *";
+  text-align: left;
+}
 
+.input-texto-before-distancia::before {
+  content: "Distancia de la restricción *";
+  text-align: left;
+}
 
-  .input-texto-before-distancia::before {
-    content: "Distancia de la restricción *";
-    text-align: left;
-  }
+/*Select before*/
+.input-select-before {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-  /*Select before*/
+.input-select-before-perimetral::before {
+  content: "Elegí la restricción perimetral vinculada *";
+  text-align: left;
+  width: 100%;
+}
 
+.input-select-before-provincia::before {
+  content: "Seleccionar Provincia *";
+  text-align: left;
+  width: 100%;
+}
 
-
-
-  .input-select-before{
-    display: flex;
-    flex-direction: column;
-  }
-
-  .input-select-before-perimetral::before{
-    content: "Elegí la restricción perimetral vinculada *";
-    text-align: left;
-  }
-
-  .input-select-before-provincia::before{
-    content: "Seleccionar Provincia *";
-    text-align: left;
-  }
-
-  .input-select-before-localidad::before{
-    content: "Seleccionar Localidad *";
-    text-align: left;
-  }
-
-
-
+.input-select-before-localidad::before {
+  content: "Seleccionar Localidad *";
+  text-align: left;
+  width: 100%;
+}
 
 .input-texto {
   background-color: inherit;
   border: 0px solid #fff;
   border-radius: 0;
   border-bottom: 1px solid black;
-  padding: 0;
 }
 
-
 .select-estilo {
-  width: fit-content;
+  width: 100%;
   border: 1px solid black;
   border-radius: 5px;
   height: 50px;
@@ -137,69 +132,62 @@ th{
   color: black;
 }
 
-
-
 /*Animación titulo*/
-  legend::after {
-    content: "";
-    border-bottom: 5px solid #480971;
-    display: flex;
-    animation-name: animacionafter;
-    animation-duration: 3s;
-    animation-iteration-count: 1;
+legend::after {
+  content: "";
+  border-bottom: 5px solid #480971;
+  display: flex;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+@keyframes animacionafter {
+  0% {
+    width: 0;
   }
-
-
-  @keyframes animacionafter {
-
-    0% {
-      width: 0;
-    }
-  
-    100% {
-      width: 100%;
-    }
-  
+  100% {
+    width: 100%;
   }
+}
 
 /* ventana modal info*/
 
 .modal-info {
-
   position: absolute;
   background-color: #fff;
   left: 50%;
   top: 10%;
   border: 1px solid;
-  border-color: #480971;;
+  border-color: #480971;
+  ;
 }
-
 
 .blurred {
   filter: blur(1.5px) saturate(0.7);
 
 }
 
-.modal-infoAdm{
+.modal-infoAdm {
   display: block;
 }
 
-.modal-infoRes{
+.modal-infoRes {
   display: flex;
   margin-top: 0.5rem;
-
 }
 
-.modal-body{
+.modal-body {
   display: grid;
 }
 
-.modal-infoRes1, .modal-infoRes2, .modal-infoP{
+.modal-infoRes1,
+.modal-infoRes2,
+.modal-infoP {
   padding-right: 50px;
 }
 
-.modal-header{
-
+.modal-header {
   color: #480971;
 }
 
@@ -208,8 +196,6 @@ th{
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
 
 .input-texto-before-infoD::before {
@@ -217,8 +203,6 @@ th{
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
 
 .input-texto-before-infoDD::before {
@@ -226,8 +210,6 @@ th{
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
 
 .input-texto-before-infoP::before {
@@ -235,16 +217,13 @@ th{
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
+
 .input-texto-before-infoL::before {
   content: "Localidad:";
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
-
 }
 
 .input-texto-before-infoDis::before {
@@ -252,7 +231,7 @@ th{
   font-size: 0.7rem;
   text-align: left;
   color: #9e58ffb5;
-  
+
 
 }
 
@@ -261,21 +240,19 @@ th{
 .input-texto-before-infoP,
 .input-texto-before-infoD,
 .input-texto-before-infoDD,
-.input-texto-before-infoN{
+.input-texto-before-infoN {
   display: flex;
   flex-direction: column;
 }
 
 
 /* filtros */
-
-
 .contenedor-filtros {
   display: flex;
   flex-direction: column;
-
   align-items: flex-start;
   max-width: fit-content;
+  position: relative;
 }
 
 .filtro {
@@ -292,18 +269,22 @@ th{
 }
 
 .boton-filtro {
-  padding: 10px;
+  width: 100%;
+}
+
+.traer-todo {
+  width: 100%;
 }
 
 .filtro-btn {
   display: flex;
-  padding: 0;
 }
 
 .input-texto-before-idpadre,
 .input-texto-before-idresP {
   display: flex;
   flex-direction: column;
+  padding-top: 10px;
 }
 
 .input-texto-before-idpadre::before {
@@ -317,10 +298,15 @@ th{
   font-size: 0.9rem;
   text-align: left;
 }
+
 .card2 {
   border: 1px solid black;
   color: black;
   padding: 2rem;
-  max-width: fit-content;
+  width: 280px;
   border-radius: 0.5rem;
+  position: absolute;
+  top: 50px;
+  z-index: 2000;
+  background-color: white;
 }

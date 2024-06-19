@@ -46,15 +46,17 @@
             </select>
         </div>
         <div class="input-select-before input-select-before-provincia">
-            <select [(ngModel)]="provinciaSeleccionada" name="provincia" class="select-estilo" (change)="onProvinciaChange($event)">
+            <select [(ngModel)]="provinciaSeleccionada" name="provincia" class="select-estilo"
+                (change)="onProvinciaChange($event)">
                 <option disabled selected>Elegí una provincia</option>
                 <option *ngFor="let provincia of provincias" [value]="provincia.idProvincia">
                     {{provincia.nombre}}
                 </option>
             </select>
-        </div>        
+        </div>
         <div class="input-select-before  input-select-before-localidad">
-            <select [(ngModel)]="localidadSeleccionada" name="localidad" class="select-estilo" (change)="guardarLocalidad($event)">
+            <select [(ngModel)]="localidadSeleccionada" name="localidad" class="select-estilo"
+                (change)="guardarLocalidad($event)">
                 <option disabled>Elegí una localidad</option>
                 <option value={{localidad.idLocalidad}} *ngFor="let localidad of localidades">
                     {{localidad.nombre}}
@@ -149,7 +151,8 @@
                             <i class="material-icons" (click)="pasarDatosAlFormulario(restriccion)">edit</i>
                         </a>
                         <a>
-                            <i class="material-icons" (click)="eliminarRpFisica(restriccion.rpLugar.idRPLugar)">delete</i>
+                            <i class="material-icons"
+                                (click)="eliminarRpFisica(restriccion.rpLugar.idRPLugar)">delete</i>
                         </a>
                         <a>
                             <i class="material-icons" (click)="masInfo(restriccion)">info</i>
@@ -158,11 +161,10 @@
                 </tr>
             </tbody>
         </table>
-
     </div>
 
     <!-- FILTROS -->
-    <div class="contenedor-filtros" >
+    <div class="contenedor-filtros">
 
         <div class="filtro">
 
@@ -176,75 +178,62 @@
 
         </div>
 
-
         <div class="card2 caja-filtros" *ngIf="showSelect">
 
             <div class="card-body">
                 <legend>Filtrar por:</legend>
 
-                <div class="traer-todo">
-                    <button class="btn btn-primary btn-block" (click)="traerTodos()">Obtener todos</button>
-                </div>
-
                 <!-- FILTRO id restriccion padre-->
                 <div class="row input-texto-before-idpadre filtro">
                     <div class="filtro-btn" input-group>
-                        <input class="form-control input-texto" type="text" name="idpadre"
-                            [(ngModel)]="idPadreFilter">
+                        <input class="form-control input-texto" type="text" name="idpadre" [(ngModel)]="idPadreFilter">
                     </div>
                 </div>
                 <!-- FILTRO id restriccion a persona-->
                 <div class="row input-texto-before-idresP filtro">
                     <div class="filtro-btn " input-group>
-                        <input class="form-control input-texto" type="text" name="idresP"
-                            [(ngModel)]="idFilter">
+                        <input class="form-control input-texto" type="text" name="idresP" [(ngModel)]="idFilter">
                     </div>
                 </div>
 
                 <div class="boton-filtro">
                     <button class="btn btn-primary btn-block" (click)="filtrarTodo()">Filtrar</button>
                 </div>
-            </div>
-
-
-        </div>
-
-
-    </div>
-
-</div>
-
-<!-- DIV MAS INFO VENTANA MODAL-->
-<div class="modal-info" *ngIf="modalAbierta" (click)="cerrarModal()">
-    <div class="modal-container">
-        <div class="modal-header">
-            <h2>Restricción Perimetral # {{infoResIDP}}-{{infoResID}} </h2>
-            <i class="material-icons" (click)="cerrarModal()">close</i>
-        </div>
-
-        <div class="modal-body">
-
-
-            <!-- INFO Domicilio-->
-            <div class="modal-infoAdm input-texto-before-admin">
-                
-                <p class="input-texto-before-infoN"><strong>{{infoNombre}}</strong></p>
-                <p class="input-texto-before-infoD"><strong>{{infoDireccion}}</strong></p>
-                <p class="input-texto-before-infoDD"><strong>{{infoDepto}}</strong></p>
-                <p class="input-texto-before-infoP"><strong>{{infoProvincia}}</strong></p>
-                <p class="input-texto-before-infoL"><strong>{{infoLocalidad}}</strong></p>
-            </div>
-            <!-- INFO RESTRICCION-->
-            <div class="modal-infoRes">
-
-                <!-- INFO DISTANCIA -->
-                <div class="modal-infoRes1">
-                    <p class="input-texto-before-infoDis"> <strong> {{infoDistancia}}</strong></p>
+                <div class="traer-todo">
+                    <button class="btn btn-primary btn-block" (click)="traerTodos()">Obtener todos</button>
                 </div>
+            </div>
+        </div>
 
+    </div>
+</div>
+
+    <!-- DIV MAS INFO VENTANA MODAL-->
+    <div class="modal-info" *ngIf="modalAbierta" (click)="cerrarModal()">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Restricción Perimetral # {{infoResIDP}}-{{infoResID}} </h2>
+                <i class="material-icons" (click)="cerrarModal()">close</i>
             </div>
 
+            <div class="modal-body">
+                <!-- INFO Domicilio-->
+                <div class="modal-infoAdm input-texto-before-admin">
+
+                    <p class="input-texto-before-infoN"><strong>{{infoNombre}}</strong></p>
+                    <p class="input-texto-before-infoD"><strong>{{infoDireccion}}</strong></p>
+                    <p class="input-texto-before-infoDD"><strong>{{infoDepto}}</strong></p>
+                    <p class="input-texto-before-infoP"><strong>{{infoProvincia}}</strong></p>
+                    <p class="input-texto-before-infoL"><strong>{{infoLocalidad}}</strong></p>
+                </div>
+                <!-- INFO RESTRICCION-->
+                <div class="modal-infoRes">
+
+                    <!-- INFO DISTANCIA -->
+                    <div class="modal-infoRes1">
+                        <p class="input-texto-before-infoDis"> <strong> {{infoDistancia}}</strong></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-</div>

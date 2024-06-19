@@ -454,4 +454,9 @@ export class AdministrarPersonasComponent implements OnInit {
       return this.dniFilter === persona.persona.dni;
     })
   }
+
+  traerTodos(){
+    this.getPersonas();
+    this.dniFilter = null;
+  }
 }

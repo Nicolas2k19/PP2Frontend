@@ -5,8 +5,6 @@
     <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
 </ngx-spinner>
 <div class="container">
-
-
     <div class="row">
         <!--FORMULARIO DE AGREGAR NUEVO USUARIO-->
         <div class="col-4">
@@ -57,7 +55,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col" >
+                        <th scope="col">
                             <div class="header-tabla">
                                 ID
                                 <a (click)="ordenarPorIDUser()">
@@ -65,7 +63,7 @@
                                 </a>
                             </div>
                         </th>
-                        <th scope="col" >
+                        <th scope="col">
                             <div class="header-tabla">
                                 Usuario
                                 <a (click)="ordenarPorUsuario()">
@@ -73,7 +71,7 @@
                                 </a>
                             </div>
                         </th>
-                        <th scope="col" >
+                        <th scope="col">
                             <div class="header-tabla">
                                 Estado
                                 <a (click)="ordenarPorEstado()">
@@ -81,16 +79,16 @@
                                 </a>
                             </div>
                         </th>
-                        <th scope="col" >
+                        <th scope="col">
                             <div class="header-tabla">
                                 Rol
-                            <a (click)="ordenarPorRol()">
-                                <i class="material-icons ordenamiento">unfold_more</i>
-                            </a>
+                                <a (click)="ordenarPorRol()">
+                                    <i class="material-icons ordenamiento">unfold_more</i>
+                                </a>
 
                             </div>
                         </th>
-                        <th scope="col" >
+                        <th scope="col">
                             <div class="header-tabla">
                                 Grupo
                                 <a (click)="ordenarPorGrupo()">
@@ -101,8 +99,8 @@
                         <th scope="col">
                             <div class="header-tabla">
                                 Operaciones
-                            </div></th>
-
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -123,43 +121,30 @@
                     </tr>
                 </tbody>
             </table>
-
         </div>
 
         <div class="contenedor-filtros">
-
             <div class="filtro">
-
                 <button class="image-button" (click)="toggleSelect()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                         class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
                         <path
                             d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
                     </svg>
-
                 </button>
-
-
             </div>
 
-
             <div class="card2" *ngIf="showSelect">
-
                 <div class="card-body">
                     <legend>Filtrar por:</legend>
 
-
                     <div class="row input-texto-before-grupo filtro-grupo">
                         <div class="input-grupo-filtro " input-group>
-                            <input class="form-control input-texto" type="text" name="grupo" 
-                            [(ngModel)]="grupoFilter">
+                            <input class="form-control input-texto" type="text" name="grupo" [(ngModel)]="grupoFilter">
                         </div>
                     </div>
 
-
-
                     <div class="row form-group btn-block input-before-selector-rol2">
-
                         <select class="select-estilo" name="rolSeleccionado" [(ngModel)]="selectedOptionRol">
                             <option value="todos">Todos</option>
                             <option value="administrativo">Administrativo </option>
@@ -168,31 +153,19 @@
                         </select>
                     </div>
 
-
                     <div class=" row form-group btn-block input-before-selector-estado">
-
                         <select class="select-estilo" name="estadoSeleccionado" [(ngModel)]="selectedOptionEstado">
-
                             <option value="todos">Todos</option>
                             <option value="conectado">Conectado</option>
                             <option value="ausente">Ausente </option>
                             <option value="fuera oficina">Fuera de oficina</option>
                             <option value="vacaciones">Vacaciones </option>
                             <option value="licencia">Licencia</option>
-                            
-
                         </select>
                     </div>
-
-
-
-
                 </div>
 
-
                 <button class="btn btn-primary btn-block" (click)="filtroMultiple()">Filtrar</button>
-
-
             </div>
         </div>
     </div>

@@ -72,7 +72,7 @@
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary calendar" (click)="d.toggle()"
                                         type="button">
-                                        <i class="small material-icons">event</i>
+                                        <i class="small material-icons calendario">event</i>
                                     </button>
                                 </div>
                             </div>
@@ -230,49 +230,39 @@
             </table>
         </div>
 
-
         <!-- FILTROS -->
 
+        <div class="col">
+            <div class="contenedor-filtros">
 
-        <div class="contenedor-filtros">
+                <div class="filtro">
+                    <button class="image-button" (click)="toggleSelect()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
+                            <path
+                                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                        </svg>
+                    </button>
+                </div>
 
-            <div class="filtro">
-
-                <button class="image-button" (click)="toggleSelect()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                        class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
-                        <path
-                            d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
-                    </svg>
-
-                </button>
-
-
-            </div>
-
-
-            <div class="card2" *ngIf="showSelect">
-
-                <div class="card-body">
-                    <legend>Filtrar por:</legend>
-
-
-                    <div class="row input-texto-before-dniFilter ">
-                        <div class="input-dni-filtro " input-group>
-                            <input class="form-control input-texto" type="text" name="dni" [(ngModel)]="dniFilter">
+                <div class="card2" *ngIf="showSelect">
+                    <div class="card-body">
+                        <legend>Filtrar por:</legend>
+                        <div class="row input-texto-before-dniFilter ">
+                            <div class="input-dni-filtro " input-group>
+                                <input class="form-control input-texto" type="text" name="dni" [(ngModel)]="dniFilter">
+                            </div>
                         </div>
                     </div>
 
+                    <div class="boton-filtro">
+                        <button class="btn btn-primary btn-block" (click)="filtros()">Filtrar</button>
+                    </div>
+                    <div class="traer-todo">
+                        <button class="btn btn-primary btn-block" (click)="traerTodos()">Obtener todos</button>
+                    </div>
                 </div>
-
-
-                <button class="btn btn-primary btn-block" (click)="filtros()">Filtrar</button>
-
-
             </div>
-
-
         </div>
-
     </div>
 </div>
