@@ -78,15 +78,18 @@ export class PruebasDeVidaComponent implements OnInit {
     config.keyboard = false;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (this.comunicacion.restriccionDTO != null) {
       this.restriccion = this.comunicacion.restriccionDTO;
       if (this.seleccionado != null) {
         this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
       } else {
         this.selectedUserLabel += this.comunicacion.restriccionDTO.victimario.apellido;
-        this.seleccionado = this.comunicacion.restriccionDTO.victimario;//Por defecto toma al agresor
-        this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+        await this.personaService.getPersona(this.comunicacion.restriccionDTO.victimario.idPersona).subscribe(res=>{
+          this.seleccionado = (res as Persona);//Por defecto toma al agresor
+          this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
+          this.opcionesDesplegable = [this.restriccion.victimario, this.restriccion.damnificada];
+        })
       }
       this.spinnerService.show();
       this.cargarPruebasSimples();
@@ -180,6 +183,7 @@ export class PruebasDeVidaComponent implements OnInit {
 
   enviarPruebaDeVidaSimple(pruebaDeVidaForm: NgForm) {
     this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
+    console.log("🚀 ~ PruebasDeVidaComponent ~ this.usuarioService.getUsuario ~ this.seleccionado.idUsuario:", this.seleccionado.idUsuario)
     this.usuarioService.getUsuario(this.seleccionado.idUsuario).subscribe( async (res: Usuario) => {
         this.usuarioSeleccionado = res;
         if (this.usuarioSeleccionado) {

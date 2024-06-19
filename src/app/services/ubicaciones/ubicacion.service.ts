@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UbicacionDto } from 'src/app/models/ubicacion-dto';
 import { environment } from '../../../environments/environment';
+import { Ubicacion } from 'src/app/models/ubicacion';
 
 
 
@@ -64,4 +65,7 @@ export class UbicacionService {
       "/dia=" + dia + "/hora=" + hora + "/minutos=" + minutos);
   }
 
+  postUbicacion(ubicacion : Ubicacion){
+    return this.http.post(this.URL_API,ubicacion)
+  }
 }

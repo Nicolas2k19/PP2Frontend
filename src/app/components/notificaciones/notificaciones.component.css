@@ -1,57 +1,127 @@
-.container{
+/* Estilos generales */
+.container {
     color: #26294D;
+    padding: 5px;
+    max-width: auto;
 }
 
-.card{
+.card {
     cursor: pointer;
 }
 
-.card:hover{
+.card:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.card-header i{
+.card-header i {
     position: absolute;
 }
 
-.card-header a{
+.card-header a {
     margin-left: 2%;
 }
 
-.archivadas{
+.archivadas {
     margin-top: 3%;
     float: right;
     text-align: right;
 }
 
-.btn{
+.btn {
     float: right;
 }
 
-.texto{
+.texto, .col, .col-4 {
     font-weight: bold;
-    text-overflow:ellipsis;
-    white-space:nowrap; 
-    overflow:hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-.col{
-    text-overflow:ellipsis;
-    white-space:nowrap; 
-    overflow:hidden; 
-}
-
-.col-4{
-    text-overflow:ellipsis;
-    white-space:nowrap; 
-    overflow:hidden; 
-}
-
-.cargarMas{
+.cargarMas {
     cursor: pointer;
 }
 
 ::ng-deep .modal-backdrop {
-    z-index: 1040 !important; 
+    z-index: 1040 !important;
 }
 
+/* Estilos del contenedor del título */
+.contenedor-titulo {
+    background-color: #8d3aff63;
+    max-width: auto;
+}
+
+.navbar-brand::after {
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+}
+
+/* Estilos del modal */
+.modal-header {
+    background-color: #FCFCFC;
+    color: #26294D;
+    border-bottom: 1px solid #480971;
+}
+
+.modal-header .close {
+    color: #26294D;
+    opacity: 1;
+}
+
+.modal-body {
+    background-color: white;
+    color: #26294D;
+    font-size: 20px;
+}
+
+.modal-footer {
+    background-color:  #FCFCFC;
+    border-top: 1px solid #480971;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-footer .joinedDate {
+    color: #26294D;
+}
+
+.modal-footer .btn {
+    background-color: #480971;
+    color: white;
+}
+
+.modal-content {
+    border-radius: 5px;
+}
+
+/* Animación del legend */
+legend {
+    color: black;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+legend::after {
+    content: "";
+    border-bottom: 5px solid #480971;
+    display: flex;
+    animation-name: animacionafter;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+}
+
+@keyframes animacionafter {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}

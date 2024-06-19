@@ -10,6 +10,10 @@ import { Localidad } from 'src/app/models/localidad';
 import { FotoIdentificacion } from 'src/app/models/foto-identificacion';
 import { FotoIdentificacionService } from 'src/app/services/fotoIdentificacion/foto-identificacion.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import NormalizadorService from 'src/app/services/normalizar/NomalizadorService';
+import Normalizacion from 'src/app/models/ObjetosNormalizador/Normalizacion';
+import { Ubicacion } from 'src/app/models/ubicacion';
+import { UbicacionService } from 'src/app/services/ubicaciones/ubicacion.service';
 
 @Component({
   selector: 'app-administrar-personas',
@@ -24,6 +28,12 @@ export class AdministrarPersonasComponent implements OnInit {
   fecha: Date = new Date();
   maxDatePicker = { year: this.fecha.getFullYear(), month: this.fecha.getMonth() + 1, day: this.fecha.getDate() };
   fechaMarcador;
+  calle: string;
+  piso: string
+  departamento: string
+  altura: string
+  datosLocalidad: Localidad
+  datosProvinciaSeleccionada: Provincia
 
   //COMBO ROLES
   rolSeleccionado;
@@ -61,7 +71,9 @@ export class AdministrarPersonasComponent implements OnInit {
     private toastr: ToastrService,
     private provinciaLocalidadService: ProvinciaLocalidadService,
     private fotoIdentificacionService: FotoIdentificacionService,
-    private spinner: NgxSpinnerService) {
+    private spinner: NgxSpinnerService,
+    private ubicacionService: UbicacionService,
+    private normalizadorService: NormalizadorService) {
     this.roles = ['DAMNIFICADA', 'VICTIMARIO'];
     this.mostrarDomicilio = false;
     this.ordenApellido = false;
@@ -126,54 +138,77 @@ export class AdministrarPersonasComponent implements OnInit {
     //CARGO DATOS DEL FORM A PERSONA
     //Logica para leer el archivo y guardarlo
     //Guardo la instancia del componente para usar dentro de la promesa, y el BLOB
-    var imgSeleccionadaBlob;
-    let thisjr = this;
-    imgSeleccionadaBlob = new Blob([this.imagenSeleccionada]);
 
-    //Creo la promesa para guardar la foto después de cargarla completamente
-    var promise = new Promise(getBuffer);
+    this.normalizadorService.obtenerCoordenadasConCalleAltura(
+      this.personaDTOSelleccionada.direccion.calle,
+      this.personaDTOSelleccionada.direccion.altura,
+      this.localidadSeleccionada,
 
-    // Espero a terminar la funcion de la promesa, y entonces guardo.
-    promise.then(function (imgBase64) {
-      let img: string = imgBase64 as string;
-      thisjr.personaDTOSelleccionada.foto = img;
-      thisjr.personaService.postPersona(thisjr.personaDTOSelleccionada)
-        .subscribe(res => {
-          console.log("Estoy en el post con error")
-          var error = res as ErrorDTO;
-
-          if (error.hayError) {
-            //MOSTRAR ERROR
-            thisjr.toastr.error("Ha ocurrido un error" + error.mensajeError, "Error!");
-            thisjr.spinner.hide();
-            personaForm.reset();
-
+      this.provinciaSeleccionada).subscribe(
+        res => {
+          let respuesta: Normalizacion = res as Normalizacion;
+          if (respuesta.direcciones.length == 0) {
+            this.toastr.error("La direccion ingresada no se puede normalizar.");
+            return;
           }
-          else {
-            thisjr.toastr.success("Persona agregada correctamente", "Agregada!");
-            console.log("Agregue correctamente")
-            console.log(thisjr.personaDTOSelleccionada);
-            thisjr.getPersonas();
-            personaForm.reset();
-            thisjr.spinner.hide();
-          }
-          thisjr.cambiarAVentanaPersona()
+          let ubicacionService = this.ubicacionService;
 
+          var imgSeleccionadaBlob;
+          let thisjr = this;
+          imgSeleccionadaBlob = new Blob([this.imagenSeleccionada]);
+
+          //Creo la promesa para guardar la foto después de cargarla completamente
+          var promise = new Promise(getBuffer);
+          
+          // Espero a terminar la funcion de la promesa, y entonces guardo.
+          promise.then(function (imgBase64) {
+            let img: string = imgBase64 as string;
+            thisjr.personaDTOSelleccionada.foto = img;
+            thisjr.personaDTOSelleccionada.lat = respuesta.direcciones[0].ubicacion.lat
+            thisjr.personaDTOSelleccionada.lon = respuesta.direcciones[0].ubicacion.lon
+            thisjr.personaService.postPersona(thisjr.personaDTOSelleccionada)
+              .subscribe(res => {
+                console.log("Estoy en el post con error")
+                var error = res as ErrorDTO;
+
+                if (error.hayError) {
+                  //MOSTRAR ERROR
+                  thisjr.toastr.error("Ha ocurrido un error" + error.mensajeError, "Error!");
+                  thisjr.spinner.hide();
+                  personaForm.reset();
+
+                }
+                else {
+                  thisjr.toastr.success("Persona agregada correctamente", "Agregada!");
+                  console.log("Agregue correctamente")
+                  console.log(thisjr.personaDTOSelleccionada);
+                  thisjr.getPersonas();
+                  personaForm.reset();
+                  thisjr.spinner.hide();
+                }
+                thisjr.cambiarAVentanaPersona()
+
+              })
+
+          })
+
+
+          /**
+          * Funcion para usar en la promesa para esperar a que se cargue la foto
+          * @param resolve  se le pasa por parametro una promesa 
+          */
+          function getBuffer(resolve) {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(imgSeleccionadaBlob);
+            fileReader.onload = function () {
+              var imgBase64 = fileReader.result
+              resolve(imgBase64);
+            }
+          }
         })
-    })
 
-    /**
-     * Funcion para usar en la promesa para esperar a que se cargue la foto
-     * @param resolve  se le pasa por parametro una promesa 
-     */
-    function getBuffer(resolve) {
-      var fileReader = new FileReader();
-      fileReader.readAsDataURL(imgSeleccionadaBlob);
-      fileReader.onload = function () {
-        var imgBase64 = fileReader.result
-        resolve(imgBase64);
-      }
-    }
+
+
   }
 
   /**
@@ -202,7 +237,6 @@ export class AdministrarPersonasComponent implements OnInit {
   }
 
   eliminarPersona(persona: FormPersonaDTO) {
-    console.log(persona.persona.idPersona);
     this.personaService.deletePersona(persona.persona.idPersona)
       .subscribe(res => {
         var error = res as ErrorDTO;
@@ -217,12 +251,9 @@ export class AdministrarPersonasComponent implements OnInit {
       });
   }
 
-  //SELECCION DE ROL PARA MOSTRAR U OCULTAR IMAGEN
+  //SELECCION DE ROL 
   cambioRol() {
-    if (this.rolSeleccionado == "VICTIMARIO")
-      this.mostrarImagen = true;
-    else
-      this.mostrarImagen = false;
+    this.mostrarImagen = true;
   }
 
   //Obtener las provincias

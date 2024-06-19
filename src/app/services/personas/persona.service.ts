@@ -29,7 +29,6 @@ export class PersonaService {
   }
 
   postPersona(personaDTO: FormPersonaDTO){
-    console.log(personaDTO);
     return this.http.post(this.URL_API, personaDTO);
   }
 

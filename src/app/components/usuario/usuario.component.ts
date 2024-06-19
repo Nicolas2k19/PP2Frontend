@@ -9,14 +9,13 @@ import { ComunicacionService } from 'src/app/services/comunicacion/comunicacion.
 import { ErrorDTO } from 'src/app/models/error-dto';
 import { ToastrService } from 'ngx-toastr';
 
-
-
 @Component({
   selector: 'app-usuario',
   templateUrl: './usuario.component.html',
   styleUrls: ['./usuario.component.css'],
   providers: [UsuarioService]
 })
+
 export class UsuarioComponent implements OnInit {
 
   loginEsInvalido = false;
@@ -71,7 +70,6 @@ export class UsuarioComponent implements OnInit {
     this.usuarioService.getUsuarios()
       .subscribe(res => {
         this.usuarioService.usuarios = res as Usuario[];
-        console.log(res);
       })
   }
 

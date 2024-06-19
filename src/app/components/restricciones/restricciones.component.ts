@@ -36,6 +36,7 @@ export class RestriccionesComponent implements OnInit {
   ubicacionDto: UbicacionDto;
   intervalo;
   restriccionPintada: RestriccionDTO;
+  indiceDeRestriccionSeleccionada:number = 0;
 
   featuresRestriccion: Feature[]
   featuresRestriccionFisica: Feature[]
@@ -62,12 +63,12 @@ export class RestriccionesComponent implements OnInit {
   inicializarMapa() {
     this.spinnerService.show();
     this.mapService.iniciarMapa('map');
-    this.getUsuarioByEmail("emailUsuario").add(res => {
+    this.getUsuarioByEmail(localStorage.getItem("emailUsuario")).add(res => {
       this.getRestricciones(localStorage.getItem("emailUsuario")).add(res => {
         this.getRestriccionesMultiples().add(res => {
-          if (!this.restriccionService.restricciones) {
-            this.getRestriccionesFisicas(this.restriccionService.restricciones[0].restriccion.idRestriccion).add(res => {
-              this.seleccionarRestriccion(this.restriccionService.restricciones[0], null);
+          if (this.restriccionService.restricciones != undefined) {
+            this.getRestriccionesFisicas(this.restriccionService.restricciones[this.indiceDeRestriccionSeleccionada].restriccion.idRestriccion).add(res => {
+              this.seleccionarRestriccion(this.restriccionService.restricciones[this.indiceDeRestriccionSeleccionada], null);
               this.getUbicacion().subscribe(resUbicacion => {
                 this.dibujarRestriccionPerimetral(resUbicacion as UbicacionDto)
                 this.mostrarRestriccionMultiple()
@@ -83,7 +84,7 @@ export class RestriccionesComponent implements OnInit {
     })
   }
 
-  dibujarRestriccionPerimetral(ubicacion: UbicacionDto) {
+  dibujarRestriccionPerimetral(ubicacion: UbicacionDto) {    
     this.crearElementosRestriccionPerimetral(ubicacion).add(res => {
       this.dibujarMapa(this.featuresRestriccion)
     });
@@ -133,6 +134,7 @@ export class RestriccionesComponent implements OnInit {
     else {
       fila.style.backgroundColor = "#b780ff"
       fila.style.color = "white";
+      this.indiceDeRestriccionSeleccionada = fila.rowIndex - 1;
     }
     let thisjr = this;
     //CADA 15 SEGUNDOS ACTUALIZO EL MAPA
@@ -150,7 +152,7 @@ export class RestriccionesComponent implements OnInit {
   actualizarMapa() {
     this.mapService.clearLayers()
     this.spinnerService.show()
-    this.getUbicacion().subscribe(resUbicacion => {
+    this.getUbicacion().subscribe(resUbicacion=> {   
       this.dibujarRestriccionPerimetral(resUbicacion as UbicacionDto)
       this.mostrarRestriccionMultiple()
       this.pintarRestriccionFisica()
@@ -176,6 +178,8 @@ export class RestriccionesComponent implements OnInit {
   getUsuarioByEmail(mail: string) {
     return this.usuarioService.getUsuarioByEmail(mail)
       .subscribe(res => {
+      console.log("🚀 ~ RestriccionesComponent ~ getUsuarioByEmail ~ res:", res)
+
         this.comunicacion.enviarUsuario(res as Usuario);
       })
   }
@@ -239,19 +243,22 @@ export class RestriccionesComponent implements OnInit {
    * @author Nicolás
    */
   pintarRestriccionFisica() {
-    this.restriccionesFisicas.forEach(res => {
-      this.getInfringe(res.distancia
-        , new UbicacionDto(new Ubicacion(0, res.latitud, res.longuitud, "", 0),
-          this.ubicacionVictimario))
-        .subscribe(respuesta => {
-          let features: Feature[] = this.marcarPerimetro(res.longuitud,
-            res.latitud,
-            res.distancia,
-            'assets/iconoRestriccionFisica.png'
-            , respuesta as boolean);
-          this.mapService.anadirFeatures(features);
-        })
-    })
+    if(this.restriccionesFisicas != undefined){ 
+      this.restriccionesFisicas.forEach(res => {
+        this.getInfringe(res.distancia
+          , new UbicacionDto(new Ubicacion(0, res.latitud, res.longuitud, "", 0),
+            this.ubicacionVictimario))
+          .subscribe(respuesta => {
+            let features: Feature[] = this.marcarPerimetro(res.longuitud,
+              res.latitud,
+              res.distancia,
+              'assets/iconoRestriccionFisica.png'
+              , respuesta as boolean);
+            this.mapService.anadirFeatures(features);
+          })
+      })
+    }
+
   }
 
   mostrarRestriccionMultiple(): Feature[] {

@@ -1,43 +1,68 @@
-form {
-  width: 250px;
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  border: 1px solid black;
-  margin: 0 auto;
-  box-sizing: content-box;
-  padding: 1rem;
-  background-color: #8d3aff63;
-
-}
-
+/*Para el titulo*/
 
 .container {
+  padding: 5px;
+  max-width: auto;
+}
+
+.contenedor-titulo {
+  background-color: #8d3aff63;
+  max-width: auto;
+}
+
+.navbar-brand::after {
+  content: "";
+  border-bottom: 5px solid #480971;
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+form {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  box-sizing: content-box;
+  padding: 20px;
+  background-color: #8d3aff63;
+}
+
+.form-group{
+  width: 300px;
+}
+
+.row {
+  max-width: auto;
+  padding-top: 20px;
+}
+
+.col {
+  max-width: auto;
+}
+
+.col-8 {
+  max-width: auto;
 }
 
 /*Iconos google fonts*/
-
 .material-icons {
   color: #480971;
 }
-
 
 th {
   background-color: #480971;
   color: white;
 }
 
-
-
 button {
   margin-top: 1rem;
   padding: .5rem;
-  width: 7rem;
-  height: 2rem;
+  height: 3rem;
   border-radius: 5%;
   display: flex;
   justify-content: center;
@@ -47,38 +72,46 @@ button {
 }
 
 .estado-actual {
-  color: white;
-  border: 1px solid black;
-  margin-top: 1rem;
-  width: fit-content;
-  height: fit-content;
-  padding: 0.5rem;
-  display: inline-block;
-
+  color: white; 
+  background-color: rgba(72, 9, 113, 0.8); 
+  border: 1px solid rgba(0, 0, 0, 0.1); 
+  border-radius: 10px; 
+  margin-top: 1rem; 
+  padding: 1rem; 
+  display: inline-block; 
+  text-align: center; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  font-size: 1rem; 
+  font-family: Arial, sans-serif;
 }
 
+.same-width {
+  width: 100%;
+}
 
+.input-texto-before-disponibilidad::before {
+  content: "Disponibilidad *";
+  text-align: left;
+  font-size: 12px;
+}
 
 .select-estilo {
-  width: 100%;
   border-radius: 5px;
   height: 50px;
   background-color: white;
   color: black;
 }
 
-
 .btn {
-  width: fit-content;
   background-color: #480971;
   color: white;
 }
 
-
 /*Animación legend*/
-
 legend {
   color: black;
+  text-align: center;
+  padding-bottom: 10px;
 }
 
 legend::after {
@@ -91,7 +124,6 @@ legend::after {
 }
 
 @keyframes animacionafter {
-
   0% {
     width: 0;
   }
@@ -99,5 +131,4 @@ legend::after {
   100% {
     width: 100%;
   }
-
 }
