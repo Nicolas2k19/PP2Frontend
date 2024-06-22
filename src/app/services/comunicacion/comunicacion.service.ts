@@ -11,11 +11,11 @@ export class ComunicacionService {
   restriccionDTO: RestriccionDTO;
   administrativo: Usuario;
 
-  enviarRestriccion(restriccion: RestriccionDTO){
+  enviarRestriccion(restriccion: RestriccionDTO) {
     this.restriccionDTO = restriccion;
   }
 
-  enviarUsuario(usuario: Usuario){
+  enviarUsuario(usuario: Usuario) {
     this.administrativo = usuario;
   }
 

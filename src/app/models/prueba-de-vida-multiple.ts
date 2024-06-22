@@ -1,7 +1,7 @@
 
 export class PruebaDeVidaMultiple {
 
-    constructor(idPruebaDeVidaMultiple=0,descripcion='',idPersona = 0, estado='', tiempoDeRespuesta= null){
+    constructor(idPruebaDeVidaMultiple = 0, descripcion = '', idPersona = 0, estado = '', tiempoDeRespuesta = null) {
         this.idPruebaDeVidaMultiple = idPruebaDeVidaMultiple;
         this.descripcion = descripcion;
         this.idPersona = idPersona;

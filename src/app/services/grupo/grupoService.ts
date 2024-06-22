@@ -4,37 +4,27 @@ import { environment } from '../../../environments/environment';
 import Grupo from 'src/app/models/grupo/Grupo';
 import GrupoNuevo from 'src/app/models/grupo/grupoNuevo';
 
-
-
 @Injectable({
     providedIn: 'root'
 })
+
 export default class GrupoService {
 
     readonly post = environment.apiUrl + '/grupo' + "/nuevoGrupo"
     readonly get = environment.apiUrl + '/grupo' + "/obtenerGrupos"
     readonly getById = environment.apiUrl + '/grupo' + "/obtenerGrupo/"
     readonly getAllById = environment.apiUrl + '/grupo' + "/obtenerGruposPorId/"
-
-
     readonly getByNombre = environment.apiUrl + '/grupo' + "/obtenerGrupoPorNombre/"
-
     readonly postEquipo = environment.apiUrl + '/grupo' + "/nuevoGrupo"
-
-
     private gruposMap: Map<Number, Grupo> = new Map();
 
-
     constructor(private http: HttpClient) {
-
         this.loadGrupos();
     }
-
 
     getGrupos() {
         return this.http.get(this.get)
     }
-
 
     getGrupo(idGrupo: Number) {
         return this.http.get(this.getById + idGrupo);
@@ -48,11 +38,9 @@ export default class GrupoService {
         return this.http.get(this.getByNombre + nombreGrupo);
     }
 
-
     crearEquipo(grupo: GrupoNuevo) {
         return this.http.post(this.postEquipo, grupo)
     }
-
 
     private loadGrupos() {
         this.http.get<Grupo[]>(this.get).subscribe(grupos => {

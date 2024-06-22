@@ -11,6 +11,7 @@ import { fromLonLat } from 'ol/proj';
 @Injectable({
   providedIn: 'root'
 })
+
 export class MapService {
   map: OlMap;
   mapSource: OlXYZ;
@@ -19,7 +20,8 @@ export class MapService {
   vectorUbicaciones: VectorSource;
   capaUbicaciones: VectorLayer;
 
-  constructor() { }
+  constructor() {
+  }
 
   iniciarMapa(map: string) {
     this.mapSource = new OlXYZ({
@@ -42,10 +44,20 @@ export class MapService {
     });
   }
 
+  borrarrMapa(map: string) {
+    this.mapSource = null
+    this.capaMapa = null
+    this.vistaMapa = null
+    this.map.setTarget(null); 
+    this.map.dispose(); 
+    this.map = null; 
+  }
+
   clearLayers(): void {
-    if (this.capaUbicaciones) {
+    // Borra únicamente las capas de vectores
+    if (this.vectorUbicaciones) {
       this.map.removeLayer(this.capaUbicaciones);
-      this.vectorUbicaciones.clear();
+      this.map.removeLayer(this.vectorUbicaciones)
     }
   }
 
@@ -58,20 +70,22 @@ export class MapService {
       source: this.vectorUbicaciones
     });
 
+    // Añade la capa de ubicaciones al mapa
     if (this.map && this.capaUbicaciones) {
       this.map.addLayer(this.capaUbicaciones);
     }
   }
 
-  anadirFeatures(features: Feature[]) {
+  anadirFeatures(featuresss: Feature[]) {
     this.vectorUbicaciones = new VectorSource({
-      features: features
+      features: featuresss
     });
 
     this.capaUbicaciones = new VectorLayer({
       source: this.vectorUbicaciones
     });
 
+    // Añade la capa de ubicaciones al mapa
     if (this.map && this.capaUbicaciones) {
       this.map.addLayer(this.capaUbicaciones);
     }

@@ -1,4 +1,3 @@
-
 export  default class Grupo {
 
     constructor(idGrupo=3, nombreGrupo = '', turnoGrupo = ''  ,idRestriccion=0,idUsuario=0){
@@ -8,6 +7,7 @@ export  default class Grupo {
         this.nombreGrupo = nombreGrupo;
         this.turnoGrupo = turnoGrupo
     }
+
     idGrupo: Number;
     nombreGrupo : String
     turnoGrupo : String

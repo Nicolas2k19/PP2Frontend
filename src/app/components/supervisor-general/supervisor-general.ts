@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-supervisor-general',
@@ -11,6 +12,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 export class SupervisorGeneralComponent implements OnInit {
 
+
+  rolDeUsuario = "";
+  usuarioLogeado: string = "";
   hayError: boolean;
 
   constructor(
@@ -19,8 +23,9 @@ export class SupervisorGeneralComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.rolDeUsuario =  localStorage.getItem('rolUsuario');
+    this.usuarioLogeado = localStorage.getItem('emailUsuario');
   }
-  
 }
 
 

@@ -5,11 +5,48 @@
     <p style="font-size: 15px; font-weight: bold; color: white">Cargando...</p>
 </ngx-spinner>
 <div class="container">
+    <div class="contenedor-titulo">
+        <nav class="navbar navbar-expand-lg navbar-light titulo-informes">
+            <a class="navbar-brand"> Bienvenido: {{usuarioLogeado}}</a>
+        </nav>
+    </div>
 
-   <p>
-    
-    
+    <div class="contenedor-btn-opc">
 
-   </p> 
-    
+        <div class="btn-space1">
+            <button [routerLink]="['/inicio/parametros-rutina']" class="btn-atajo">
+                <span class="material-icons icon-btn"> display_settings </span>
+                Parámetros de rutina
+            </button>
+        </div>
+
+        <div class="btn-space1">
+            <button [routerLink]="['/inicio/parametros-prueba-de-vida']" class="btn-atajo">
+                <span class="material-icons icon-btn"> display_settings </span>
+                Parámetros de pruebas de vida
+            </button>
+        </div>
+
+        <div class="btn-space1">
+            <button [routerLink]="['/inicio/juzgado']" class="btn-atajo">
+                <span class="material-icons icon-btn"> gavel </span>
+                Administración juzgados
+            </button>
+        </div>
+
+        <div class="btn-space1">
+            <button [routerLink]="['/inicio/configurar-mensajes']" class="btn-atajo">
+                <span class="material-icons icon-btn"> settings_applications </span>
+                Configuración de mensajes
+            </button>
+        </div>
+
+        <div class="btn-space1">
+            <button [routerLink]="['/inicio/informes']" class="btn-atajo">
+                <span class="material-icons icon-btn"> description </span>
+                Visualización de informes
+            </button>
+        </div>
+
+    </div>
 </div>

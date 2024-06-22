@@ -122,6 +122,8 @@ export class RestriccionesComponent implements OnInit {
   }
 
   seleccionarRestriccion(restriccion: RestriccionDTO, fila) {
+    this.mapService.borrarrMapa('map')
+    this.mapService.iniciarMapa('map')
     this.featuresRestriccion = []
     this.restriccionPintada = restriccion;
     this.comunicacion.enviarRestriccion(this.restriccionPintada);
@@ -135,6 +137,7 @@ export class RestriccionesComponent implements OnInit {
       fila.style.backgroundColor = "#b780ff"
       fila.style.color = "white";
       this.indiceDeRestriccionSeleccionada = fila.rowIndex - 1;
+      this.centrar()
     }
     let thisjr = this;
     //CADA 15 SEGUNDOS ACTUALIZO EL MAPA
@@ -165,14 +168,6 @@ export class RestriccionesComponent implements OnInit {
       fila.style.backgroundColor = "inherit"
       fila.style.color = "white";
     })
-  }
-
-  /**
-   * Marca en color violeta claro la restricción vigilada
-   * @author nicolás
-   */
-  marcarRestriccion() {
-    // document.querySelector()
   }
 
   getUsuarioByEmail(mail: string) {
@@ -377,7 +372,9 @@ export class RestriccionesComponent implements OnInit {
    * @author Nicolás
    */
   centrar() {
-    this.mapService.centrarMapa(this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud)
+    this.getUbicacion().subscribe(resUbicacion=> {
+      this.mapService.centrarMapa(this.ubicacionDamnificada.longitud, this.ubicacionDamnificada.latitud)
+    })
   }
 
 }
