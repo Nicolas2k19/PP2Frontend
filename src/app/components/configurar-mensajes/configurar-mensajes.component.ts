@@ -19,12 +19,12 @@ export class ConfigurarMensajesComponent implements OnInit {
 
 
   showTelegramConfig =false;
-  telegramMessage ="Este es un mensaje de prueba.";
+  telegramMessage;
   showWhatsAppConfig =false;
-  whatsAppMessage ="Este es un mensaje de prueba.";
+  whatsAppMessage;
   showMailConfig =false;
-  mailMessage ="Este es un correo de prueba.";
-  mailAsunto = "Este es un asunto de prueba";
+  mailMessage;
+  mailAsunto;
 
   constructor(
 
@@ -35,6 +35,11 @@ export class ConfigurarMensajesComponent implements OnInit {
 
     //Traer los mensajes que se estan usando ahora en cada mensajeria
     //Traer el mensaje que esta para telegram y guardarlo en telegramMessage y asi con todos.
+
+    this.telegramMessage= "Este es un msj de prueba."
+    this.whatsAppMessage ="Este es un msj de prueba."
+    this.mailAsunto ="Este es un asunto de prueba"
+    this.mailMessage ="Este es un correo de prueba."
 
 
   }
