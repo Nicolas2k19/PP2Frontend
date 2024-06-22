@@ -189,7 +189,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
     try {
       this.grupoService.crearEquipo(grupo).subscribe(res => {
-        console.log(res);
         this.toastr.success("¡Se agrego el nuevo equipo!")
         this.spinner.hide();
 
@@ -259,7 +258,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
         this.spinner.hide();
         this.restriccionService.restricciones = res as RestriccionDTO[];
         this.originalRes= res as RestriccionDTO[];
-        console.log(res);
       })
   }
 
@@ -291,7 +289,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
    * @returns boolean
    */
   agregarDamnificada(ngForm : NgForm) {
-    console.log(this.damnificada.dni)
     if (this.stringVacio(this.damnificada.dni)) {
       this.setErrorCampoDamnificada();
       this.toastr.error("Verificar el DNI de damnificada ingresado.", "Error!");
@@ -334,7 +331,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   guardarRestriccion(restriccionForm: NgForm) {
     if (this.editarBandera == true) {
-      console.log(this.editarBandera)
       this.restriccion.idDamnificada = this.damnificada.idPersona;
       this.restriccion.idVictimario = this.victimario.idPersona;
       this.restriccion.idGrupo = this.grupoSeleccionado;
@@ -345,7 +341,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
       if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
         || this.restriccion.idDamnificada == 0) {
-        console.log("PRIEMRA BANDERA")
         this.toastr.error("Completar todos los campos", "Error!");
         this.setCamposIncompletos();
       }
@@ -353,7 +348,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
         this.spinner.show();
         this.restriccionService.putRestriccion(this.restriccion)
           .subscribe(res => {
-            console.log(res)
             this.spinner.hide();
             this.toastr.success("La restricción se modificó correctamente", "Modificada!");
             restriccionForm.reset();
@@ -409,9 +403,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
 
     if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0) {
-      console.log(this.restriccion.idDamnificada,this.restriccion.idVictimario)
-
-      console.log("SEGUNDA BANDERA")
       this.toastr.error("Completar todos los campos", "Error!");
       this.setCamposIncompletos();
     }
@@ -443,7 +434,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   confirm() {
     if (window.confirm("Are you sure to delete ")) {
-      console.log("eliminar restriccion");
     }
   }
 
@@ -720,9 +710,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
    * Verifica si el string campos estan vacíos
    */
   stringVacio(string: string) {
-    console.log(string.length > 0)
     return string.length == 0
-
   }
 }
 

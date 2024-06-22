@@ -4,10 +4,8 @@ import OlXYZ from 'ol/source/XYZ';
 import OlTileLayer from 'ol/layer/Tile';
 import OlView from 'ol/View';
 import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
 import VectorSource from 'ol/source/Vector';
 import { Vector as VectorLayer } from 'ol/layer';
-import { Icon, Style, Fill, Circle } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 
 @Injectable({
@@ -21,10 +19,9 @@ export class MapService {
   vectorUbicaciones: VectorSource;
   capaUbicaciones: VectorLayer;
 
-  constructor() { 
-  }
+  constructor() { }
 
-  iniciarMapa(map : string) {
+  iniciarMapa(map: string) {
     this.mapSource = new OlXYZ({
       url: 'http://tile.osm.org/{z}/{x}/{y}.png'
     });
@@ -46,52 +43,39 @@ export class MapService {
   }
 
   clearLayers(): void {
-    // Borra únicamente las capas de vectores
-    if (this.vectorUbicaciones) {
-          this.map.removeLayer(this.capaUbicaciones);
-          this.map.removeLayer(this.vectorUbicaciones)
+    if (this.capaUbicaciones) {
+      this.map.removeLayer(this.capaUbicaciones);
+      this.vectorUbicaciones.clear();
     }
   }
 
-  mostrarUbicaciones(markerVictimario: Feature, markerDamnificada: Feature, perimetro: Feature, marcasAdicionales : Feature[]) {
-    console.log("Marcas adicionales",marcasAdicionales)
-
+  mostrarUbicaciones(markerVictimario: Feature, markerDamnificada: Feature, perimetro: Feature, marcasAdicionales: Feature[]) {
     this.vectorUbicaciones = new VectorSource({
-      features: [markerVictimario, markerDamnificada, perimetro,...marcasAdicionales]
+      features: [markerVictimario, markerDamnificada, perimetro, ...marcasAdicionales]
     });
 
     this.capaUbicaciones = new VectorLayer({
       source: this.vectorUbicaciones
     });
 
-    // Añade la capa de ubicaciones al mapa
     if (this.map && this.capaUbicaciones) {
       this.map.addLayer(this.capaUbicaciones);
     }
   }
 
-
-  anadirFeatures(featuresss: Feature[]){
-
-    console.log(featuresss)
-
-    console.log(featuresss,"ESTOY ACA")
-  
+  anadirFeatures(features: Feature[]) {
     this.vectorUbicaciones = new VectorSource({
-      features: featuresss
+      features: features
     });
-    
+
     this.capaUbicaciones = new VectorLayer({
       source: this.vectorUbicaciones
     });
 
-    // Añade la capa de ubicaciones al mapa
     if (this.map && this.capaUbicaciones) {
       this.map.addLayer(this.capaUbicaciones);
     }
-
   }
-
 
   centrarMapa(longitude: number, latitude: number) {
     this.vistaMapa.setCenter(fromLonLat([longitude, latitude]));

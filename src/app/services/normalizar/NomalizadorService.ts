@@ -17,12 +17,7 @@ export default class NormalizadorService{
 
     }
     obtenerCoordenadasConCalleAltura(calle : string,altura : string,localidad:string,provincia : string){
-      console.log(`${this.api_normalizador_direcciones}direccion=${calle} ${altura}&departamento=${localidad}&provincia=${provincia}`);
-      
        return this.http.get(`${this.api_normalizador_direcciones}direccion=${calle} ${altura}&departamento=${localidad}&provincia=${provincia}`);
     }
-
-
-
 
 }

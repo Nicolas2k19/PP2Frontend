@@ -178,8 +178,6 @@ export class RestriccionesComponent implements OnInit {
   getUsuarioByEmail(mail: string) {
     return this.usuarioService.getUsuarioByEmail(mail)
       .subscribe(res => {
-      console.log("🚀 ~ RestriccionesComponent ~ getUsuarioByEmail ~ res:", res)
-
         this.comunicacion.enviarUsuario(res as Usuario);
       })
   }

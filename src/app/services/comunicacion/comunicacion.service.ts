@@ -16,7 +16,6 @@ export class ComunicacionService {
   }
 
   enviarUsuario(usuario: Usuario){
-    console.log("🚀 ~ ComunicacionService ~ enviarUsuario ~ usuario:", usuario)
     this.administrativo = usuario;
   }
 

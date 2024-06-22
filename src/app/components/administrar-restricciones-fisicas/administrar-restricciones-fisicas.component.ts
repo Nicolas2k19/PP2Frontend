@@ -98,7 +98,6 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit {
     this.restriccionService.getRestriccionesConInfo().subscribe(res => {
       this.restriccionesConInfo = res as RestriccionConInfo[];
       this.originalResConInfo = res as RestriccionConInfo[]
-      console.log(this.restriccionesConInfo)
     })
   }
 
@@ -122,7 +121,6 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit {
     this.restriccionService.getRestriccionesFisicas().subscribe(
       resFisicas => {
         this.restriccionesFisicasAMostrar = resFisicas as RestriccionFisicaEditar[];
-        console.log(this.restriccionesFisicasAMostrar)
       }
     )
   }
@@ -246,7 +244,6 @@ export class AdministrarRestriccionesFisicasComponent implements OnInit {
    * @author Nicolás 
    */
   editarRestriccion() {
-    console.log("llamando edicion")
     let restriccion: RestriccionFisicaEditar = new RestriccionFisicaEditar();
     restriccion.nombre = this.nombreRestriccion;
     restriccion.direccion = this.armarDireccion()

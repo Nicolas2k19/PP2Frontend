@@ -23,7 +23,6 @@ export class IncidenciaService {
   }
 
   updateIncidencia(incidencia : Incidencia){
-    console.log(incidencia.topico);
     return this.http.post(this.URL_API + "/agregar", incidencia);
   }
 

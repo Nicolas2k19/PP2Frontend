@@ -183,7 +183,6 @@ export class PruebasDeVidaComponent implements OnInit {
 
   enviarPruebaDeVidaSimple(pruebaDeVidaForm: NgForm) {
     this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
-    console.log("🚀 ~ PruebasDeVidaComponent ~ this.usuarioService.getUsuario ~ this.seleccionado.idUsuario:", this.seleccionado.idUsuario)
     this.usuarioService.getUsuario(this.seleccionado.idUsuario).subscribe( async (res: Usuario) => {
         this.usuarioSeleccionado = res;
         if (this.usuarioSeleccionado) {

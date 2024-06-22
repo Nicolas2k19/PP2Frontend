@@ -17,7 +17,6 @@ export class FotoIdentificacionService {
   }
 
   postFotoIdentificacion(foto: FotoIdentificacion){
-    console.log("La foto se agregara: " + foto);
     var fd = new FormData();
     fd.append("file", foto.foto);
     fd.append("idPersona", foto.idPersona.toString());
@@ -25,7 +24,6 @@ export class FotoIdentificacionService {
   }
 
   postpr(datos64: string, idPersona: string){
-    console.log("La foto se agregara BASE 64: " + datos64);
     var fd = new FormData();
     fd.append("foto", datos64);
     fd.append("idPersona", idPersona);

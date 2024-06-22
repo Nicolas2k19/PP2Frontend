@@ -107,7 +107,6 @@ export class RestriccionService {
    * @author Nicolás
    */
    postRestriccioFisica(restriccionFisica : RestriccionFisica){
-    console.log("Hola estoy agregando")
     return this.http.post(this.URL_API_FISICA,restriccionFisica);
   }
 
@@ -154,7 +153,6 @@ export class RestriccionService {
    * @author Nicolás
    */
   deleteRestriccionFisica(restriccionId: Number) {
-    console.log(this.URL_API_FISICA+"/"+restriccionId)
      return this.http.delete(this.URL_API_FISICA+"/"+restriccionId);
   }
   /**

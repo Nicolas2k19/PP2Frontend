@@ -11,24 +11,16 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 export class SupervisorGeneralComponent implements OnInit {
 
-
   hayError: boolean;
 
   constructor(
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
-
-
   }
-
 
   ngOnInit(): void {
-    console.log("soy onInit supervisor general ")
   }
-
-
   
-
 }
 
 

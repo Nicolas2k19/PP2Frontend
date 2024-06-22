@@ -81,7 +81,6 @@ export class UsuarioService {
    * @returns 
    */
   putUsuario(usuario: Usuario){
-    console.log("Estoy actualizando....")
     return this.http.put(this.URL_API+"/modificarUsuario", usuario);
   }
 

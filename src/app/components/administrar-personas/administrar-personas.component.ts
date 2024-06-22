@@ -99,7 +99,6 @@ export class AdministrarPersonasComponent implements OnInit {
         this.spinner.hide();
         this.personaService.personas = res as FormPersonaDTO[];
         this.originalPeople = res as FormPersonaDTO[];
-        console.log(res);
       })
   }
 
@@ -134,7 +133,6 @@ export class AdministrarPersonasComponent implements OnInit {
    */
   agregarPersona(personaForm: NgForm) {
     this.spinner.show();
-    console.log("Estoy en agregar")
     //CARGO DATOS DEL FORM A PERSONA
     //Logica para leer el archivo y guardarlo
     //Guardo la instancia del componente para usar dentro de la promesa, y el BLOB
@@ -159,7 +157,7 @@ export class AdministrarPersonasComponent implements OnInit {
 
           //Creo la promesa para guardar la foto después de cargarla completamente
           var promise = new Promise(getBuffer);
-          
+
           // Espero a terminar la funcion de la promesa, y entonces guardo.
           promise.then(function (imgBase64) {
             let img: string = imgBase64 as string;
@@ -168,7 +166,6 @@ export class AdministrarPersonasComponent implements OnInit {
             thisjr.personaDTOSelleccionada.lon = respuesta.direcciones[0].ubicacion.lon
             thisjr.personaService.postPersona(thisjr.personaDTOSelleccionada)
               .subscribe(res => {
-                console.log("Estoy en el post con error")
                 var error = res as ErrorDTO;
 
                 if (error.hayError) {
@@ -180,8 +177,6 @@ export class AdministrarPersonasComponent implements OnInit {
                 }
                 else {
                   thisjr.toastr.success("Persona agregada correctamente", "Agregada!");
-                  console.log("Agregue correctamente")
-                  console.log(thisjr.personaDTOSelleccionada);
                   thisjr.getPersonas();
                   personaForm.reset();
                   thisjr.spinner.hide();
@@ -218,7 +213,6 @@ export class AdministrarPersonasComponent implements OnInit {
   setHayError(): void {
     this.hayError = true;
     setTimeout(() => {
-      console.log("Ahora estoy en falso señor")
       this.hayError = false;
     }, 5000);
   }
@@ -455,7 +449,7 @@ export class AdministrarPersonasComponent implements OnInit {
     })
   }
 
-  traerTodos(){
+  traerTodos() {
     this.getPersonas();
     this.dniFilter = null;
   }

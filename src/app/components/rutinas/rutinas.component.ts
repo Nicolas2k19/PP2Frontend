@@ -43,13 +43,11 @@ export class RutinasComponent implements OnInit {
     private toastr: ToastrService, private mapService: MapService) { }
 
   ngOnInit() {
-    console.log("estoy iniciando la pantalla rutina")
     this.mapService.iniciarMapa('map2');
     if (this.comunicacion.restriccionDTO != null) {
       var victimario = this.comunicacion.restriccionDTO.victimario;
       this.victimarioSeleccionado = victimario.apellido + ", " + victimario.nombre;
       this.seleccioneRestriccion = true;
-      console.log("este es mi victimario" + this.victimarioSeleccionado);
       this.mostrarRutina()
     }
   }
@@ -57,8 +55,6 @@ export class RutinasComponent implements OnInit {
   mostrarRutina() {
     this.ubicacionService.getUbicacionesRestriccion(this.comunicacion.restriccionDTO.restriccion.idRestriccion)
       .subscribe(res => {
-        console.log("🚀 ~ RutinasComponent ~ mostrarRutina ~ this.comunicacion.restriccionDTO.victimario.idPersona, this.dias.indexOf(this.diaSeleccionado) 1, this.time.hour, this.time.minute:", this.comunicacion.restriccionDTO.victimario.idPersona, this.dias.indexOf(this.diaSeleccionado) + 1, this.time.hour, this.time.minute)
-
         this.ubicacionesRestriccion = res as UbicacionDto;;
         this.ubicacionService.getUbicacionPromedioRutina(this.comunicacion.restriccionDTO.victimario.idPersona, 
           this.dias.indexOf(this.diaSeleccionado) + 1, this.time.hour, this.time.minute)

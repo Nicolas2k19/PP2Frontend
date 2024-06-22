@@ -19,7 +19,6 @@ export class PruebaDeVidaService {
   }
 
   postPruebaDeVida(pruebaDeVida: PruebaDeVida){
-    console.log(pruebaDeVida);
     return this.http.post(this.URL_API, pruebaDeVida);
   }
 

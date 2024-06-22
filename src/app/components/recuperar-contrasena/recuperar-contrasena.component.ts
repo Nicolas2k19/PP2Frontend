@@ -37,7 +37,6 @@ export class RecuperarContrasenaComponent implements OnInit {
       .subscribe(res => {
         this.spinnerService.hide();
         this.usuario = res as Usuario;
-        console.log(res);
       })
   }
 

@@ -100,8 +100,6 @@ export class IncidenciasComponent implements OnInit {
   }
 
   seleccionarIncidencia(incidencia: Incidencia) {
-    console.log('estoy aca ');
-    console.log(incidencia);
     document.getElementById("topico").innerHTML = " " + incidencia.topico;
     document.getElementById("descripción").innerHTML = " " + incidencia.descripcion;
     document.getElementById("peligrosidad").innerHTML = " " + incidencia.peligrosidad;
@@ -128,7 +126,6 @@ export class IncidenciasComponent implements OnInit {
 
     this.topicoParserInverso(incidencia);
 
-    console.log("guarde la peligrosidad");
   }
 
 
