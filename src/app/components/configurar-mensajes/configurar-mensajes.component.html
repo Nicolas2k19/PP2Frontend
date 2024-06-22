@@ -1,0 +1,226 @@
+<div class="container">
+    <div class="contenedor-titulo">
+        <nav class="navbar navbar-expand-lg navbar-light titulo-informes">
+            <a class="navbar-brand"> Configuración de Mensajes </a>
+        </nav>
+    </div>
+
+
+    <div class="configuracion-mensajes">
+        <p class="mensajeria">Seleccione la mensajería:</p>
+        <div class="div-mensajes">
+            <button (click)="abrirConfig('telegram')" class="btn-iconos btn-info msjs">
+                <fa-icon [icon]="faTelegram"></fa-icon>
+            </button>
+
+
+            <button (click)="abrirConfig('whatsapp')" class="btn-iconos btn-success msjs">
+                <fa-icon [icon]="faWhatsapp"></fa-icon>
+
+            </button>
+
+            <button (click)="abrirConfig('email')" class="btn-iconos btn-primary msjs">
+                <fa-icon [icon]="faEnvelope"></fa-icon>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!--CONFIGURACION MSJ TELEGRAM-->
+
+    <div *ngIf="showTelegramConfig" class="config-telegram config">
+        <div class="nav-config">
+            <p class="title-box">
+                <span class="material-icons">
+                    settings
+                </span>
+                Configuración Telegram
+            </p>
+        </div>
+        <div class="vista-config">
+            <div class="vista-previa">
+                <h3>Vista previa</h3>
+                <div class="telegram-msg">
+                    <div class="chat-telegram">
+                        <div class="msj-telegram">
+                            {{telegramMessage}}
+                        </div>
+                        <div class="time-check">
+                            <span class="time">12:45 PM</span>
+                        <span class="material-icons check">check</span>
+                        </div>
+                    </div>
+                    <div class="chat-telegram-img">
+                        <div class="img-chat">
+                        </div>
+                        <div class="time-check">
+                            <span class="time">12:45 PM</span>
+                        <span class="material-icons check">check</span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="configuracion">
+                <h3>Configuración de mensaje</h3>
+                <p class="text-modify">Modifique el mensaje: </p>
+
+                <textarea class="input" [(ngModel)]="telegramMessage" name="text" cols="32" rows="5"
+                    placeholder="{{telegramMessage}}"></textarea>
+
+                <div class="contenedor-boton">
+                    <button class="btn-edit btn" (click)="configurarMensajeTelegram(telegramMessage)">
+                        Confirmar
+                    </button>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <!--CONFIGURACION MSJ WHATSAPP-->
+
+
+    <div *ngIf="showWhatsAppConfig" class="config-wsp config">
+        <div class="nav-config">
+            <p class="title-box">
+                <span class="material-icons">
+                    settings
+                </span>
+                Configuración WhatsApp
+            </p>
+        </div>
+        <div class="vista-config">
+            <div class="vista-previa">
+                <h3>Vista previa</h3>
+                <div class="wsp-msg">
+                    <div class="chat-wsp">
+                        {{whatsAppMessage}}
+                        <div class="time-check">
+                            <span class="time">12:45 PM</span>
+                        <span class="material-icons check">check</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="configuracion">
+                <h3>Configuración de mensaje</h3>
+                <p class="text-modify">Modifique el mensaje: </p>
+                <textarea class="input" [(ngModel)]="whatsAppMessage" name="text" cols="32" rows="5"
+                    placeholder="{{whatsAppMessage}}"></textarea>
+
+                <div class="contenedor-boton">
+                    <button class="btn-edit btn">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--CONFIGURACION MSJ CORREO-->
+
+
+
+    <div *ngIf="showMailConfig" class="config-mail config">
+        <div class="nav-config">
+            <p class="title-box">
+                <span class="material-icons">
+                    settings
+                </span>
+                Configuración Correos Electrónicos
+            </p>
+        </div>
+        <div class="vista-config">
+            <div class="vista-previa">
+                <h3>Vista previa</h3>
+                <div class="msg-mail">
+                    <div class="mail-nav">
+                        <div class="mail-nav-titulo">
+                            Mensaje nuevo
+                        </div>
+                        <div class="mail-nav-iconos">
+                            <span class="material-icons">
+                                minimize
+                            </span>
+                            <span class="material-icons">
+                                open_in_full
+                            </span>
+
+                            <span class="material-icons">
+                                close
+                            </span>
+
+                        </div>
+
+                    </div>
+                    <div class="mail-destinatarios">Destinatarios</div>
+                    <div class="mail-asunto">
+                        {{mailAsunto}}
+                    </div>
+                    <div class="mail-cuerpo">
+                        {{mailMessage}}
+                    </div>
+                    <div class="mail-envio">
+
+                        <div class="btn-envio">
+                            <button class="mail-btn">
+                                Enviar
+                            </button>
+                            <button class="mail-btn-2">
+                                <span class="material-icons arrow-icon">
+                                    arrow_drop_down
+                                </span>
+                            </button>
+
+                        </div>
+
+
+                        <div class="iconos-envio">
+                            <span class="material-icons">
+                                attach_file
+                            </span>
+                            <span class="material-icons">
+                                schedule_send
+                            </span>
+                            <span class="material-icons">
+                                delete
+                            </span>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="configuracion">
+                <h3>Configuración de mensaje</h3>
+                <p class="text-modify">Modifique el Asunto del correo: </p>
+
+                <input class="input-asunto" [(ngModel)]="mailAsunto" type="text" placeholder="{{mailAsunto}}">
+
+                <p class="text-modify">Modifique el cuerpo del correo: </p>
+                <textarea class="input" [(ngModel)]="mailMessage" name="text" cols="32" rows="5"
+                    placeholder="{{mailMessage}}"></textarea>
+
+                <div class="contenedor-boton">
+                    <button class="btn-edit btn">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

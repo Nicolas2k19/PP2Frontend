@@ -28,11 +28,12 @@ import { AdministrarRestriccionesFisicasComponent } from './components/administr
 import { AdministrarRestriccionesMultiplesPersonaComponent } from './components/administrar-restricciones-multiples-persona/administrar-restricciones-multiples-persona.component';
 import { SupervisorGeneralComponent } from './components/supervisor-general/supervisor-general';
 import { InformesComponent } from './components/informes/informes.component';
+import { ConfigurarMensajesComponent } from './components/configurar-mensajes/configurar-mensajes.component';
 import { JuzgadoComponent } from './components/juzgado/juzgado.component';
 import { ParametrosRutinaComponent } from './components/parametros-rutina/parametros-rutina.component';
 import { ParametrosPruebaDeVidaComponent } from './components/parametros-prueba-de-vida/parametros-prueba-de-vida.component';
 
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { ParametrosPruebaDeVidaComponent } from './components/parametros-prueba-
     RecuperarContrasenaComponent,
     EstadoComponent, 
     InformesComponent,
+    ConfigurarMensajesComponent,
     JuzgadoComponent,
     ParametrosRutinaComponent,
     ParametrosPruebaDeVidaComponent,
@@ -66,6 +68,7 @@ import { ParametrosPruebaDeVidaComponent } from './components/parametros-prueba-
     HttpClientModule,
     NgbModule,
     BrowserAnimationsModule,
+    FontAwesomeModule,
     NgxSpinnerModule,
     ToastrModule.forRoot({
       timeOut: 3000,

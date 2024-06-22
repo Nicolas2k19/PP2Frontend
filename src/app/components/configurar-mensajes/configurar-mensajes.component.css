@@ -1,0 +1,419 @@
+.container {
+  padding: 20px;
+  max-width: -webkit-fill-available;
+}
+
+
+/*Para el titulo*/
+
+.contenedor-titulo {
+  background-color: #8d3aff63;
+}
+
+
+.navbar-brand::after {
+
+  content: "";
+  border-bottom: 5px solid #480971;
+  display: flex;
+  animation-name: animacionafter;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+}
+
+
+@keyframes animacionafter {
+
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+
+/* Para los botones selectores */
+
+.mensajeria {
+  font-weight: 500;
+  font-size: 1rem;
+
+}
+
+p {
+  margin-top: 1rem;
+}
+
+
+.div-mensajes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+}
+
+.btn-iconos {
+  width: -webkit-fill-available;
+  height: 100px;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0;
+  border-style: none;
+}
+
+
+/*CAJA DE CONFIGURACION*/
+
+.text-modify {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+
+h3:after {
+
+  border: 0px !important;
+
+}
+
+h3 {
+  font-size: 1.4rem;
+  color: #480971;
+}
+
+
+.nav-config {
+
+  height: max-content;
+  background-color: #480971;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.title-box {
+  margin: 0 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+
+.config {
+
+  width: -webkit-fill-available;
+  margin-top: 40px;
+
+}
+
+.vista-config {
+  display: -webkit-box;
+  background-color: #8d3aff63;
+}
+
+.vista-previa {
+  width: 48%;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.configuracion {
+  width: 50%;
+  display: flow;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.input {
+  width: 98%;
+  border-style: none;
+  border-radius: 1rem;
+  margin-top: 10px;
+}
+
+.btn-edit {
+  width: max-content;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  justify-self: flex-end;
+  margin-right: 10px;
+  height: fit-content;
+}
+
+.contenedor-boton {
+  text-align: -webkit-right;
+}
+
+.time-check{
+  display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: grey;
+}
+
+.check{
+  transform: translateZ(10px);
+}
+
+/*WHATSAPP*/
+
+.chat-wsp {
+  background-color: #dcf8c6;
+  border: 1px solid #dcf8c6;
+  border-radius: 7.5px;
+  padding: 8px 12px;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  width: fit-content;
+  position: relative;
+  margin: 10px 15px 10px 0;
+  word-wrap: break-word;
+  height: max-content;
+  margin-left: 10px;
+}
+
+.chat-wsp:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -4px;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-right: 9px solid #dcf8c6;
+  border-left: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  top: -9px;
+  transform: rotate(45deg);
+}
+
+.wsp-msg {
+  height: max-content;
+  width: 90%;
+  margin-bottom: 30px;
+  background-image: url('../../../assets/FondoWhatsApp.png');
+  align-content: space-evenly;
+  text-align: -webkit-right;
+  margin-top: 20px;
+  border-radius: 1rem;
+
+}
+
+.wsp-msg .time {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-top: 5px;
+}
+
+/*TELEGRAM*/
+
+.chat-telegram {
+  background-color: #e0f7fa;
+  border-radius: 7.5px;
+  padding: 8px 12px;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  width: fit-content;
+  position: relative;
+  margin: 10px 0;
+  word-wrap: break-word;
+  height: max-content;
+  margin-left: 10px;
+  margin-right: 15px;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 7.5px;
+}
+
+.chat-telegram-img {
+  background-color: #e0f7fa;
+  border-radius: 7.5px;
+  padding: 8px 12px;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  width: fit-content;
+  position: relative;
+  margin: 10px 0;
+  word-wrap: break-word;
+  height: max-content;
+  margin-left: 10px;
+  margin-right: 15px;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border-top-right-radius: 7.5px;
+  border-bottom-right-radius: 7.5px;
+
+}
+
+.chat-telegram-img:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -9px;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-right: 9px solid #e0f7fa;
+  border-left: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  transform: rotate(90deg);
+}
+
+.telegram-msg {
+  height: max-content;
+  width: 90%;
+  margin-bottom: 30px;
+  background-image: url('../../../assets/FondoTelegram.png');
+  align-content: space-evenly;
+  text-align: -webkit-right;
+  margin-top: 20px;
+  border-radius: 1rem;
+
+}
+
+.telegram-msg .time {
+  display: block;
+  text-align: right;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-top: 5px;
+}
+
+.msj-telegram {
+  text-align: -webkit-left;
+}
+
+
+
+.img-chat {
+  width: 290px;
+  height: 260px;
+  background-image: url('../../../assets/imgEjemplo.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 7.5px;
+}
+
+
+
+/*CORREO ELECTRONICO*/
+
+.input-asunto {
+  border-radius: 1rem;
+  width: 98%;
+  border-style: none;
+}
+
+.msg-mail {
+  width: 95%;
+  background-color: white;
+  display: flow;
+  border-radius: 1rem;
+}
+
+.mail-nav {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid lightgrey;
+  background-color: #FFEDEB;
+}
+
+.mail-nav-titulo {
+  width: 80%;
+  margin-left: 10px;
+  color: #003463;
+  font-weight: 800;
+  height: 2rem;
+  align-content: space-evenly;
+}
+
+.mail-nav-iconos {
+  margin-right: 6px;
+}
+
+.mail-destinatarios {
+  margin-left: 10px;
+  border-bottom: 1px solid lightgrey;
+  color: gray;
+  margin-right: 10px;
+  height: 2rem;
+  align-content: center;
+}
+
+.mail-asunto {
+  margin-left: 10px;
+  min-height: 2rem;
+  border-bottom: 1px solid lightgrey;
+  margin-right: 10px;
+  align-content: center;
+  color: grey;
+}
+
+.mail-cuerpo {
+  margin-left: 10px;
+  margin-right: 10px;
+  border-bottom: 1px solid lightgrey;
+  min-height: 6rem;
+  margin-top: 3px;
+}
+
+.mail-envio {
+  margin-left: 10px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+
+}
+
+.mail-btn {
+  color: #fff;
+  background-color: #0b57d0;
+  border-style: none;
+  width: max-content;
+  height: max-content;
+  margin-bottom: 10px;
+  pointer-events: none;
+  padding: 10px;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 0;
+  font-weight: 700;
+  font-family: "Google Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  border-right: 1px solid black;
+}
+
+.mail-btn-2 {
+  color: #fff;
+  background-color: #0b57d0;
+  border-style: none;
+  width: max-content;
+  height: max-content;
+  margin-bottom: 10px;
+  pointer-events: none;
+  padding: 6px;
+  vertical-align: -webkit-baseline-middle;
+  border-radius: 0 18px 18px 0;
+  font-weight: 700;
+  font-family: Google Sans, Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+}
+
+
+
+.arrow-icon {
+  font-size: 24px !important;
+}
+
+.material-icons {
+  font-size: 16px;
+}

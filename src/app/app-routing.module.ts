@@ -21,6 +21,7 @@ import { InformesComponent } from './components/informes/informes.component';
 import { JuzgadoComponent } from './components/juzgado/juzgado.component';
 import { ParametrosRutinaComponent } from './components/parametros-rutina/parametros-rutina.component';
 import { ParametrosPruebaDeVidaComponent } from './components/parametros-prueba-de-vida/parametros-prueba-de-vida.component';
+import { ConfigurarMensajesComponent } from './components/configurar-mensajes/configurar-mensajes.component';
 
 const routes: Routes = [
   {
@@ -39,11 +40,12 @@ const routes: Routes = [
       { path: 'supervisorGeneral', component: SupervisorGeneralComponent, canActivate : [ AuthSupervisorGeneralGuard ] },
       { path: 'administrarRestricciones', component: AdministrarRestriccionesComponent, canActivate : [ AuthSupervisorGuard ] },
       { path: 'recuperarContrasena', component: RecuperarContrasenaComponent },
-      {path:'estado', component:EstadoComponent},
-      {path:'informes', component:InformesComponent},
-      {path:'juzgado', component:JuzgadoComponent},
-      {path:'parametros-rutina', component:ParametrosRutinaComponent},
-      {path:'parametros-prueba-de-vida', component:ParametrosPruebaDeVidaComponent}
+      { path:'estado', component:EstadoComponent},
+      { path:'informes', component:InformesComponent},
+      { path:'configurar-mensajes', component:ConfigurarMensajesComponent},
+      { path:'juzgado', component:JuzgadoComponent},
+      { path:'parametros-rutina', component:ParametrosRutinaComponent},
+      { path:'parametros-prueba-de-vida', component:ParametrosPruebaDeVidaComponent}
     ]
   },
   { path: 'ingresar', component: UsuarioComponent },
