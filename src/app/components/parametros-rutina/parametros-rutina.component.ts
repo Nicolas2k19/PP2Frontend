@@ -1,5 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import Configuracion from 'src/app/models/Configuracion/Configuracion';
+import ConfiguracionEntrenamiento from 'src/app/models/Configuracion/ConfiguracionEntrenamiento';
+import { Persona } from 'src/app/models/persona';
+import { Restriccion } from 'src/app/models/restriccion';
+import { RestriccionDTO } from 'src/app/models/restriccion-dto';
+import ConfiguracionLSTM from 'src/app/services/configuracion/ConfiguracionLSTM';
+import { RestriccionService } from 'src/app/services/restricciones/restriccion.service';
+import UbicacionEntrenamiento from 'src/app/services/ubicaciones/ubicionEntrenamieto';
 
 @Component({
   selector: 'app-parametros-rutina',
@@ -15,11 +23,24 @@ export class ParametrosRutinaComponent implements OnInit {
   units: number;
   batch: number;
 
-  constructor(){
+
+  idvictimario : Number
+
+  restricciones : RestriccionDTO[]
+
+  entrenando : boolean;
+
+  sinDatos : boolean
+
+  constructor( public serviceConfig :ConfiguracionLSTM, public perimetralService : RestriccionService){
     this.datosCsv = [[]]
   }
 
   ngOnInit(): void {
+
+    this.sinDatos = true
+    this.entrenando = false
+    this.perimetralService.getRestricciones().subscribe((res : RestriccionDTO[])=> this.restricciones = res)
     const inputElement1 : HTMLInputElement= document.querySelector('#distancia-permitida');
     const inputValue1 = inputElement1.value;
     this.distancia = Number.parseInt(inputValue1)
@@ -43,9 +64,51 @@ export class ParametrosRutinaComponent implements OnInit {
      const inputValue5 = inputElement5.value;
      this.batch = Number.parseInt(inputValue5)
 
-
-    console.log(this.distancia)
     
+  }
+
+
+  enviarInformacionEntrenamiento(){
+      if(this.sinDatos || this.idvictimario==undefined ||this.idvictimario==null) return
+
+      let persona = this.restricciones.filter(res => { console.log(res.victimario.idPersona == this.idvictimario,res.victimario.idPersona,this.idvictimario); return res.victimario.idPersona == this.idvictimario})[0].victimario 
+      let ubicaciones : UbicacionEntrenamiento[] = []
+      this.datosCsv.forEach(ubi => {
+        console.log(ubi)
+        let ubicacion : UbicacionEntrenamiento = new UbicacionEntrenamiento()
+        ubicacion.dia = ubi[3]
+        ubicacion.fecha = new Date(ubi[2])
+        ubicacion.latitud = Number.parseFloat(ubi[1])
+        ubicacion.longitud = Number.parseFloat(ubi[0])
+        ubicacion.idPersona = persona
+        console.log("llegue")
+        ubicaciones.push(ubicacion)
+      })
+      let configuracion : ConfiguracionEntrenamiento = new ConfiguracionEntrenamiento()
+      configuracion.input_length = this.inputlength
+      configuracion.output = 1
+      configuracion.distanciaPermitida = this.distancia
+      configuracion.epochs = this.epochs
+      configuracion.nunits = this.units
+      configuracion.batch_size = this.batch
+      configuracion.idPersona  = persona
+      let configFinal : Configuracion = new Configuracion()
+      configFinal.config = configuracion
+      configFinal.ubicaciones = ubicaciones
+      this.entrenando = true
+      this.serviceConfig.cargarDatos(configFinal).subscribe(elem =>{
+            
+        
+        setTimeout(() => {
+              this.serviceConfig.entrenar(configFinal).subscribe(elem =>{
+              this.entrenando = false
+                     })
+            }, 20000);
+
+           
+  
+      })
+
   }
 
 
@@ -61,6 +124,7 @@ export class ParametrosRutinaComponent implements OnInit {
     };
 
     reader.readAsBinaryString(file);
+    this.sinDatos = false
   }
 
   parseCSV(text) {
