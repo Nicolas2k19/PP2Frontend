@@ -40,18 +40,29 @@
                 </span>
                 Configuración Telegram
             </p>
+            <div>
+                <select class="selector-mensaje" [(ngModel)]="tipoMensaje" (ngModelChange)="handleSelectChange()">
+                    <option value="" disabled selected hidden>Seleccione el tipo de mensaje</option>
+                    <option value="alertaTelegramP">Alerta a policia</option>
+                    <option value="alertaTelegram">Alerta a juzgados, dependencias y comisarias</option>
+                </select>
+            </div>
         </div>
         <div class="vista-config">
-            <div class="vista-previa">
+            <div class="vista-previa" *ngIf="showTelegramAlerta">
                 <h3>Vista previa</h3>
                 <div class="telegram-msg">
                     <div class="chat-telegram">
                         <div class="msj-telegram">
-                            {{telegramMessage}}
+                            {{telegramMessageBef}}
+                            <div>
+                                <strong> **#id**</strong>
+                            </div>
+                            {{telegramMessageAft}}
                         </div>
                         <div class="time-check">
                             <span class="time">12:45 PM</span>
-                        <span class="material-icons check">check</span>
+                            <span class="material-icons check">check</span>
                         </div>
                     </div>
                     <div class="chat-telegram-img">
@@ -59,73 +70,89 @@
                         </div>
                         <div class="time-check">
                             <span class="time">12:45 PM</span>
-                        <span class="material-icons check">check</span>
+                            <span class="material-icons check">check</span>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
-            <div class="configuracion">
+            <div class="configuracion" *ngIf="showTelegramAlerta">
                 <h3>Configuración de mensaje</h3>
                 <p class="text-modify">Modifique el mensaje: </p>
 
-                <textarea class="input" [(ngModel)]="telegramMessage" name="text" cols="32" rows="5"
-                    placeholder="{{telegramMessage}}"></textarea>
+                <textarea class="input" [(ngModel)]="telegramMessageBef" name="text" cols="32" rows="5"
+                    placeholder="{{telegramMessageBef}}"></textarea>
+
+                **Acá va el #id de la restricción**
+
+                <textarea class="input" [(ngModel)]="telegramMessageAft" name="text" cols="32" rows="5"
+                    placeholder="{{telegramMessageAft}}"></textarea>
 
                 <div class="contenedor-boton">
-                    <button class="btn-edit btn" (click)="configurarMensajeTelegram(telegramMessage)">
+                    <button class="btn-edit btn" (click)="configurarMensajeTelegram('alertaTelegram')">
                         Guardar
                     </button>
                 </div>
-
-
             </div>
-        </div>
-
-    </div>
 
 
-
-
-    <!--CONFIGURACION MSJ WHATSAPP-->
-
-
-    <div *ngIf="showWhatsAppConfig" class="config-wsp config">
-        <div class="nav-config">
-            <p class="title-box">
-                <span class="material-icons">
-                    settings
-                </span>
-                Configuración WhatsApp
-            </p>
-        </div>
-        <div class="vista-config">
-            <div class="vista-previa">
+            <div class="vista-previa" *ngIf="showTelegramAlertaP">
                 <h3>Vista previa</h3>
-                <div class="wsp-msg">
-                    <div class="chat-wsp">
-                        {{whatsAppMessage}}
+                <div class="telegram-msg">
+                    <div class="chat-telegram">
+                        <div class="msj-telegram">
+                            {{telegramMessageBefP}}
+                            <div>
+                                <strong> **latitud**</strong>
+                            </div>
+                            {{telegramMessageAftP}}
+                            <div>
+                                <strong> **longitud**</strong>
+                            </div>
+                        </div>
                         <div class="time-check">
                             <span class="time">12:45 PM</span>
-                        <span class="material-icons check">check</span>
+                            <span class="material-icons check">check</span>
                         </div>
+                    </div>
+                    <div class="chat-telegram-img">
+                        <div class="img-chat">
+                        </div>
+                        <div class="time-check">
+                            <span class="time">12:45 PM</span>
+                            <span class="material-icons check">check</span>
+                        </div>
+
                     </div>
                 </div>
             </div>
-            <div class="configuracion">
+            <div class="configuracion" *ngIf="showTelegramAlertaP">
                 <h3>Configuración de mensaje</h3>
                 <p class="text-modify">Modifique el mensaje: </p>
-                <textarea class="input" [(ngModel)]="whatsAppMessage" name="text" cols="32" rows="5"
-                    placeholder="{{whatsAppMessage}}"></textarea>
+
+                <textarea class="input" [(ngModel)]="telegramMessageBefP" name="text" cols="32" rows="5"
+                placeholder="{{telegramMessageBefP}}"></textarea>
+
+                **Acá va la latitud**
+
+                <textarea class="input" [(ngModel)]="telegramMessageAftP" name="text" cols="32" rows="5"
+                placeholder="{{telegramMessageAftP}}"></textarea>
+
+                **Acá va la longitud**
+
 
                 <div class="contenedor-boton">
-                    <button class="btn-edit btn">
+                    <button class="btn-edit btn" (click)="configurarMensajeTelegram('alertaTelegramP')">
                         Guardar
                     </button>
                 </div>
             </div>
+
+
         </div>
+
     </div>
+
 
 
     <!--CONFIGURACION MSJ CORREO-->
@@ -140,9 +167,107 @@
                 </span>
                 Configuración Correos Electrónicos
             </p>
+
+            <div>
+                <select class="selector-mensaje " [(ngModel)]="tipoMensaje" (ngModelChange)="handleSelectChange()">
+                    <option value="" disabled selected hidden>Seleccione el tipo de mensaje</option>
+                    <option value="cambioContraseña">Cambio de contraseña</option>
+                    <option value="alertaDamnificada">Alerta a damnificada</option>
+                </select>
+            </div>
         </div>
+
+
         <div class="vista-config">
-            <div class="vista-previa">
+            <div class="vista-previa" *ngIf="showMailAlerta">
+                <h3>Vista previa</h3>
+                <div class="msg-mail">
+                    <div class="mail-nav">
+                        <div class="mail-nav-titulo">
+                            Mensaje nuevo
+                        </div>
+                        <div class="mail-nav-iconos">
+                            <span class="material-icons">
+                                minimize
+                            </span>
+                            <span class="material-icons">
+                                open_in_full
+                            </span>
+                            <span class="material-icons">
+                                close
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mail-destinatarios">Destinatarios</div>
+                    <div class="mail-asunto">
+                        {{mailAsuntoAlerta}}
+                    </div>
+                    <div class="mail-cuerpo">
+                        <div class="salto-linea">
+                            <strong>
+                                **nombre y apellido de la damnificada**
+                            </strong>
+                        </div>
+                        {{mailMessageBefAlerta}}
+                        <div class="salto-linea">
+                            <strong>
+                                **coordenadas de latitud y longitud**
+                            </strong>
+                        </div>
+                        {{mailMessageAftAlerta}}
+                        <div class="salto-linea">
+                            <strong>
+                                **fecha y hora**
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="mail-envio">
+
+                        <div class="btn-envio">
+                            <button class="mail-btn">
+                                Enviar
+                            </button>
+                            <button class="mail-btn-2">
+                                <span class="material-icons arrow-icon">
+                                    arrow_drop_down
+                                </span>
+                            </button>
+                        </div>
+                        <div class="iconos-envio">
+                            <span class="material-icons">
+                                attach_file
+                            </span>
+                            <span class="material-icons">
+                                schedule_send
+                            </span>
+                            <span class="material-icons">
+                                delete
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="configuracion" *ngIf="showMailAlerta">
+                <h3>Configuración de mensaje</h3>
+                <p class="text-modify">Modifique el Asunto del correo: </p>
+
+                <input class="input-asunto" [(ngModel)]="mailAsuntoAlerta" type="text"
+                    placeholder="{{mailAsuntoAlerta}}">
+                <p class="text-modify">Modifique el cuerpo del correo: </p>
+                **en este lugar va el nombre y apellido de la damnificada**
+                <textarea class="input" [(ngModel)]="mailMessageBefAlerta" name="text" cols="32" rows="5"
+                    placeholder="{{mailMessageBefAlerta}}"></textarea>
+                **en este lugar van las coordenadas de latitud y longitud**
+                <textarea class="input" [(ngModel)]="mailMessageAftAlerta" name="text" cols="32" rows="5"
+                    placeholder="{{mailMessageAftAlerta}}"></textarea>
+                **en este lugar va la fecha y la hora**
+                <div class="contenedor-boton">
+                    <button (click)="configurarMensajeMail('alertaMail')" class="btn-edit btn">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+            <div class="vista-previa" *ngIf="showMailPass">
                 <h3>Vista previa</h3>
                 <div class="msg-mail">
                     <div class="mail-nav">
@@ -162,14 +287,19 @@
                             </span>
 
                         </div>
-
                     </div>
                     <div class="mail-destinatarios">Destinatarios</div>
                     <div class="mail-asunto">
-                        {{mailAsunto}}
+                        {{mailAsuntoPass}}
                     </div>
                     <div class="mail-cuerpo">
-                        {{mailMessage}}
+                        {{mailMessageBefPass}}
+                        <div class="salto-linea">
+                            <strong>
+                                **contraseña**
+                            </strong>
+                        </div>
+                        {{mailMessageAftPass}}
                     </div>
                     <div class="mail-envio">
 
@@ -202,15 +332,63 @@
                     </div>
                 </div>
             </div>
-            <div class="configuracion">
+            <div class="configuracion" *ngIf="showMailPass">
                 <h3>Configuración de mensaje</h3>
                 <p class="text-modify">Modifique el Asunto del correo: </p>
 
-                <input class="input-asunto" [(ngModel)]="mailAsunto" type="text" placeholder="{{mailAsunto}}">
+                <input class="input-asunto" [(ngModel)]="mailAsuntoPass" type="text" placeholder="{{mailAsuntoPass}}">
 
                 <p class="text-modify">Modifique el cuerpo del correo: </p>
-                <textarea class="input" [(ngModel)]="mailMessage" name="text" cols="32" rows="5"
-                    placeholder="{{mailMessage}}"></textarea>
+                <textarea class="input" [(ngModel)]="mailMessageBefPass" name="text" cols="32" rows="5"
+                    placeholder="{{mailMessageBefPass}}"></textarea>
+
+                **en este lugar va la contraseña**
+
+                <textarea class="input" [(ngModel)]="mailMessageAftPass" name="text" cols="32" rows="5"
+                    placeholder="{{mailMessageAftPass}}"></textarea>
+
+                <div class="contenedor-boton">
+                    <button (click)="configurarMensajeMail('passMail')" class="btn-edit btn">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!--CONFIGURACION MSJ WHATSAPP-->
+
+
+    <div *ngIf="showWhatsAppConfig" class="config-wsp config">
+        <div class="nav-config">
+            <p class="title-box">
+                <span class="material-icons">
+                    settings
+                </span>
+                Configuración WhatsApp
+            </p>
+        </div>
+        <div class="vista-config">
+            <div class="vista-previa">
+                <h3>Vista previa</h3>
+                <div class="wsp-msg">
+                    <div class="chat-wsp">
+                        {{whatsAppMessage}}
+                        <div class="time-check">
+                            <span class="time">12:45 PM</span>
+                            <span class="material-icons check">check</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="configuracion">
+                <h3>Configuración de mensaje</h3>
+                <p class="text-modify">Modifique el mensaje: </p>
+                <textarea class="input" [(ngModel)]="whatsAppMessage" name="text" cols="32" rows="5"
+                    placeholder="{{whatsAppMessage}}"></textarea>
 
                 <div class="contenedor-boton">
                     <button class="btn-edit btn">
@@ -220,7 +398,5 @@
             </div>
         </div>
     </div>
-
-
 
 </div>

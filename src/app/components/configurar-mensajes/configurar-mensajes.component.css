@@ -92,8 +92,19 @@ h3 {
 
   height: max-content;
   background-color: #480971;
-  color: white;
+  color: #fff;
   font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem
+}
+
+.selector-mensaje {
+  border-radius: 1rem;
+  margin: 10px;
+  background-color: #cfabff;
+  color: #480971;
 }
 
 .title-box {
@@ -114,6 +125,8 @@ h3 {
 .vista-config {
   display: -webkit-box;
   background-color: #8d3aff63;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }
 
 .vista-previa {
@@ -121,6 +134,8 @@ h3 {
   margin-left: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }
 
 .configuracion {
@@ -128,6 +143,8 @@ h3 {
   display: flow;
   margin-left: 10px;
   margin-top: 10px;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }
 
 .input {
@@ -150,14 +167,14 @@ h3 {
   text-align: -webkit-right;
 }
 
-.time-check{
+.time-check {
   display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    color: grey;
+  justify-content: flex-end;
+  align-items: center;
+  color: grey;
 }
 
-.check{
+.check {
   transform: translateZ(10px);
 }
 
