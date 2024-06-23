@@ -17,8 +17,6 @@ import { ConfigurarMensajesService } from 'src/app/services/config-mensajes/conf
 export class ConfigurarMensajesComponent implements OnInit {
 
   mensajes: ConfigMensaje[] = [];
-
-
   //iconos
   faTelegram = faTelegram;
   faWhatsapp = faWhatsapp;
@@ -61,10 +59,7 @@ export class ConfigurarMensajesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.getMensajes();
-
-
   }
 
 
