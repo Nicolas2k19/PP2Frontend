@@ -171,8 +171,8 @@ export class ConfigurarMensajesComponent implements OnInit {
 
     if (tipo === "alertaTelegram") {
       const telegramMsj = this.mensajes.find(mensaje => mensaje.tipo === 'alertaTelegram');
-      telegramMsj.mensajeAft = this.telegramMessageBef;
-      telegramMsj.mensajeBef = this.telegramMessageAft;
+      telegramMsj.mensajeBef = this.telegramMessageBef;
+      telegramMsj.mensajeAft = this.telegramMessageAft;
 
       this.configService.putMensaje(telegramMsj).subscribe();
     }
@@ -180,8 +180,8 @@ export class ConfigurarMensajesComponent implements OnInit {
     if (tipo === "alertaTelegramP") {
 
       const mensajeTelegram = this.mensajes.find(mensaje => mensaje.tipo === 'alertaTelegramP');
-      mensajeTelegram.mensajeAft = this.telegramMessageBefP;
-      mensajeTelegram.mensajeBef = this.telegramMessageAftP;
+      mensajeTelegram.mensajeBef = this.telegramMessageBefP;
+      mensajeTelegram.mensajeAft = this.telegramMessageAftP;
 
       this.configService.putMensaje(mensajeTelegram).subscribe();
 
