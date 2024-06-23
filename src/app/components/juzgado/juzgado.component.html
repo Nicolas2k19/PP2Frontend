@@ -3,8 +3,258 @@
         <p style="font-size: 15px; font-weight: bold; color: #26294D">Cargando...</p>
     </ngx-spinner>
 
-    <p> pantalla de juzgado
+    <div class="pantalla-juzgado">
 
-    </p>
+        <div class="contenedor-formulario">
+
+            <div class="card " style="max-width: 20rem;">
+                <div class="card-body">
+                    <legend>Añadir Juzgado</legend>
+                    <form class="formulario-card" #juzgadoForm="ngForm" (ngSubmit)="agregarJuzgado(juzgadoForm)"
+                        novalidate>
+                        <div class="datos-solicitados">
+
+                            <div class="datos-1 ">
+
+                                <div class="ingresar-nombre datos">
+
+                                    *Nombre:
+
+                                    <input class="form-control input-texto" type="text" name="nombre"
+                                        [ngClass]="{ 'is-invalid': nombre.invalid && nombre.touched, 'is-valid': nombre.valid}"
+                                        #nombre="ngModel" [(ngModel)]="juzgadoSeleccionado.nombre" ngbTooltip="Nombre"
+                                        required maxlength="100">
+                                    <div class="invalid-feedback d-block"
+                                        *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
+                                        Nombre requerido
+                                    </div>
+                                </div>
+
+                                <div class="ingresar-ciudad datos">
+
+                                    *Ciudad:
+
+                                    <input class="form-control input-texto" type="text" name="ciudad"
+                                        [ngClass]="{ 'is-invalid': ciudad.invalid && ciudad.touched, 'is-valid': ciudad.valid}"
+                                        #ciudad="ngModel" [(ngModel)]="juzgadoSeleccionado.ciudad" ngbTooltip="Cuidad"
+                                        required maxlength="50">
+                                    <div class="invalid-feedback d-block"
+                                        *ngIf="ciudad.invalid && (ciudad.dirty || ciudad.touched)">
+                                        Ciudad requerida
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="datos-2 ">
+
+
+                                <div class="ingresar-contacto datos">
+
+                                    *Contacto:
+                                    <input class="form-control input-texto" type="text" name="contacto"
+                                        [ngClass]="{ 'is-invalid': contacto.invalid && contacto.touched, 'is-valid': contacto.valid}"
+                                        #contacto="ngModel" [(ngModel)]="juzgadoSeleccionado.contacto"
+                                        ngbTooltip="Contacto" required maxlength="50">
+                                    <div class="invalid-feedback d-block"
+                                        *ngIf="contacto.invalid && (contacto.dirty || contacto.touched)">
+                                        Contacto requerido
+                                    </div>
+                                </div>
+
+                                <div class="ingresar-jurisdiccion datos">
+
+                                    *Jurisdicción:
+
+                                    <input class="form-control input-texto" type="text" name="jurisdiccion"
+                                        [ngClass]="{ 'is-invalid': jurisdiccion.invalid && jurisdiccion.touched, 'is-valid': jurisdiccion.valid}"
+                                        #jurisdiccion="ngModel" [(ngModel)]="juzgadoSeleccionado.jurisdiccion"
+                                        ngbTooltip="Jurisdiccion" required maxlength="50">
+                                    <div class="invalid-feedback d-block"
+                                        *ngIf="jurisdiccion.invalid && (jurisdiccion.dirty || jurisdiccion.touched)">
+                                        Dirección requerida
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="datos-3 ">
+
+                                <div class="ingresar-direccion datos">
+
+                                    *Dirección:
+
+                                    <input class="form-control input-texto" type="text" name="direccion"
+                                        [ngClass]="{ 'is-invalid': direccion.invalid && direccion.touched, 'is-valid': direccion.valid}"
+                                        #direccion="ngModel" [(ngModel)]="juzgadoSeleccionado.direccion"
+                                        ngbTooltip="Direccion" required maxlength="50">
+                                    <div class="invalid-feedback d-block"
+                                        *ngIf="direccion.invalid && (direccion.dirty || direccion.touched)">
+                                        Dirección requerida
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="boton">
+
+                            <button class="btn btn-primary btn-block" [disabled]="!juzgadoForm.valid">Agregar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="contenedor-tabla">
+
+            <div class="tabla">
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <div class="header-tabla">
+                                    ID
+                                    <a (click)="ordenamiento('idJuzgado')">
+                                        <i class="material-icons ordenamiento">unfold_more</i>
+                                    </a>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="header-tabla">
+                                    Nombre
+                                    <a (click)="ordenamiento('nombre')">
+                                        <i class="material-icons ordenamiento">unfold_more</i>
+                                    </a>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="header-tabla">
+                                    Ciudad
+                                    <a (click)="ordenamiento('ciudad')">
+                                        <i class="material-icons ordenamiento">unfold_more</i>
+                                    </a>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="header-tabla">
+                                    Direccion
+                                    <a (click)="ordenamiento('direccion')">
+                                        <i class="material-icons ordenamiento">unfold_more</i>
+                                    </a>
+
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="header-tabla">
+                                    Contacto
+                                    <a (click)="ordenamiento('contacto')">
+                                        <i class="material-icons ordenamiento">unfold_more</i>
+                                    </a>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="header-tabla">
+                                    Jurisdiccion
+                                    <a (click)="ordenamiento('jurisdiccion')">
+                                        <i class="material-icons ordenamiento">unfold_more</i>
+                                    </a>
+                                </div>
+                            </th>
+                            <th scope="col">
+                                <div class="header-tabla">
+                                    Operaciones
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let juzgado of juzgadoService.juzgados">
+                            <td>{{juzgado.idJuzgado}}</td>
+                            <td>{{juzgado.nombre}}</td>
+                            <td>{{juzgado.ciudad}}</td>
+                            <td>{{juzgado.direccion}}</td>
+                            <td>{{juzgado.contacto}}</td>
+                            <td>{{juzgado.jurisdiccion}}</td>
+                            <td>
+                                <a (click)="editarJuzgado(juzgado)">
+                                    <i class="material-icons">editar</i>
+                                </a>
+                                <a (click)="eliminarJuzgado(juzgado.idJuzgado)">
+                                    <i class="material-icons">delete</i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+            <div class="filtros">
+
+                <div class="filtro">
+                    <button class="image-button" (click)="toggleSelect()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-funnel-fill" viewBox="0 0 16 16" style="width: 24px; height: 24px;">
+                            <path
+                                d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="card2" *ngIf="showSelect">
+                    <div class="card-body2">
+                        <legend>Filtrar por:</legend>
+
+                        <div class="botonera">
+
+                            <div class="traer-todo">
+                                <button class="btn btn-primary btn-block" (click)="traerTodos()">Obtener todos</button>
+                            </div>
+
+                        </div>
+                        <div class="row input-texto-before-nombreFilter ">
+                            <div class="input-nombre-filtro " input-group>
+                                <input class="form-control input-texto" type="text" name="nombre"
+                                    [(ngModel)]="nombreFilter">
+                            </div>
+                        </div>
+                        <div class="row input-texto-before-jurisdiccionFilter ">
+                            <div class="input-jurisdiccion-filtro " input-group>
+                                <input class="form-control input-texto" type="text" name="jurisdiccion"
+                                    [(ngModel)]="jurisdiccionFilter">
+                            </div>
+                        </div>
+                        <div class="row input-texto-before-ciudadFilter ">
+                            <div class="input-ciudad-filtro " input-group>
+                                <input class="form-control input-texto" type="text" name="ciudad"
+                                    [(ngModel)]="ciudadFilter">
+                            </div>
+                        </div>
+
+                        <div class="botonera">
+
+                            <div class="boton-filtro">
+                                <button class="btn btn-primary btn-block" (click)="filtros()">Filtrar</button>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
 
 </div>
