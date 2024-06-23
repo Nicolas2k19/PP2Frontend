@@ -43,7 +43,6 @@ export class JuzgadoComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("Pantalla juzgados")
     this.getJuzgados();
     this.hayError = false;
     this.editarBandera = false;
