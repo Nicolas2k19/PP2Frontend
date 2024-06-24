@@ -10,6 +10,8 @@ import { UsuarioService } from 'src/app/services/login/usuario.service';
 import { PruebaDeVidaService } from 'src/app/services/pruebaDeVida/prueba-de-vida.service';
 import { RestriccionService } from 'src/app/services/restricciones/restriccion.service';
 import Chart from 'chart.js/auto';
+import { Persona } from 'src/app/models/persona';
+import { PersonaService } from 'src/app/services/personas/persona.service';
 
 
 @Component({
@@ -24,18 +26,23 @@ export class InformesComponent implements OnInit {
   usuarios: Usuario[] = [];
   incidencias: Incidencia[] = [];
   pruebas: PruebaDeVida[] = [];
+  personas1: Persona[] = [];
 
   informes = [
     { tipo: 'Informe de Restricciones' },
     { tipo: 'Informe de Usuarios' },
     { tipo: 'Informe de Incidencias' },
-    { tipo: 'Informe de Pruebas de Vida' }
+    { tipo: 'Informe de Pruebas de Vida' },
+    { tipo: 'Informe de Personas' },
+    { tipo: 'Informe de Infracciones de Restricciones' }
   ];
   tipo: string;
+  ordenAscendente = true;
 
   //Config graficos
 
   usersChart: Chart;
+  
 
   @ViewChild('usersChartCanvas', { static: false }) usersChartCanvas: ElementRef;
 
@@ -55,14 +62,19 @@ export class InformesComponent implements OnInit {
     private usuarioService: UsuarioService,
     private incidenciaService: IncidenciaService,
     private pruebaService: PruebaDeVidaService,
+    private personaService: PersonaService,
     private spinner: NgxSpinnerService
-  ) { }
+  ) { 
+
+    
+  }
 
   ngOnInit(): void {
     this.getRestricciones();
     this.getUsuarios();
     this.getIncidencias();
     this.getPruebas();
+    this.getPersonas();
   }
 
   getIncidencias() {
@@ -71,7 +83,6 @@ export class InformesComponent implements OnInit {
       .subscribe(res => {
         this.spinner.hide();
         this.incidencias = res as Incidencia[];
-        console.log(res);
       })
 
   }
@@ -82,10 +93,7 @@ export class InformesComponent implements OnInit {
       .subscribe(res => {
         this.spinner.hide();
         this.pruebas = res as PruebaDeVida[];
-        console.log(res);
       })
-
-
   }
 
   getUsuarios() {
@@ -94,9 +102,18 @@ export class InformesComponent implements OnInit {
       .subscribe(user => {
         this.spinner.hide();
         this.usuarios = user as Usuario[];
-        console.log(user);
+
       })
 
+  }
+
+  getPersonas() {
+    this.spinner.show();
+    this.personaService.getPersonas()
+      .subscribe(res => {
+        this.spinner.hide();
+        this.personas1 = res as Persona[];
+      })
   }
 
   getRestricciones() {
@@ -105,7 +122,6 @@ export class InformesComponent implements OnInit {
       .subscribe(res => {
         this.spinner.hide();
         this.restricciones = res as RestriccionDTO[];
-        console.log(res);
         this.addInformeRestricciones();
       })
   }
@@ -114,7 +130,6 @@ export class InformesComponent implements OnInit {
     this.restricciones.forEach(restriccion => {
       this.informes.push({ tipo: `Informe de Restricción ${restriccion.restriccion.idRestriccion}` });
     });
-    console.log(this.informes);
   }
 
 
@@ -126,8 +141,6 @@ export class InformesComponent implements OnInit {
 
 
   generarReportes(tipoTraido: string) {
-    console.log(`Generando e imprimiendo el ${tipoTraido}`);
-
     const restriccionPattern = /^Informe de Restricción (\d+)$/;
     const match = tipoTraido.match(restriccionPattern);
 
@@ -153,12 +166,50 @@ export class InformesComponent implements OnInit {
           this.incidencias.filter(i => i.idRestriccion === restriccionId)
         );
       } else {
-        console.error("No se encontro la restriccion con ID ${restriccionId");
+
       }
     } else {
-      console.log("entre al else antes del switch")
 
       switch (tipoTraido) {
+        case 'Informe de Infracciones de Restricciones':
+          const titulo = 'Informe de Infracciones de Restricciones';
+          const columnas = ['ID', 'Victimario', 'Victimario DNI', 'Damnificada', 'Damnificada DNI', 'Fecha Sentencia', 'Distancia', 'Responsable'];
+          const datos = this.restricciones.map(r => ({
+            ID: r.restriccion.idRestriccion,
+            'Victimario': `${r.victimario.nombre} ${r.victimario.apellido}`,
+            'Victimario DNI': r.victimario.dni,
+            'Damnificada': `${r.damnificada.nombre} ${r.damnificada.apellido}`,
+            'Damnificada DNI': r.damnificada.dni,
+            'Fecha Sentencia': r.restriccion.fechaSentencia,
+            'Distancia': r.restriccion.distancia
+          }))
+          const incidencias = this.incidencias;
+
+          this.generarInformeInfraccionRestricciones(titulo, columnas, datos, incidencias);
+          break;
+        case 'Informe de Personas':
+          console.log("Encuentra si hay match:", this.personas1.map(item => ({
+            ID: item.idPersona,
+            Nombre: item.nombre,
+            Apellido: item.apellido,
+            DNI: item.dni,
+            Telefono: item.telefono,
+            'Fecha Nacimiento': item.fechaNacimiento, 
+          })));
+          this.generarInforme(
+            'Informe de Personas',
+            ['ID', 'Nombre', 'Apellido', 'DNI', 'Telefono', 'Fecha Nacimiento'],
+            this.personas1.map(item => ({
+              ID: item.idPersona,
+              Nombre: item.nombre,
+              Apellido: item.apellido,
+              DNI: item.dni,
+              Telefono: item.telefono,
+              'Fecha Nacimiento': item.fechaNacimiento, 
+            })), this.personas1
+          );
+          break;
+
         case 'Informe de Restricciones':
           this.generarInforme(
             'Informe de Restricciones',
@@ -186,14 +237,14 @@ export class InformesComponent implements OnInit {
         case 'Informe de Incidencias':
           this.generarInformeIncidencias(
             'Informe de Incidencias',
-            ['ID', 'IDRestriccion','Fecha','Descripcion','Topico','Peligrosidad'],
+            ['ID', 'IDRestriccion', 'Fecha', 'Descripcion', 'Topico', 'Peligrosidad'],
             this.incidencias.map(r => ({
               ID: r.idIncidencia,
               'IDRestriccion': r.idRestriccion,
               'Fecha': r.fecha,
-              'Descripcion':r.descripcion,
-              'Topico':r.topico,
-              'Peligrosidad':r.peligrosidad
+              'Descripcion': r.descripcion,
+              'Topico': r.topico,
+              'Peligrosidad': r.peligrosidad
             })), this.incidencias
           );
           break;
@@ -203,13 +254,13 @@ export class InformesComponent implements OnInit {
             ['ID', 'IDRestriccion', 'Fecha', 'Descripcion', 'Estado', 'IDPersona', 'Accion'],
             this.pruebas.map(r => ({
               ID: r.idPruebaDeVida,
-              'IDRestriccion': r.idRestriccion, 
-              'Fecha': r.fecha, 
-              'Descripcion': r.descripcion, 
-              'Estado': r.estado, 
-              'IDPersona': r.idPersonaRestriccion, 
-              'Accion' : r.accion
-              
+              'IDRestriccion': r.idRestriccion,
+              'Fecha': r.fecha,
+              'Descripcion': r.descripcion,
+              'Estado': r.estado,
+              'IDPersona': r.idPersonaRestriccion,
+              'Accion': r.accion
+
             })), this.pruebas
           );
           break;
@@ -397,6 +448,7 @@ export class InformesComponent implements OnInit {
   //Basico solo con tablas 
 
   generarInforme(titulo, columnas, datos, lista) {
+
     let popupWin = window.open('', '_blank', 'width=800, height=600');
     popupWin!.document.open();
     popupWin!.document.write(`
@@ -610,19 +662,19 @@ export class InformesComponent implements OnInit {
 
   //Reporte de incidencias ; grafico de cantidad por restriccion, grafico por topico y grafico por peligrosidad
 
- 
+
   generarInformeIncidencias(titulo, columnas, datos, lista) {
 
     // Agrupar datos por restriccion, topico y peligrosidad
     const groupBy = (key) => {
-        return lista.reduce((acc, obj) => {
-            const prop = obj[key];
-            if (!acc[prop]) {
-                acc[prop] = 0;
-            }
-            acc[prop]++;
-            return acc;
-        }, {});
+      return lista.reduce((acc, obj) => {
+        const prop = obj[key];
+        if (!acc[prop]) {
+          acc[prop] = 0;
+        }
+        acc[prop]++;
+        return acc;
+      }, {});
     };
 
     const incidenciasPorRestriccion = groupBy('idRestriccion');
@@ -730,38 +782,38 @@ export class InformesComponent implements OnInit {
       </html>
     `);
     popupWin!.document.close();
-}
+  }
 
 
-//Reporte de pruebas de vida: grafico por restriccion y grafico por estado.
+  //Reporte de pruebas de vida: grafico por restriccion y grafico por estado.
 
-generarInformePrueba(titulo, columnas, datos, lista) {
+  generarInformePrueba(titulo, columnas, datos, lista) {
 
-  // Agrupar datos por restriccion y estado
-  const groupBy = (key) => {
-    return lista.reduce((acc, obj) => {
-      const prop = obj[key];
-      if (!acc[prop]) {
-        acc[prop] = 0;
-      }
-      acc[prop]++;
-      return acc;
-    }, {});
-  };
+    // Agrupar datos por restriccion y estado
+    const groupBy = (key) => {
+      return lista.reduce((acc, obj) => {
+        const prop = obj[key];
+        if (!acc[prop]) {
+          acc[prop] = 0;
+        }
+        acc[prop]++;
+        return acc;
+      }, {});
+    };
 
-  const pruebasPorRestriccion = groupBy('idRestriccion');
-  const pruebasPorEstado = groupBy('estado');
+    const pruebasPorRestriccion = groupBy('idRestriccion');
+    const pruebasPorEstado = groupBy('estado');
 
-  // Crear arrays para Chart.js
-  const labelsRestriccion = Object.keys(pruebasPorRestriccion);
-  const dataRestriccion = Object.values(pruebasPorRestriccion);
+    // Crear arrays para Chart.js
+    const labelsRestriccion = Object.keys(pruebasPorRestriccion);
+    const dataRestriccion = Object.values(pruebasPorRestriccion);
 
-  const labelsEstado = Object.keys(pruebasPorEstado);
-  const dataEstado = Object.values(pruebasPorEstado);
+    const labelsEstado = Object.keys(pruebasPorEstado);
+    const dataEstado = Object.values(pruebasPorEstado);
 
-  let popupWin = window.open('', '_blank', 'width=800, height=600');
-  popupWin!.document.open();
-  popupWin!.document.write(`
+    let popupWin = window.open('', '_blank', 'width=800, height=600');
+    popupWin!.document.open();
+    popupWin!.document.write(`
     <html>
     <button id="printButton" onclick="printPage()">Imprimir</button>
       <head>
@@ -847,8 +899,167 @@ generarInformePrueba(titulo, columnas, datos, lista) {
       </body>
     </html>
   `);
-  popupWin!.document.close();
-}
+    popupWin!.document.close();
+  }
 
+
+  //REPORTE DE RESTRICCIONES X TIPO DE INCIDENCIA (1ERO POR INFRACCION )
+
+  generarInformeInfraccionRestricciones(titulo: string, columnas: string[], datos: any[], incidencias: any[]) {
+    // Filtrar las restricciones que tuvieron una incidencia del tipo "InfraccionDeRestriccion"
+    const restriccionesConInfraccion = incidencias.filter(incidencia => incidencia.topico === 'InfraccionDeRestriccion');
+
+    // Obtener IDs únicos de las restricciones con infracción
+    const restriccionesConInfraccionIDs = [...new Set(restriccionesConInfraccion.map(incidencia => incidencia.idRestriccion))];
+
+    // Filtrar los datos para obtener solo las restricciones con infracción
+    const datosFiltrados = datos.filter(dato => restriccionesConInfraccionIDs.includes(dato.ID));
+
+
+    // Contar total de restricciones y total de restricciones con infracción
+    const totalRestricciones = datos.length;
+    const totalRestriccionesConInfraccion = datosFiltrados.length;
+
+    // Crear datos para el gráfico
+    const labels = ['Total de Restricciones', 'Restricciones con Infracción'];
+    const data = [totalRestricciones, totalRestriccionesConInfraccion];
+
+    let popupWin = window.open('', '_blank', 'width=800, height=600');
+    popupWin!.document.open();
+    popupWin!.document.write(`
+      <html>
+      <button id="printButton" onclick="printPage()">Imprimir</button>
+        <head>
+          <title>${titulo}</title>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+          <style>
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            table, th, td {
+              border: 1px solid black;
+            }
+            th, td {
+              padding: 8px;
+              text-align: left;
+            }
+            canvas {
+              margin-top: 20px;
+            }
+            #printButton {
+              margin-top: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>${titulo}</h1>
+          <table>
+            <tr>
+              ${columnas.map(col => `<th>${col}</th>`).join('')}
+            </tr>
+            ${datosFiltrados.map(d => `
+              <tr>
+                ${columnas.map(col => `<td>${d[col]}</td>`).join('')}
+              </tr>
+            `).join('')}
+          </table>
+          <canvas id="chartRestricciones"></canvas>
+          <script>
+            function printPage() {
+              var printButton = document.getElementById('printButton');
+              printButton.style.display = 'none';
+              window.print();
+              setTimeout(function() {
+                printButton.style.display = 'block';
+              }, 800); // Ajusta el tiempo según sea necesario
+            }
+  
+            // Crear gráfico
+            var ctx = document.getElementById('chartRestricciones').getContext('2d');
+            new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: ${JSON.stringify(labels)},
+                datasets: [{
+                  label: 'Cantidad de Restricciones',
+                  data: ${JSON.stringify(data)},
+                  backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                  ],
+                  borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)'
+                  ],
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                },
+                title: {
+                  display: true,
+                  text: 'Comparación de Restricciones'
+                }
+              }
+            });
+          </script>
+        </body>
+      </html>
+    `);
+    popupWin!.document.close();
+  }
+
+
+
+
+  //Generacion de reporte para imprimir
+
+
+
+  //ACCIONES FRONT
+
+
+  imprimir(tipoTraido : string){
+
+  }
+
+  vistaprevia(tipoTraido: string){
+
+    this.generarReportes(tipoTraido)
+
+  }
+
+
+  ordenamiento() {
+    if (this.ordenAscendente) {
+      // Orden ascendente por tipo
+      this.informes.sort((a, b) => {
+        if (a.tipo < b.tipo) return -1;
+        if (a.tipo > b.tipo) return 1;
+        return 0;
+      });
+      console.log("Informes ordenados ascendentemente:");
+      console.log(this.informes);
+    } else {
+      // Orden descendente por tipo
+      this.informes.sort((a, b) => {
+        if (a.tipo > b.tipo) return -1;
+        if (a.tipo < b.tipo) return 1;
+        return 0;
+      });
+      console.log("Informes ordenados descendentemente:");
+      console.log(this.informes);
+    }
+  
+    // Cambia el estado de ordenamiento para el próximo clic
+    this.ordenAscendente = !this.ordenAscendente;
+  }
 
 }
