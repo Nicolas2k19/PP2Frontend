@@ -32,7 +32,7 @@ export class PruebasDeVidaComponent implements OnInit {
   imgPruebaDeVida: String;
   respondio: boolean = true;
   opcionesDesplegable: Persona[];
-  seleccionado: Persona;
+  seleccionado: Persona = null;
   selectedUserLabel: string = "Pruebas de vida para: ";
   usuarioSeleccionado: Usuario;
   pruebasDeVida: PruebaDeVida[] = [];
@@ -89,18 +89,15 @@ export class PruebasDeVidaComponent implements OnInit {
           this.seleccionado = (res as Persona);//Por defecto toma al agresor
           this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
           this.opcionesDesplegable = [this.restriccion.victimario, this.restriccion.damnificada];
+          this.cargarPruebasSimples();
+          this.obtenerFotoDePerfil();
+          this.cargarPruebasMultiples();
         })
       }
       this.spinnerService.show();
-      this.cargarPruebasSimples();
-      this.obtenerFotoDePerfil();
-      this.cargarPruebasMultiples();
     }
     this.opcionesDesplegable = [this.restriccion.victimario, this.restriccion.damnificada];
-    this.cargarPruebasSimples();
-    this.cargarPruebasMultiples();
   }
-
 
   seleccionarOpcion(opcion: Persona) {
     this.personaService.getPersona(opcion.idPersona)
@@ -231,7 +228,6 @@ export class PruebasDeVidaComponent implements OnInit {
       fechaActual.setHours(fechaActual.getHours() + this.diferenciaHoraria);
       fechaActual.setMonth(fechaActual.getMonth()+1)
       pruebaDeVidaMultiple.descripcion = this.descripcionPruebaMultiple + " disponible hasta las: " + fechaActual.getHours() + ":" + (fechaActual.getMinutes() < 10 ? '0' : '') + fechaActual.getMinutes() + " del " + fechaActual.getDate() + "/" + (fechaActual.getMonth() < 10 ? '0' : '') + fechaActual.getMonth() ;
-
       this.pruebaDeVidaMultipleService.postPruebaDeVidaMultiple(pruebaDeVidaMultiple).subscribe(res => {
         let nuevaPruebaDeVidaMultiple = res as PruebaDeVidaMultiple;
         this.accionesMultiples.forEach(async (accion) => {
@@ -241,6 +237,7 @@ export class PruebasDeVidaComponent implements OnInit {
           this.pruebaDeVida.esMultiple = true;
           this.pruebaDeVida.descripcion = this.tranformaAccion(accion.valor)
           this.pruebaDeVida.idPruebaDeVidaMultiple = nuevaPruebaDeVidaMultiple.idPruebaDeVidaMultiple;
+          this.pruebaDeVida.idRestriccion = this.comunicacion.restriccionDTO.restriccion.idRestriccion;
           await this.pruebaDeVidaService.postPruebaDeVida(this.pruebaDeVida).subscribe(res => {
             this.getPruebasDeVidaPersona(this.seleccionado.idPersona);
             this.pruebaDeVida = new PruebaDeVida();

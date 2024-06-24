@@ -99,7 +99,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   traerRestriccionesPerimetrales() {
     this.restriccionService.getRestricciones().subscribe(res => {
       this.restriccionesPerimetrales = res as Restriccion[]
-      console.log(this.restriccionesPerimetrales)
     })
   }
 
@@ -110,7 +109,6 @@ export class AdministrarRestriccionesMultiplesPersonaComponent implements OnInit
   traerProvincias() {
     this.provinciaLocalidadService.getProvincias().subscribe(res => {
       this.provincias = res as Provincia[]
-      console.log(this.provincias)
     })
 
   }
