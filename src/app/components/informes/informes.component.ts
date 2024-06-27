@@ -140,7 +140,7 @@ export class InformesComponent implements OnInit {
   //Reporte de incidencias: graficos de cant de cada tipo de incidencias, cant de incidencias por cada restriccion
 
 
-  generarReportes(tipoTraido: string) {
+  generarReportes(tipoTraido: string, imprimir : boolean) {
     const restriccionPattern = /^Informe de Restricción (\d+)$/;
     const match = tipoTraido.match(restriccionPattern);
 
@@ -163,7 +163,7 @@ export class InformesComponent implements OnInit {
             'Responsable': restriccion.administrativo.email
           }],
           this.pruebas.filter(p => p.idRestriccion === restriccionId),
-          this.incidencias.filter(i => i.idRestriccion === restriccionId)
+          this.incidencias.filter(i => i.idRestriccion === restriccionId),imprimir
         );
       } else {
 
@@ -185,17 +185,9 @@ export class InformesComponent implements OnInit {
           }))
           const incidencias = this.incidencias;
 
-          this.generarInformeInfraccionRestricciones(titulo, columnas, datos, incidencias);
+          this.generarInformeInfraccionRestricciones(titulo, columnas, datos, incidencias,imprimir);
           break;
         case 'Informe de Personas':
-          console.log("Encuentra si hay match:", this.personas1.map(item => ({
-            ID: item.idPersona,
-            Nombre: item.nombre,
-            Apellido: item.apellido,
-            DNI: item.dni,
-            Telefono: item.telefono,
-            'Fecha Nacimiento': item.fechaNacimiento, 
-          })));
           this.generarInforme(
             'Informe de Personas',
             ['ID', 'Nombre', 'Apellido', 'DNI', 'Telefono', 'Fecha Nacimiento'],
@@ -206,7 +198,7 @@ export class InformesComponent implements OnInit {
               DNI: item.dni,
               Telefono: item.telefono,
               'Fecha Nacimiento': item.fechaNacimiento, 
-            })), this.personas1
+            })), this.personas1,imprimir
           );
           break;
 
@@ -222,7 +214,7 @@ export class InformesComponent implements OnInit {
               'Damnificada DNI': r.damnificada.dni,
               'Fecha Sentencia': r.restriccion.fechaSentencia,
               'Distancia': r.restriccion.distancia
-            })), this.restricciones
+            })), this.restricciones, imprimir
           );
           break;
         case 'Informe de Usuarios':
@@ -231,7 +223,7 @@ export class InformesComponent implements OnInit {
             'Email': u.email,
             'Rol': u.rolDeUsuario,
             'IdGrupo': u.idGrupo
-          })), this.usuarios
+          })), this.usuarios, imprimir
           );
           break;
         case 'Informe de Incidencias':
@@ -245,7 +237,7 @@ export class InformesComponent implements OnInit {
               'Descripcion': r.descripcion,
               'Topico': r.topico,
               'Peligrosidad': r.peligrosidad
-            })), this.incidencias
+            })), this.incidencias, imprimir
           );
           break;
         case 'Informe de Pruebas de Vida':
@@ -261,7 +253,7 @@ export class InformesComponent implements OnInit {
               'IDPersona': r.idPersonaRestriccion,
               'Accion': r.accion
 
-            })), this.pruebas
+            })), this.pruebas, imprimir
           );
           break;
         default:
@@ -279,13 +271,14 @@ export class InformesComponent implements OnInit {
     arg1: string[],
     arg2: { ID: number; Victimario: string; 'Victimario DNI': string; Damnificada: string; 'Damnificada DNI': string; 'Fecha Sentencia': Date; Distancia: number; 'Responsable': string }[],
     arg3: PruebaDeVida[],
-    arg4: Incidencia[]
+    arg4: Incidencia[], imprimir: boolean
   ) {
     // Crear una nueva ventana emergente para el informe
     let popupWin = window.open('', '_blank', 'width=800, height=600');
     popupWin!.document.open();
     popupWin!.document.write(`
         <html>
+        <button id="printButton" onclick="printPage()">Imprimir</button>
           <head>
             <title>${tipoTraido}</title>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
@@ -341,16 +334,16 @@ export class InformesComponent implements OnInit {
             </table>
             <canvas id="incidenciaChart"></canvas>
             <canvas id="pruebaDeVidaChart"></canvas>
-            <button id="printButton" onclick="printPage()">Imprimir</button>
             <script>
-              function printPage() {
-                var printButton = document.getElementById('printButton');
-                printButton.style.display = 'none';
-                window.print();
-                setTimeout(function() {
-                  printButton.style.display = 'block';
-                }, 800); // Ajusta el tiempo según sea necesario
-              }
+          function printPage() {
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = 'none';
+            window.print();
+            setTimeout(function() {
+              printButton.style.display = 'block';
+            }, 800); // Ajusta el tiempo según sea necesario
+          }
+          ${imprimir ? 'setTimeout(printPage, 300);' : ''}
     
               // Agrupar incidencias por tipo
           const incidenciaTipos = ${JSON.stringify(arg4.map(incidencia => incidencia.topico))};
@@ -447,7 +440,95 @@ export class InformesComponent implements OnInit {
 
   //Basico solo con tablas 
 
-  generarInforme(titulo, columnas, datos, lista) {
+  generarInforme(titulo, columnas, datos, lista,imprimir) {
+
+    let popupWin = window.open('', '_blank', 'width=800, height=600');
+  popupWin!.document.open();
+  popupWin!.document.write(`
+    <html>
+      <button id="printButton" onclick="printPage()">Imprimir</button>
+      <head>
+        <title>${titulo}</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+        <style>
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+          table, th, td {
+            border: 1px solid black;
+          }
+          th, td {
+            padding: 8px;
+            text-align: left;
+          }
+          canvas {
+            margin-top: 20px;
+          }
+          #printButton {
+            margin-top: 20px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>${titulo}</h1>
+        <table>
+          <tr>
+            ${columnas.map(col => `<th>${col}</th>`).join('')}
+          </tr>
+          ${datos.map(d => `
+            <tr>
+              ${columnas.map(col => `<td>${d[col]}</td>`).join('')}
+            </tr>
+          `).join('')}
+        </table>
+        <script>
+          function printPage() {
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = 'none';
+            window.print();
+            setTimeout(function() {
+              printButton.style.display = 'block';
+            }, 800); // Ajusta el tiempo según sea necesario
+          }
+          ${imprimir ? 'setTimeout(printPage, 300);' : ''}
+        </script>
+      </body>
+    </html>
+  `);
+  popupWin!.document.close();
+  }
+
+
+  //Reporte de usuarios: graficos de cant de cada tipo de usuario y Cant de cada usuario x grupo
+
+
+  generarInformeUser(titulo, columnas, datos, lista,imprimir) {
+    console.log("Entre a generar informe usuario")
+    // Calcular la cantidad de usuarios por rol
+    const roles = {};
+    datos.forEach(d => {
+      if (d.Rol in roles) {
+        roles[d.Rol]++;
+      } else {
+        roles[d.Rol] = 1;
+      }
+    });
+    //Calcular la cantidad de usuarios x grupo
+    const grupos = {};
+    datos.forEach(d => {
+      if (d.IdGrupo in grupos) {
+        grupos[d.IdGrupo]++;
+      } else {
+        grupos[d.IdGrupo] = 1;
+      }
+    });
+    // Crear etiquetas y datos para el gráfico
+    const labels = Object.keys(roles);
+    const data = labels.map(label => roles[label]);
+
+    const labels2 = Object.keys(grupos).map(key => `Cant de usuarios en Grupo #${key}`);
+    const data2 = Object.values(grupos);
 
     let popupWin = window.open('', '_blank', 'width=800, height=600');
     popupWin!.document.open();
@@ -489,95 +570,9 @@ export class InformesComponent implements OnInit {
               </tr>
             `).join('')}
           </table>
-           <script>
-              function printPage() {
-              var printButton = document.getElementById('printButton');
-              printButton.style.display = 'none';
-              window.print();
-              setTimeout(function() {
-                printButton.style.display = 'block';
-              }, 800); // Ajusta el tiempo según sea necesario
-            }
-          </script>
-        </body>
-      </html>
-    `);
-    popupWin!.document.close();
-  }
-
-
-  //Reporte de usuarios: graficos de cant de cada tipo de usuario y Cant de cada usuario x grupo
-
-
-  generarInformeUser(titulo, columnas, datos, lista) {
-    console.log("Entre a generar informe usuario")
-    // Calcular la cantidad de usuarios por rol
-    const roles = {};
-    datos.forEach(d => {
-      if (d.Rol in roles) {
-        roles[d.Rol]++;
-      } else {
-        roles[d.Rol] = 1;
-      }
-    });
-    //Calcular la cantidad de usuarios x grupo
-    const grupos = {};
-    datos.forEach(d => {
-      if (d.IdGrupo in grupos) {
-        grupos[d.IdGrupo]++;
-      } else {
-        grupos[d.IdGrupo] = 1;
-      }
-    });
-    // Crear etiquetas y datos para el gráfico
-    const labels = Object.keys(roles);
-    const data = labels.map(label => roles[label]);
-
-    const labels2 = Object.keys(grupos).map(key => `Cant de usuarios en Grupo #${key}`);
-    const data2 = Object.values(grupos);
-
-    let popupWin = window.open('', '_blank', 'width=800, height=600');
-    popupWin!.document.open();
-    popupWin!.document.write(`
-      <html>
-        <head>
-          <title>${titulo}</title>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-          <style>
-            table {
-              width: 100%;
-              border-collapse: collapse;
-            }
-            table, th, td {
-              border: 1px solid black;
-            }
-            th, td {
-              padding: 8px;
-              text-align: left;
-            }
-            canvas {
-              margin-top: 20px;
-            }
-            #printButton {
-              margin-top: 20px;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>${titulo}</h1>
-          <table>
-            <tr>
-              ${columnas.map(col => `<th>${col}</th>`).join('')}
-            </tr>
-            ${datos.map(d => `
-              <tr>
-                ${columnas.map(col => `<td>${d[col]}</td>`).join('')}
-              </tr>
-            `).join('')}
-          </table>
           <canvas id="usersChart"></canvas>
           <canvas id="usersChart2"></canvas>
-          <button id="printButton" onclick="printPage()">Imprimir</button>
+          
           <script>
             var ctx = document.getElementById('usersChart').getContext('2d');
             var usersChart = new Chart(ctx, {
@@ -645,13 +640,14 @@ export class InformesComponent implements OnInit {
           });
   
             function printPage() {
-              var printButton = document.getElementById('printButton');
-              printButton.style.display = 'none';
-              window.print();
-              setTimeout(function() {
-                printButton.style.display = 'block';
-              }, 1000); // Ajusta el tiempo según sea necesario
-            }
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = 'none';
+            window.print();
+            setTimeout(function() {
+              printButton.style.display = 'block';
+            }, 800); // Ajusta el tiempo según sea necesario
+          }
+          ${imprimir ? 'setTimeout(printPage, 300);' : ''}
           </script>
         </body>
       </html>
@@ -663,7 +659,7 @@ export class InformesComponent implements OnInit {
   //Reporte de incidencias ; grafico de cantidad por restriccion, grafico por topico y grafico por peligrosidad
 
 
-  generarInformeIncidencias(titulo, columnas, datos, lista) {
+  generarInformeIncidencias(titulo, columnas, datos, lista,imprimir) {
 
     // Agrupar datos por restriccion, topico y peligrosidad
     const groupBy = (key) => {
@@ -738,13 +734,14 @@ export class InformesComponent implements OnInit {
 
           <script>
               function printPage() {
-              var printButton = document.getElementById('printButton');
-              printButton.style.display = 'none';
-              window.print();
-              setTimeout(function() {
-                printButton.style.display = 'block';
-              }, 800); // Ajusta el tiempo según sea necesario
-            }
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = 'none';
+            window.print();
+            setTimeout(function() {
+              printButton.style.display = 'block';
+            }, 800); // Ajusta el tiempo según sea necesario
+          }
+          ${imprimir ? 'setTimeout(printPage, 300);' : ''}
 
             // Crear gráficos
             function crearGrafico(id, labels, data, label) {
@@ -787,7 +784,7 @@ export class InformesComponent implements OnInit {
 
   //Reporte de pruebas de vida: grafico por restriccion y grafico por estado.
 
-  generarInformePrueba(titulo, columnas, datos, lista) {
+  generarInformePrueba(titulo, columnas, datos, lista,imprimir) {
 
     // Agrupar datos por restriccion y estado
     const groupBy = (key) => {
@@ -864,6 +861,7 @@ export class InformesComponent implements OnInit {
               printButton.style.display = 'block';
             }, 800); // Ajusta el tiempo según sea necesario
           }
+          ${imprimir ? 'setTimeout(printPage, 300);' : ''}
 
           // Crear gráficos
           function crearGrafico(id, labels, data, label) {
@@ -905,7 +903,7 @@ export class InformesComponent implements OnInit {
 
   //REPORTE DE RESTRICCIONES X TIPO DE INCIDENCIA (1ERO POR INFRACCION )
 
-  generarInformeInfraccionRestricciones(titulo: string, columnas: string[], datos: any[], incidencias: any[]) {
+  generarInformeInfraccionRestricciones(titulo: string, columnas: string[], datos: any[], incidencias: any[],imprimir:boolean) {
     // Filtrar las restricciones que tuvieron una incidencia del tipo "InfraccionDeRestriccion"
     const restriccionesConInfraccion = incidencias.filter(incidencia => incidencia.topico === 'InfraccionDeRestriccion');
 
@@ -967,13 +965,14 @@ export class InformesComponent implements OnInit {
           <canvas id="chartRestricciones"></canvas>
           <script>
             function printPage() {
-              var printButton = document.getElementById('printButton');
-              printButton.style.display = 'none';
-              window.print();
-              setTimeout(function() {
-                printButton.style.display = 'block';
-              }, 800); // Ajusta el tiempo según sea necesario
-            }
+            var printButton = document.getElementById('printButton');
+            printButton.style.display = 'none';
+            window.print();
+            setTimeout(function() {
+              printButton.style.display = 'block';
+            }, 800); // Ajusta el tiempo según sea necesario
+          }
+          ${imprimir ? 'setTimeout(printPage, 300);' : ''}
   
             // Crear gráfico
             var ctx = document.getElementById('chartRestricciones').getContext('2d');
@@ -1027,12 +1026,18 @@ export class InformesComponent implements OnInit {
 
 
   imprimir(tipoTraido : string){
-
+    this.generarReportes(tipoTraido,true);
+  
   }
+
+
+
+
+
 
   vistaprevia(tipoTraido: string){
 
-    this.generarReportes(tipoTraido)
+    this.generarReportes(tipoTraido,false);
 
   }
 

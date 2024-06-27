@@ -171,7 +171,7 @@
             <div>
                 <select class="selector-mensaje " [(ngModel)]="tipoMensaje" (ngModelChange)="handleSelectChange()">
                     <option value="" disabled selected hidden>Seleccione el tipo de mensaje</option>
-                    <option value="cambioContraseña">Cambio de contraseña</option>
+                    <option value="cambioContraseña">Nueva contraseña</option>
                     <option value="alertaDamnificada">Alerta damnificada</option>
                 </select>
             </div>
@@ -370,13 +370,27 @@
                 </span>
                 Configuración WhatsApp
             </p>
+            <div>
+                <select class="selector-mensaje" [(ngModel)]="tipoMensaje" (ngModelChange)="handleSelectChange()">
+                    <option value="" disabled selected hidden>Seleccione el tipo de mensaje</option>
+                    <option value="alertaWspP">Alerta a policia</option>
+                    <option value="alertaWsp">Alerta a juzgados, dependencias y comisarias</option>
+                </select>
+            </div>
         </div>
         <div class="vista-config">
-            <div class="vista-previa">
+            <div class="vista-previa" *ngIf="showWspAlerta">
                 <h3>Vista previa</h3>
                 <div class="wsp-msg">
                     <div class="chat-wsp">
-                        {{whatsAppMessage}}
+                        <div class="msj-wsp">
+                            {{wspMessageBef}}
+                            <div>
+                                <strong> **#id**</strong>
+                            </div>
+                            {{wspMessageAft}}
+                        </div>
+                        
                         <div class="time-check">
                             <span class="time">12:45 PM</span>
                             <span class="material-icons check">check</span>
@@ -384,18 +398,67 @@
                     </div>
                 </div>
             </div>
-            <div class="configuracion">
+            <div class="configuracion" *ngIf="showWspAlerta">
                 <h3>Configuración de mensaje</h3>
                 <p class="text-modify">Modifique el mensaje: </p>
-                <textarea class="input" [(ngModel)]="whatsAppMessage" name="text" cols="32" rows="5"
-                    placeholder="{{whatsAppMessage}}"></textarea>
+                <textarea class="input" [(ngModel)]="wspMessageBef" name="text" cols="32" rows="5"
+                    placeholder="{{wspMessageBef}}"></textarea>
 
+                **Acá va el #id de la restricción**
+
+                <textarea class="input" [(ngModel)]="wspMessageAft" name="text" cols="32" rows="5"
+                    placeholder="{{wspMessageAft}}"></textarea>
                 <div class="contenedor-boton">
-                    <button class="btn-edit btn">
+                    <button class="btn-edit btn" (click)="configurarMensajeWhatsApp('alertaWsp')" >
                         Guardar
                     </button>
                 </div>
             </div>
+
+
+            <div class="vista-previa" *ngIf="showWspAlertaP">
+                <h3>Vista previa</h3>
+                <div class="wsp-msg">
+                    <div class="chat-wsp">
+                        <div class="msj-wsp">
+                            {{wspMessageBefP}}
+                            <div>
+                                <strong> **latitud**</strong>
+                            </div>
+                            {{wspMessageAftP}}
+                            <div>
+                                <strong> **longitud**</strong>
+                            </div>
+                        </div>
+                        
+                        <div class="time-check">
+                            <span class="time">12:45 PM</span>
+                            <span class="material-icons check">check</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="configuracion" *ngIf="showWspAlertaP">
+                <h3>Configuración de mensaje</h3>
+                <p class="text-modify">Modifique el mensaje: </p>
+                <textarea class="input" [(ngModel)]="wspMessageBefP" name="text" cols="32" rows="5"
+                    placeholder="{{wspMessageBefP}}"></textarea>
+
+                **Acá va la latitud**
+
+                <textarea class="input" [(ngModel)]="wspMessageAftP" name="text" cols="32" rows="5"
+                    placeholder="{{wspMessageAftP}}"></textarea>
+
+                **Acá va la longitud**
+                <div class="contenedor-boton">
+                    <button class="btn-edit btn" (click)="configurarMensajeWhatsApp('alertaWspP')">
+                        Guardar
+                    </button>
+                </div>
+            </div>
+
+
+
         </div>
     </div>
 

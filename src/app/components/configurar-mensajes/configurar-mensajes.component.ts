@@ -25,7 +25,12 @@ export class ConfigurarMensajesComponent implements OnInit {
   //mensaje de whatsapp
   tipoMensajeW: string = '';
   showWhatsAppConfig = false;
-  whatsAppMessage;
+  showWspAlerta = false;
+  showWspAlertaP = false;
+  wspMessageBef;
+  wspMessageBefP;
+  wspMessageAft;
+  wspMessageAftP;
 
 
   //mensaje telegram
@@ -104,6 +109,8 @@ export class ConfigurarMensajesComponent implements OnInit {
         this.showMailAlerta = false;
         this.showTelegramAlertaP = false;
         this.showTelegramAlerta = false;
+        this.showWspAlertaP = false;
+        this.showWspAlerta = false;
         this.getMail("passMail");
         break;
       case 'alertaDamnificada':
@@ -112,6 +119,8 @@ export class ConfigurarMensajesComponent implements OnInit {
         this.showMailAlerta = true;
         this.showTelegramAlertaP = false;
         this.showTelegramAlerta = false;
+        this.showWspAlertaP = false;
+        this.showWspAlerta = false;
         this.getMail("alertaMail");
         break;
       case 'alertaTelegramP':
@@ -120,6 +129,8 @@ export class ConfigurarMensajesComponent implements OnInit {
         this.showTelegramAlerta = false;
         this.showMailPass = false;
         this.showMailAlerta = false;
+        this.showWspAlertaP = false;
+        this.showWspAlerta = false;
         this.getTelegram("alertaTelegramP");
         break;
       case 'alertaTelegram':
@@ -128,9 +139,31 @@ export class ConfigurarMensajesComponent implements OnInit {
         this.showTelegramAlertaP = false;
         this.showMailPass = false;
         this.showMailAlerta = false;
+        this.showWspAlertaP = false;
+        this.showWspAlerta = false;
         this.getTelegram("alertaTelegram");
         break;
-        //falta agregar lo de wsp
+      //falta agregar lo de wsp
+      case 'alertaWspP':
+        this.resetSelect();
+        this.showWspAlertaP = true;
+        this.showWspAlerta = false;
+        this.showTelegramAlertaP = false;
+        this.showTelegramAlerta = false;
+        this.showMailPass = false;
+        this.showMailAlerta = false;
+        this.getWsp("alertaWspP");
+        break;
+      case 'alertaWsp':
+        this.resetSelect();
+        this.showWspAlerta = true;
+        this.showWspAlertaP = false;
+        this.showTelegramAlerta = false;
+        this.showTelegramAlertaP = false;
+        this.showMailPass = false;
+        this.showMailAlerta = false;
+        this.getWsp("alertaWsp");
+        break;
     }
   }
 
@@ -164,6 +197,19 @@ export class ConfigurarMensajesComponent implements OnInit {
       this.telegramMessageBefP = mensajeEncontrado.mensajeBef;
       this.telegramMessageAftP = mensajeEncontrado.mensajeAft;
     }
+  }
+
+  getWsp(tipoBuscado: string) {
+    const mensajeEncontrado = this.mensajes.find(mensaje => mensaje.tipo === tipoBuscado);
+
+    if (tipoBuscado === "alertaWsp") {
+      this.wspMessageBef = mensajeEncontrado.mensajeBef;
+      this.wspMessageAft = mensajeEncontrado.mensajeAft;
+    } else {
+      this.wspMessageBefP = mensajeEncontrado.mensajeBef;
+      this.wspMessageAftP = mensajeEncontrado.mensajeAft;
+    }
+
   }
 
 
@@ -214,14 +260,29 @@ export class ConfigurarMensajesComponent implements OnInit {
     }
   }
 
-  //Falta hacer:
 
-  configurarMensajeWhatsApp() {
+  configurarMensajeWhatsApp(tipo: string) {
+
+    if (tipo === "alertaWsp") {
+      const wspMsj = this.mensajes.find(mensaje => mensaje.tipo === 'alertaWsp');
+      wspMsj.mensajeBef = this.wspMessageBef;
+      wspMsj.mensajeAft = this.wspMessageAft;
+
+      this.configService.putMensaje(wspMsj).subscribe();
+    }
+
+    if (tipo === "alertaWspP") {
+
+      const mensajeWsp = this.mensajes.find(mensaje => mensaje.tipo === 'alertaWspP');
+      mensajeWsp.mensajeBef = this.wspMessageBefP;
+      mensajeWsp.mensajeAft = this.wspMessageAftP;
+
+      this.configService.putMensaje(mensajeWsp).subscribe();
+
+    }
 
   }
 
-  getWsp(tipoBuscado: string) {
-
-  }
+  
 
 }
