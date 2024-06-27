@@ -28,8 +28,6 @@ export class PersonaService {
   }
 
   postPersona(personaDTO: FormPersonaDTO) {
-    console.log("🚀 ~ PersonaService ~ postPersona ~ personaDTO:", personaDTO)
-    
     return this.http.post(this.URL_API, personaDTO);
   }
 
