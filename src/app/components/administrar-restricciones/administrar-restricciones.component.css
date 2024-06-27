@@ -69,7 +69,7 @@ td {
 }
 
 .input-texto-before-victimario::before {
-  content: "DNI agresor*";
+  content: "DNI victimario*";
   font-size: 0.7rem;
   text-align: left;
   width: 100%;
