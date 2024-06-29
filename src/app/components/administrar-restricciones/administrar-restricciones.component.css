@@ -40,6 +40,8 @@ td {
 .input-before-selector-grupos,
 .input-before-selector-distancia,
 .input-before-selector-fecha,
+.input-before-selector-comisaria,
+.input-before-selector-juzgado,
 .input-texto-before-grupoF,
 .input-texto-before-dniV,
 .input-texto-before-dniD,
@@ -53,7 +55,9 @@ td {
 .input-texto-before-comisaria,
 .input-texto-before-juzgado,
 .input-texto-before-peligrosidad,
-.input-texto-before-fecha
+.input-texto-before-fecha,
+.input-texto-before-detalle,
+.input-texto-before-juez
  {
   display: flex;
   flex-direction: column;
@@ -70,6 +74,20 @@ td {
 
 .input-texto-before-victimario::before {
   content: "DNI victimario*";
+  font-size: 0.7rem;
+  text-align: left;
+  width: 100%;
+}
+
+.input-texto-before-detalle::before {
+  content: "Detalle de la restriccion*";
+  font-size: 0.7rem;
+  text-align: left;
+  width: 100%;
+}
+
+.input-texto-before-juez::before {
+  content: "Juez responsable*";
   font-size: 0.7rem;
   text-align: left;
   width: 100%;
@@ -97,6 +115,18 @@ td {
 
 .input-before-selector-fecha::before {
   content: "Inicio de restricción *";
+  font-size: 0.7rem;
+  text-align: left;
+  width: 100%;
+}
+.input-before-selector-comisaria::before {
+  content: "Comisaria *";
+  font-size: 0.7rem;
+  text-align: left;
+  width: 100%;
+}
+.input-before-selector-juzgado::before {
+  content: "Juzgado *";
   font-size: 0.7rem;
   text-align: left;
   width: 100%;
