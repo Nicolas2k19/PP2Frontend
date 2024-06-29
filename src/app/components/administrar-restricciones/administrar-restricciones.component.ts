@@ -1,8 +1,8 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Persona } from 'src/app/models/persona';
 import { Usuario } from 'src/app/models/usuario';
 import { Restriccion } from 'src/app/models/restriccion';
-import { NgForm} from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { RestriccionService } from 'src/app/services/restricciones/restriccion.service';
 import { PersonaService } from 'src/app/services/personas/persona.service';
 import { UsuarioService } from 'src/app/services/login/usuario.service';
@@ -15,12 +15,18 @@ import GrupoService from 'src/app/services/grupo/grupoService';
 import Grupo from 'src/app/models/grupo/Grupo';
 import GrupoNuevo from 'src/app/models/grupo/grupoNuevo';
 import { AdministrarRestriccionesFisicasComponent } from '../administrar-restricciones-fisicas/administrar-restricciones-fisicas.component';
+import { DetalleRestriccion } from 'src/app/models/detalle-restriccion';
+import { JuzgadoService } from 'src/app/services/juzgado/juzgado.service';
+import { Juzgado } from 'src/app/models/juzgado';
+import { ComisariaService } from 'src/app/services/comisaria/comisaria.service';
+import { Comisaria } from 'src/app/models/comisaria';
+import { DetalleService } from 'src/app/services/detalle/detalle.service';
 
 @Component({
   selector: 'app-administrar-restricciones',
   templateUrl: './administrar-restricciones.component.html',
   styleUrls: ['./administrar-restricciones.component.css'],
-  
+
 })
 
 export class AdministrarRestriccionesComponent implements OnInit {
@@ -28,13 +34,32 @@ export class AdministrarRestriccionesComponent implements OnInit {
   victimario = new Persona;
   administrativo = new Usuario;
   restriccion = new Restriccion;
-  restriccionMultiplePersona : boolean
+  restriccionMultiplePersona: boolean;
 
+  //Para el detalle (cuando edito)
 
-  restriccionFisica : boolean
+  detalle = new DetalleRestriccion;
+
+  detalles: DetalleRestriccion[];
+
+  //lista de comisarias
+
+  comisarias: Comisaria[];
+
+  //para agarrar la comisaria seleccionada
+
+  comisariaSeleccionado: number;
+
+  //lista de juzgados
+
+  juzgados: Juzgado[];
+
+  //para agarrar el juzgado seleccionado
+
+  juzgadoSeleccionado: number;
+  restriccionFisica: boolean
   errorCampos: Boolean
   errorCampoDamnificada: Boolean
-
   camposIncompletos = false;
   fecha: Date = new Date();
   maxDatePicker = { year: this.fecha.getFullYear(), month: this.fecha.getMonth() + 1, day: this.fecha.getDate() };
@@ -43,8 +68,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
   grupos: Number[];
   grupoSeleccionado: Number
   grupoActual: Grupo
-
-
   particionesGrupo: Grupo[]
   usuariosDelGrupo: Usuario[]
   restriccionesDelGrupo: Restriccion[]
@@ -52,22 +75,24 @@ export class AdministrarRestriccionesComponent implements OnInit {
   mostrarGrupoRestricciones: boolean;
   mostrarGrupo: boolean
 
-
   //filtros
+
   emailFilter: string;
   grupoFilter: number;
   dniFilterDamnificada: string;
   dniFilterVictimario: string;
   idFilterDamnificada: number;
   idFilterVictimario: number;
+
   //ordenamiento
+
   contadorA = 0;
   contadorV = 0;
   contadorD = 0;
   contadorGR = 0;
-  ordenID :boolean;
-  ordenAdmin:boolean;
-  ordenDamnificada :boolean;
+  ordenID: boolean;
+  ordenAdmin: boolean;
+  ordenDamnificada: boolean;
   ordenVictimario: boolean;
   ordenGrupo: boolean;
 
@@ -82,34 +107,39 @@ export class AdministrarRestriccionesComponent implements OnInit {
   infoResFecha: Date;
   infoResAdmin: string;
   infoResDistancia: number;
-
-
   turnoGrupo: String
   nombreEquipo: String
-
   errorTextoEquipo: boolean
   errorTurno: boolean
-
-
   nombreGrupoAAsignar: String;
   errorCampoVictimario: boolean;
   errorCampoSelectorGrupo: boolean
   errorCampoFecha: boolean
   errorCampoDistancia: boolean
-
   originalRes: RestriccionDTO[] = [];
+  errorCampoDetalle: boolean;
+  errorCampoJuez: boolean;
+  errorCampoSelectorComisaria: boolean
+  errorCampoSelectorJuzgado: boolean
+  infoResDetalle: string;
+  infoResJuez: string;
+  infoResComisaria: string;
+  infoResJuzgado: string;
+  banderaEdicion: boolean;
 
   constructor(
     public restriccionService: RestriccionService,
     public grupoService: GrupoService,
     private personaService: PersonaService,
     private usuarioService: UsuarioService,
+    private juzgadoService: JuzgadoService,
+    private comisariaService: ComisariaService,
+    private detalleService: DetalleService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
     this.grupos = [];
-    this.usuariosDelGrupo = []
-    this.restriccionesDelGrupo = []
-
+    this.usuariosDelGrupo = [];
+    this.restriccionesDelGrupo = [];
     this.mostrarAbmRestricciones = true;
     this.mostrarGrupo = false;
     this.mostrarGrupoRestricciones = false
@@ -118,6 +148,8 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.nombreGrupoAAsignar = ""
     this.errorCampoDamnificada = false;
     this.errorCampoVictimario = false;
+    this.errorCampoDetalle = false;
+    this.errorCampoJuez = false;
     this.errorCampoSelectorGrupo = false;
     this.errorCampoFecha = false;
     this.errorTextoEquipo = false
@@ -125,30 +157,28 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.restriccionFisica = false;
     this.restriccionMultiplePersona = false;
 
-    this.ordenID=true;
-    this.ordenAdmin=true;
-    this.ordenDamnificada=true;
-    this.ordenGrupo=true;
-    this.ordenVictimario=true;
-  
-
+    this.ordenID = true;
+    this.ordenAdmin = true;
+    this.ordenDamnificada = true;
+    this.ordenGrupo = true;
+    this.ordenVictimario = true;
   }
-
-
 
   ngOnInit() {
     this.getRestricciones();
     this.restriccion.distancia = 200;
     this.editarBandera = false;
-    this.grupoService.getGrupos()
-      .subscribe(grupo => {
-        (grupo as []).forEach(grupo => {
-          let grupoRetornado: Grupo = grupo as Grupo;
-          this.grupos.push(grupoRetornado.idGrupo)
-        })
-      }
-      );
+    this.grupoService.getGrupos().subscribe(grupo => {
+      (grupo as []).forEach(grupo => {
+        let grupoRetornado: Grupo = grupo as Grupo;
+        this.grupos.push(grupoRetornado.idGrupo)
+      })
+    }
+    );
 
+    this.getJuzgados();
+    this.getComisarias();
+    this.getDetalles();
   }
 
 
@@ -248,6 +278,32 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
       });
   }
+
+  getJuzgados() {
+    this.spinner.show();
+    this.juzgadoService.getJuzgados().subscribe(juzgado => {
+      this.spinner.hide();
+      this.juzgados = juzgado as Juzgado[];
+    })
+  }
+
+  getComisarias() {
+    this.spinner.show();
+    this.comisariaService.getComisarias().subscribe(comisaria => {
+      this.spinner.hide();
+      this.comisarias = comisaria as Comisaria[];
+    })
+  }
+
+  getDetalles() {
+    this.spinner.show();
+    this.detalleService.getDetalles().subscribe(detalle => {
+      this.spinner.hide();
+      this.detalles = detalle as DetalleRestriccion[];
+    })
+  }
+
+
   /**
    * Obtiene todas las restricciones
    */
@@ -257,7 +313,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
       .subscribe(res => {
         this.spinner.hide();
         this.restriccionService.restricciones = res as RestriccionDTO[];
-        this.originalRes= res as RestriccionDTO[];
+        this.originalRes = res as RestriccionDTO[];
       })
   }
 
@@ -265,7 +321,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
    * Agrega el victimario, retorna un booleano indicando si la operación de agregar fue exitosa
    * @returns boolean
    */
-  agregarVictimario(ngForm : NgForm) {
+  agregarVictimario(ngForm: NgForm) {
     if (this.stringVacio(this.victimario.dni)) {
       this.setErrorCampoVictimario();
       this.toastr.error("Verificar el DNI de victimario ingresado.", "Error!");
@@ -288,7 +344,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
    * Agrega a la damnificada, retorna un booleano indicando si la operación de agregar fue exitosa
    * @returns boolean
    */
-  agregarDamnificada(ngForm : NgForm) {
+  agregarDamnificada(ngForm: NgForm) {
     if (this.stringVacio(this.damnificada.dni)) {
       this.setErrorCampoDamnificada();
       this.toastr.error("Verificar el DNI de damnificada ingresado.", "Error!");
@@ -310,9 +366,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
   }
 
 
-
-
-
   agregarAdministrativo() {
     this.spinner.show();
     this.usuarioService.getUsuarioByEmail(this.administrativo.email)
@@ -329,8 +382,19 @@ export class AdministrarRestriccionesComponent implements OnInit {
       })
   }
 
+
+
   guardarRestriccion(restriccionForm: NgForm) {
+
+    let copia = this.restriccionService.restricciones;
+    copia.sort((a, b) => {
+      if (a.restriccion.idRestriccion > b.restriccion.idRestriccion) {
+        return 1
+      }
+      return -1
+    })
     if (this.editarBandera == true) {
+
       this.restriccion.idDamnificada = this.damnificada.idPersona;
       this.restriccion.idVictimario = this.victimario.idPersona;
       this.restriccion.idGrupo = this.grupoSeleccionado;
@@ -338,7 +402,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
       let ngbDate = restriccionForm.value.dp;
       let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
       this.restriccion.fechaSentencia = myDate;
-
       if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0
         || this.restriccion.idDamnificada == 0) {
         this.toastr.error("Completar todos los campos", "Error!");
@@ -346,27 +409,37 @@ export class AdministrarRestriccionesComponent implements OnInit {
       }
       else {
         this.spinner.show();
-        this.restriccionService.putRestriccion(this.restriccion)
-          .subscribe(res => {
-            this.spinner.hide();
-            this.toastr.success("La restricción se modificó correctamente", "Modificada!");
-            restriccionForm.reset();
-            this.getRestricciones();
-            document.getElementById("labelVictimario").innerHTML = "";
-            document.getElementById("labelDamnificada").innerHTML = "";
-            document.getElementById("labelAdministrativo").innerHTML = "";
-            this.victimario = new Persona;
-            this.damnificada = new Persona;
-            this.administrativo = new Usuario;
-            this.editarBandera = false;
-            this.eliminarErroresCampos()
+          this.detalle.restriccion = this.restriccion;
+          this.detalleService.putDetalle(this.detalle).subscribe(res => {
+
+            this.restriccionService.putRestriccion(this.restriccion)
+              .subscribe(res => {
+                this.spinner.hide();
+                this.toastr.success("La restricción se modificó correctamente", "Modificada!");
+                restriccionForm.reset();
+                this.getRestricciones();
+                this.getDetalles();
+                document.getElementById("labelVictimario").innerHTML = "";
+                document.getElementById("labelDamnificada").innerHTML = "";
+                document.getElementById("labelAdministrativo").innerHTML = "";
+                this.victimario = new Persona;
+                this.damnificada = new Persona;
+                this.administrativo = new Usuario;
+                this.detalle = new DetalleRestriccion;
+                this.editarBandera = false;
+                this.eliminarErroresCampos();
+
+              })
           })
+        
+
       }
     }
     else {
       this.agregarDamnificada(restriccionForm);
     }
   }
+
 
   agregarRestriccion(restriccionForm: NgForm) {
     /*if (this.agregarDamnificada() == false || this.agregarVictimario() == false) {
@@ -391,17 +464,20 @@ export class AdministrarRestriccionesComponent implements OnInit {
       return
     }
 
+    let copia = this.restriccionService.restricciones;
+    copia.sort((a, b) => {
+      if (a.restriccion.idRestriccion > b.restriccion.idRestriccion) {
+        return 1
+      }
+      return -1
+    })
+
     this.restriccion.idDamnificada = this.damnificada.idPersona;
     this.restriccion.idVictimario = this.victimario.idPersona;
     this.restriccion.idGrupo = this.grupoSeleccionado;
-
-
-
     let ngbDate = restriccionForm.value.dp;
     let myDate = new Date(ngbDate.year, ngbDate.month - 1, ngbDate.day);
     this.restriccion.fechaSentencia = myDate;
-
-
     if (this.restriccion.idDamnificada == 0 || this.restriccion.idVictimario == 0) {
       this.toastr.error("Completar todos los campos", "Error!");
       this.setCamposIncompletos();
@@ -416,19 +492,40 @@ export class AdministrarRestriccionesComponent implements OnInit {
             //MOSTRAR ERROR
             this.toastr.error("" + error.mensajeError, "Error!");
             this.setCamposIncompletos();
+          } else {
+
+            //detalle
+            this.detalle.detalle = this.detalle.detalle;
+            this.detalle.juez = this.detalle.juez;
+            this.detalle.comisaria = this.comisarias.filter(com => com.idComisaria == this.comisariaSeleccionado)[0];
+            this.detalle.juzgado = this.juzgados.filter(com => com.idJuzgado == this.juzgadoSeleccionado)[0];
+
+            let idRes = copia[this.restriccionService.restricciones.length - 1].restriccion.idRestriccion;
+            this.restriccionService.getByid(idRes + 1).subscribe(restriccion => {
+              let ultima = restriccion as Restriccion;
+              this.detalle.restriccion = ultima;
+              this.detalleService.postDetalle(this.detalle)
+                .subscribe(detalleRes => {
+                  this.spinner.hide();
+                  var detalleError = detalleRes as ErrorDTO;
+                  if (detalleError.hayError) {
+                    this.toastr.error("" + detalleError.mensajeError, "Error al guardar detalle!");
+                  } else {
+                    this.eliminarErroresCampos()
+                    this.toastr.success("La restricción se agrego correctamente", "Agregada!");
+                    restriccionForm.reset();
+                    this.getRestricciones();
+                    this.victimario = new Persona;
+                    this.damnificada = new Persona;
+                    this.administrativo = new Usuario;
+                    this.restriccion = new Restriccion;
+                    this.restriccion.distancia = 200;
+
+                  }
+                });
+            })
           }
-          else {
-            this.eliminarErroresCampos()
-            this.toastr.success("La restricción se agrego correctamente", "Agregada!");
-            restriccionForm.reset();
-            this.getRestricciones();
-            this.victimario = new Persona;
-            this.damnificada = new Persona;
-            this.administrativo = new Usuario;
-            this.restriccion = new Restriccion;
-            this.restriccion.distancia = 200;
-          }
-        })
+        });
     }
   }
 
@@ -437,34 +534,42 @@ export class AdministrarRestriccionesComponent implements OnInit {
     }
   }
 
-
   editarRestriccion(restriccionDTO: RestriccionDTO) {
     this.restriccion = restriccionDTO.restriccion;
     this.victimario = restriccionDTO.victimario;
     this.damnificada = restriccionDTO.damnificada;
     this.administrativo = restriccionDTO.administrativo;
+    this.detalle = this.detalles.filter(det => det.restriccion.idRestriccion == restriccionDTO.restriccion.idRestriccion)[0];
+    this.detalle.restriccion = restriccionDTO.restriccion;
+    this.editarBandera = true;
   }
 
   eliminarRestriccion(restriccionDTO: RestriccionDTO) {
+
+    let idD = this.detalles.filter(det => det.restriccion.idRestriccion == restriccionDTO.restriccion.idRestriccion)[0];
+
     if (window.confirm("Are you sure to delete ")) {
       this.spinner.show();
-      this.restriccionService.deleteRestriccion(restriccionDTO.restriccion.idRestriccion)
-        .subscribe(res => {
-          this.spinner.hide();
-          this.getRestricciones();
-          document.getElementById("labelVictimario").innerHTML = "";
-          document.getElementById("labelDamnificada").innerHTML = "";
-          document.getElementById("labelAdministrativo").innerHTML = "";
-          this.victimario = new Persona;
-          this.damnificada = new Persona;
-          this.administrativo = new Usuario;
-          this.restriccion = new Restriccion;
-        });
+      this.detalleService.deleteDetalle(idD.idDetalle).subscribe(detail => {
+        this.restriccionService.deleteRestriccion(restriccionDTO.restriccion.idRestriccion)
+          .subscribe(res => {
+            this.spinner.hide();
+            this.getRestricciones();
+            document.getElementById("labelVictimario").innerHTML = "";
+            document.getElementById("labelDamnificada").innerHTML = "";
+            document.getElementById("labelAdministrativo").innerHTML = "";
+            this.victimario = new Persona;
+            this.damnificada = new Persona;
+            this.administrativo = new Usuario;
+            this.restriccion = new Restriccion;
+          });
+      });
     }
-
   }
 
   masInfo(restriccionDTO: RestriccionDTO) {
+
+    let detalle = this.detalles.filter(det => det.restriccion.idRestriccion == restriccionDTO.restriccion.idRestriccion)[0];
 
     this.infoResId = restriccionDTO.restriccion.idRestriccion;
     this.infoDamnificadaNombre = restriccionDTO.damnificada.nombre + " " + restriccionDTO.damnificada.apellido;
@@ -474,8 +579,10 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.infoResFecha = restriccionDTO.restriccion.fechaSentencia;
     this.infoResAdmin = restriccionDTO.administrativo.email;
     this.infoResDistancia = restriccionDTO.restriccion.distancia;
-
-
+    this.infoResDetalle = detalle.detalle;
+    this.infoResJuez = detalle.juez;
+    this.infoResComisaria = detalle.comisaria.nombre;
+    this.infoResJuzgado = detalle.juzgado.nombre + " " + detalle.juzgado.jurisdiccion;
 
     this.modalAbierta = true;
   }
@@ -489,43 +596,42 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   //filtros
 
-  traerTodos(){
+  traerTodos() {
     this.getRestricciones();
 
     this.dniFilterDamnificada = null;
     this.dniFilterVictimario = null;
-    this.emailFilter= null;
+    this.emailFilter = null;
     this.grupoFilter = null;
   }
 
-
-
-  filtrarTodo(){
+  filtrarTodo() {
     let resultadosFiltrados = this.originalRes;
 
     // Filtrar por administrativo si el filtro de email está presente
     if (this.emailFilter) {
-      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion =>
         restriccion.administrativo.email === this.emailFilter);
     }
-  
+
     // Filtrar por damnificada si el filtro de DNI de damnificada está presente
     if (this.dniFilterDamnificada) {
-      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion =>
         restriccion.damnificada.dni === this.dniFilterDamnificada);
     }
-  
+
     // Filtrar por victimario si el filtro de DNI de victimario está presente
     if (this.dniFilterVictimario) {
-      resultadosFiltrados = resultadosFiltrados.filter(restriccion => 
+      resultadosFiltrados = resultadosFiltrados.filter(restriccion =>
         restriccion.victimario.dni === this.dniFilterVictimario);
     }
-  
+
     // Filtrar por grupo si el filtro de grupo está presente
     if (this.grupoFilter) {
       resultadosFiltrados = resultadosFiltrados.filter(restriccion => {
-        return restriccion.restriccion.idGrupo.toString() === this.grupoFilter+""});
-      }
+        return restriccion.restriccion.idGrupo.toString() === this.grupoFilter + ""
+      });
+    }
     // Asignar los resultados finales al arreglo de restricciones
     this.restriccionService.restricciones = resultadosFiltrados;
 
@@ -533,31 +639,30 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   //ordenamiento tabla restricciones
 
+  ordenarPorID() {
 
-  ordenarPorID(){
-    
-      let orden : number = this.ordenID ?  1:-1
+    let orden: number = this.ordenID ? 1 : -1
 
-      let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
-      restriccion.sort((a,b)=>{
-        if(a.restriccion.idRestriccion > b.restriccion.idRestriccion){
-          return 1 * orden
-        }
-        return -1 * orden
-      })
+    let restriccion: RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a, b) => {
+      if (a.restriccion.idRestriccion > b.restriccion.idRestriccion) {
+        return 1 * orden
+      }
+      return -1 * orden
+    })
 
-      this.ordenID = !this.ordenID;
+    this.ordenID = !this.ordenID;
 
-  
+
   }
 
   ordenarPorAdministrativo() {
 
-    let orden : number = this.ordenAdmin ?  1:-1
+    let orden: number = this.ordenAdmin ? 1 : -1
 
-    let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
-    restriccion.sort((a,b)=>{
-      if(a.administrativo.email > b.administrativo.email){
+    let restriccion: RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a, b) => {
+      if (a.administrativo.email > b.administrativo.email) {
         return 1 * orden
       }
       return -1 * orden
@@ -566,14 +671,12 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.ordenAdmin = !this.ordenAdmin;
   }
 
-
-
   ordenarPorVictimario() {
-    let orden : number = this.ordenVictimario ?  1:-1
+    let orden: number = this.ordenVictimario ? 1 : -1
 
-    let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
-    restriccion.sort((a,b)=>{
-      if(a.victimario.dni > b.victimario.dni){
+    let restriccion: RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a, b) => {
+      if (a.victimario.dni > b.victimario.dni) {
         return 1 * orden
       }
       return -1 * orden
@@ -584,11 +687,11 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   ordenarPorGrupoR() {
 
-    let orden : number = this.ordenGrupo ?  1:-1
+    let orden: number = this.ordenGrupo ? 1 : -1
 
-    let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
-    restriccion.sort((a,b)=>{
-      if(a.restriccion.idGrupo > b.restriccion.idGrupo){
+    let restriccion: RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a, b) => {
+      if (a.restriccion.idGrupo > b.restriccion.idGrupo) {
         return 1 * orden
       }
       return -1 * orden
@@ -599,11 +702,11 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   ordenarPorDamnificada() {
 
-    let orden : number = this.ordenDamnificada ?  1:-1
+    let orden: number = this.ordenDamnificada ? 1 : -1
 
-    let restriccion : RestriccionDTO[] = this.restriccionService.restricciones;
-    restriccion.sort((a,b)=>{
-      if(a.damnificada.dni > b.damnificada.dni){
+    let restriccion: RestriccionDTO[] = this.restriccionService.restricciones;
+    restriccion.sort((a, b) => {
+      if (a.damnificada.dni > b.damnificada.dni) {
         return 1 * orden
       }
       return -1 * orden
@@ -616,21 +719,21 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.showSelect = !this.showSelect;
   }
 
-
   cambiarVista() {
     this.mostrarGrupoRestricciones = !this.mostrarGrupoRestricciones
     this.mostrarAbmRestricciones = !this.mostrarAbmRestricciones
     this.restriccionFisica = false
   }
 
-  mostrarGrupos(){
+  mostrarGrupos() {
     this.mostrarGrupoRestricciones = true
     this.mostrarAbmRestricciones = false
     this.restriccionFisica = false
     this.restriccionMultiplePersona = false
 
   }
-  mostrarRestriccionesFisicas(){
+
+  mostrarRestriccionesFisicas() {
     this.mostrarGrupoRestricciones = false
     this.mostrarAbmRestricciones = false
     this.restriccionFisica = true
@@ -638,20 +741,19 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
   }
 
-  mostrarRestricciones(){
+  mostrarRestricciones() {
     this.mostrarGrupoRestricciones = false
     this.mostrarAbmRestricciones = true
     this.restriccionFisica = false
     this.restriccionMultiplePersona = false
   }
-  
-  mostrarMultiplesPersonas(){
+
+  mostrarMultiplesPersonas() {
     this.mostrarGrupoRestricciones = false
     this.mostrarAbmRestricciones = false
     this.restriccionFisica = false
     this.restriccionMultiplePersona = true
   }
-
 
 
   /**

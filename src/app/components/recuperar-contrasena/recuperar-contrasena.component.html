@@ -4,8 +4,13 @@
     </ngx-spinner>
     <div class="row">
         <div class="col-4 mx-auto">
-            <div class="card bg-light mb-3" style="max-width: 20rem;">
+            <div class="card mb-3" style="max-width: 20rem;">
                 <div class="card-body">
+                    <div class="contenedor-titulo">
+                        <nav class="navbar navbar-expand-lg navbar-light titulo-informes">
+                            <a class="navbar-brand"> Recuperar contraseña </a>
+                        </nav>
+                    </div>
                     <form #usuarioForm="ngForm" (ngSubmit)="modificarContrasena(usuarioForm)">
                         <div class="form-group">
                             <input type="password" class="form-control" placeholder="Contraseña antigua"

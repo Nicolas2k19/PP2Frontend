@@ -55,6 +55,32 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="input-texto-before-detalle" [ngClass]="{ 'error': errorCampoDetalle}">
+                            <div class="input-group">
+                                <input class="form-control input-texto" type="text" name="detalleRestriccion"
+                                    ngbTooltip="Detalle de restriccion" [(ngModel)]="detalle.detalle" required>
+                            </div>
+                        </div>
+                        <div class="input-texto-before-juez" [ngClass]="{ 'error': errorCampoJuez}">
+                            <div class="input-group">
+                                <input class="form-control input-texto" type="text" name="juezRestriccion"
+                                    ngbTooltip="Juez" [(ngModel)]="detalle.juez" required>
+                            </div>
+                        </div>
+                        <div class="input-before-selector-comisaria" [ngClass]="{ 'error': errorCampoSelectorComisaria}">
+                            <select class="select-estilo" name="comisariaSeleccionado" id="comisariaSeleccionado" [(ngModel)]="comisariaSeleccionado" required>
+                                <option value="" disabled selected>Seleccione una comisaría</option>
+                                <option *ngFor="let comisaria of comisarias" [value]="comisaria.idComisaria">{{comisaria.nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="input-before-selector-juzgado" [ngClass]="{ 'error': errorCampoSelectorJuzgado}">
+                            <select class="select-estilo" name="juzgadoSeleccionado" id="juzgadoSeleccionado" [(ngModel)]="juzgadoSeleccionado" required>
+                                <option value="" disabled selected>Seleccione un juzgado</option>
+                                <option *ngFor="let juzgado of juzgados" [value]="juzgado.idJuzgado">{{ juzgado.nombre}}</option>
+                            </select>
+                        </div>
+
+
                         <!-- [disabled]="!restriccionForm.valid"-->
                         <button class="btn btn-restriccion">Agregar</button>
                     </form>
@@ -315,16 +341,17 @@
 
                 <!-- INFO DISTANCIA Y PROX COMISARIA/JUZGADO-->
                 <div class="modal-infoRes1">
-                    <p class="input-texto-before-distancia"> <strong> {{ infoResDistancia }}</strong></p>
-                    <p class="input-texto-before-comisaria"> <strong> xxxxxxxxxxxxxxxxxxxxx </strong> </p>
-                    <p class="input-texto-before-juzgado"> <strong> xxxxxxxxxxxxxxxxxxxxx</strong></p>
-
+                    <p class="input-texto-before-juez"> <strong> {{ infoResJuez }}</strong> </p>
+                    <p class="input-texto-before-juzgado"> <strong> {{ infoResJuzgado }}</strong></p>
+                    <p class="input-texto-before-comisaria"> <strong> {{ infoResComisaria }} </strong> </p>
+                    
                 </div>
 
                 <!-- INFO FECHA SENTENCIA Y PROX NIVEL DE PELIGROSIDAD-->
                 <div class="modal-infoRes2">
-                    <p class="input-texto-before-peligrosidad"> <strong> xxxxxxxxxxxxxx</strong> </p>
+                    <p class="input-texto-before-distancia"> <strong> {{ infoResDistancia }}</strong></p>
                     <p class="input-texto-before-fecha"> <strong>{{ infoResFecha }} </strong></p>
+                    <p class="input-texto-before-detalle"> <strong> {{ infoResDetalle }}</strong></p>
                 </div>
             </div>
         </div>

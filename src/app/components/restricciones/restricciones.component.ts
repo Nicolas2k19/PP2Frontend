@@ -66,7 +66,7 @@ export class RestriccionesComponent implements OnInit {
     this.getUsuarioByEmail(localStorage.getItem("emailUsuario")).add(res => {
       this.getRestricciones(localStorage.getItem("emailUsuario")).add(res => {
         this.getRestriccionesMultiples().add(res => {
-          if (this.restriccionService.restricciones != undefined) {
+          if (this.restriccionService.restricciones != undefined && this.restriccionService.restricciones.length > 0) {
             this.getRestriccionesFisicas(this.restriccionService.restricciones[this.indiceDeRestriccionSeleccionada].restriccion.idRestriccion).add(res => {
               this.seleccionarRestriccion(this.restriccionService.restricciones[this.indiceDeRestriccionSeleccionada], null);
               this.getUbicacion().subscribe(resUbicacion => {
