@@ -409,21 +409,16 @@ export class AdministrarRestriccionesComponent implements OnInit {
       }
       else {
         this.spinner.show();
-        this.restriccionService.getByid(this.restriccion.idRestriccion).subscribe(restriccion => {
-          let elegida = restriccion as Restriccion;
-          this.detalle.restriccion = elegida;
+          this.detalle.restriccion = this.restriccion;
           this.detalleService.putDetalle(this.detalle).subscribe(res => {
 
             this.restriccionService.putRestriccion(this.restriccion)
               .subscribe(res => {
                 this.spinner.hide();
-
-
-
-
                 this.toastr.success("La restricción se modificó correctamente", "Modificada!");
                 restriccionForm.reset();
                 this.getRestricciones();
+                this.getDetalles();
                 document.getElementById("labelVictimario").innerHTML = "";
                 document.getElementById("labelDamnificada").innerHTML = "";
                 document.getElementById("labelAdministrativo").innerHTML = "";
@@ -436,7 +431,7 @@ export class AdministrarRestriccionesComponent implements OnInit {
 
               })
           })
-        })
+        
 
       }
     }
@@ -546,14 +541,13 @@ export class AdministrarRestriccionesComponent implements OnInit {
     this.administrativo = restriccionDTO.administrativo;
     this.detalle = this.detalles.filter(det => det.restriccion.idRestriccion == restriccionDTO.restriccion.idRestriccion)[0];
     this.detalle.restriccion = restriccionDTO.restriccion;
-    this.banderaEdicion = true;
+    this.editarBandera = true;
   }
 
   eliminarRestriccion(restriccionDTO: RestriccionDTO) {
 
     let idD = this.detalles.filter(det => det.restriccion.idRestriccion == restriccionDTO.restriccion.idRestriccion)[0];
 
-    console.log("sirve", idD);
     if (window.confirm("Are you sure to delete ")) {
       this.spinner.show();
       this.detalleService.deleteDetalle(idD.idDetalle).subscribe(detail => {
@@ -576,8 +570,6 @@ export class AdministrarRestriccionesComponent implements OnInit {
   masInfo(restriccionDTO: RestriccionDTO) {
 
     let detalle = this.detalles.filter(det => det.restriccion.idRestriccion == restriccionDTO.restriccion.idRestriccion)[0];
-
-    console.log(detalle);
 
     this.infoResId = restriccionDTO.restriccion.idRestriccion;
     this.infoDamnificadaNombre = restriccionDTO.damnificada.nombre + " " + restriccionDTO.damnificada.apellido;
