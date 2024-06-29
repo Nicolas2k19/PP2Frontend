@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import * as e from 'express';
 import Configuracion from 'src/app/models/Configuracion/Configuracion';
 import ConfiguracionEntrenamiento from 'src/app/models/Configuracion/ConfiguracionEntrenamiento';
 import { Persona } from 'src/app/models/persona';
@@ -29,8 +30,14 @@ export class ParametrosRutinaComponent implements OnInit {
   restricciones : RestriccionDTO[]
 
   entrenando : boolean;
+  entrenado : boolean
 
   sinDatos : boolean
+
+  configFinalGuardada : Configuracion //iniciarVigilancia
+
+
+  configuraciones : ConfiguracionEntrenamiento[]
 
   constructor( public serviceConfig :ConfiguracionLSTM, public perimetralService : RestriccionService){
     this.datosCsv = [[]]
@@ -38,8 +45,11 @@ export class ParametrosRutinaComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.obtenerConfiguraciones()
+
     this.sinDatos = true
     this.entrenando = false
+    this.entrenado = false
     this.perimetralService.getRestricciones().subscribe((res : RestriccionDTO[])=> this.restricciones = res)
     const inputElement1 : HTMLInputElement= document.querySelector('#distancia-permitida');
     const inputValue1 = inputElement1.value;
@@ -69,7 +79,7 @@ export class ParametrosRutinaComponent implements OnInit {
 
 
   enviarInformacionEntrenamiento(){
-      if(this.sinDatos || this.idvictimario==undefined ||this.idvictimario==null) return
+      if(this.sinDatos || this.idvictimario==undefined ||this.idvictimario==null  || this.entrenado) return
 
       let persona = this.restricciones.filter(res => { console.log(res.victimario.idPersona == this.idvictimario,res.victimario.idPersona,this.idvictimario); return res.victimario.idPersona == this.idvictimario})[0].victimario 
       let ubicaciones : UbicacionEntrenamiento[] = []
@@ -95,13 +105,15 @@ export class ParametrosRutinaComponent implements OnInit {
       let configFinal : Configuracion = new Configuracion()
       configFinal.config = configuracion
       configFinal.ubicaciones = ubicaciones
+      this.configFinalGuardada = configFinal;
       this.entrenando = true
+      this.entrenado = false
       this.serviceConfig.cargarDatos(configFinal).subscribe(elem =>{
-            
-        
         setTimeout(() => {
               this.serviceConfig.entrenar(configFinal).subscribe(elem =>{
               this.entrenando = false
+              this.entrenado = true
+              this.obtenerConfiguraciones()
                      })
             }, 20000);
 
@@ -112,7 +124,11 @@ export class ParametrosRutinaComponent implements OnInit {
   }
 
 
-  
+  vigilar(){
+   this.serviceConfig.iniciarVigilancia(this.configFinalGuardada.config.idPersona).subscribe(e =>{
+        console.log('Vigilandooooooooooo')
+   })
+  }
 
    readFile(e){
     let reader = new FileReader();
@@ -136,6 +152,13 @@ export class ParametrosRutinaComponent implements OnInit {
       return values;
     });
   }
+
+
+    obtenerConfiguraciones(){
+      this.serviceConfig.obtenerConfiguraciones().subscribe(configs =>{
+        this.configuraciones = configs as ConfiguracionEntrenamiento[];
+      })
+    }
 
 
   }

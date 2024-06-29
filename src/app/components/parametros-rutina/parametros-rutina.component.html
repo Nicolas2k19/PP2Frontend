@@ -59,6 +59,8 @@
                 id="csv"
                 accept=".csv" (change)="readFile($event)"/>       
                 <button class="btn">Entrenar</button>
+                <button *ngIf="entrenado" class="btn" (click)="vigilar()">Vigilar</button>
+
         </form>
         <div class="scroll">
             <select class="select-estilo select-dia" name="dia">
@@ -109,5 +111,19 @@
             hourglass_top
         </span> 
     </div>
+
+    <h3>Historial de modelos</h3>
+    <ul class="configuraciones-iniciadas">
+        <li class="configuracion-individual" *ngFor="let config of configuraciones">
+           <legend>Configuracion</legend>
+           <label for="">Input legth {{config.input_length}}</label>
+           <label for="">Output{{config.output}}</label>
+           <label for="">Distancia permitida: {{config.distanciaPermitida}}</label>
+           <label for="">N Units : {{config.nunits}}</label>
+           <label for="">Epochs: {{config.epochs}}</label>
+           <label for="">Batch size :{{config.batch_size}}</label>
+           <label for="">Persona vigilando: {{config.idPersona.dni}}</label>
+        </li>
+    </ul>
 
 </div>
