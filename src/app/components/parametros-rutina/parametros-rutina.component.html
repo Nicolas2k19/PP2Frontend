@@ -58,8 +58,17 @@
                 type="file"
                 id="csv"
                 accept=".csv" (change)="readFile($event)"/>       
-                <button class="btn">Entrenar</button>
+                <button *ngIf="!entrenando" class="btn">Entrenar</button>
                 <button *ngIf="entrenado" class="btn" (click)="vigilar()">Vigilar</button>
+
+                <div class="vigilancia-valor">
+                    <label *ngIf="vigilando" for="">
+                        Vigilancia activa
+                    </label>
+                    <label *ngIf="!vigilando" for="">
+                        Vigilancia desactivada
+                    </label>
+                </div>
 
         </form>
         <div class="scroll">
@@ -114,7 +123,7 @@
 
     <h3>Historial de modelos</h3>
     <ul class="configuraciones-iniciadas">
-        <li class="configuracion-individual" *ngFor="let config of configuraciones">
+        <li class="configuracion-individual" (click) ="redireccionar(config)"*ngFor="let config of configuraciones">
            <legend>Configuracion</legend>
            <label for="">Input legth {{config.input_length}}</label>
            <label for="">Output{{config.output}}</label>

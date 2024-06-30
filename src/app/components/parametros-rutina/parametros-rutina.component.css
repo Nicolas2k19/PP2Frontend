@@ -87,6 +87,11 @@ legend::after{
   padding: 2rem;
   transition: 0.2s;
   border-radius: 1rem;
+  cursor: pointer;
+}
+
+.configuracion-individual > label , .configuracion-individual > legend{
+  cursor: pointer;
 }
 
 .configuracion-individual:hover{
@@ -121,6 +126,9 @@ h3::after{
     color: black;
 }
 
+.vigilancia-valor{
+    margin-top: 0.5rem;
+}
 .container-elementos-configuracion{
     display: flex;
     flex-direction: row;

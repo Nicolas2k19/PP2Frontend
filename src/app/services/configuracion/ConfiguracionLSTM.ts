@@ -38,6 +38,10 @@ export default class ConfiguracionLSTM {
      obtenerConfiguraciones(){
       return this.http.get(this.url+"/obtenerConfiguraciones")
    }
+
+      procesoActivo(){
+      return this.http.get(this.url+"/procesoActivo")
+   }
  
 
 

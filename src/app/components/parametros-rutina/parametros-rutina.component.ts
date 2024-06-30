@@ -9,6 +9,7 @@ import { RestriccionDTO } from 'src/app/models/restriccion-dto';
 import ConfiguracionLSTM from 'src/app/services/configuracion/ConfiguracionLSTM';
 import { RestriccionService } from 'src/app/services/restricciones/restriccion.service';
 import UbicacionEntrenamiento from 'src/app/services/ubicaciones/ubicionEntrenamieto';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-parametros-rutina',
@@ -36,7 +37,7 @@ export class ParametrosRutinaComponent implements OnInit {
 
   configFinalGuardada : Configuracion //iniciarVigilancia
 
-
+  vigilando : Boolean
   configuraciones : ConfiguracionEntrenamiento[]
 
   constructor( public serviceConfig :ConfiguracionLSTM, public perimetralService : RestriccionService){
@@ -46,6 +47,10 @@ export class ParametrosRutinaComponent implements OnInit {
   ngOnInit(): void {
 
     this.obtenerConfiguraciones()
+
+    this.serviceConfig.procesoActivo().subscribe(activo =>{
+      this.vigilando = activo as Boolean
+     })
 
     this.sinDatos = true
     this.entrenando = false
@@ -79,7 +84,7 @@ export class ParametrosRutinaComponent implements OnInit {
 
 
   enviarInformacionEntrenamiento(){
-      if(this.sinDatos || this.idvictimario==undefined ||this.idvictimario==null  || this.entrenado) return
+      if(this.sinDatos || this.idvictimario==undefined ||this.idvictimario==null || this.entrenado) return
 
       let persona = this.restricciones.filter(res => { console.log(res.victimario.idPersona == this.idvictimario,res.victimario.idPersona,this.idvictimario); return res.victimario.idPersona == this.idvictimario})[0].victimario 
       let ubicaciones : UbicacionEntrenamiento[] = []
@@ -126,7 +131,9 @@ export class ParametrosRutinaComponent implements OnInit {
 
   vigilar(){
    this.serviceConfig.iniciarVigilancia(this.configFinalGuardada.config.idPersona).subscribe(e =>{
-        console.log('Vigilandooooooooooo')
+        this.serviceConfig.procesoActivo().subscribe(activo =>{
+          this.vigilando = activo as Boolean
+         })
    })
   }
 
@@ -160,6 +167,10 @@ export class ParametrosRutinaComponent implements OnInit {
       })
     }
 
+
+    redireccionar(config : ConfiguracionEntrenamiento){
+        location.href=environment.apiUrl+"/IdentificacionRutinas/obtenerCurva/curva"+config.input_length+""+1+""+config.distanciaPermitida+""+config.epochs+".jpg";
+    }
 
   }
 
